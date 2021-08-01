@@ -51,7 +51,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthenticationDao.cs" />
+    <Compile Include="CategoryFilmDao.cs" />
     <Compile Include="FilmDao.cs" />
+    <Compile Include="GenericDao.cs" />
     <Compile Include="HomeDao.cs" />
     <Compile Include="PostDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

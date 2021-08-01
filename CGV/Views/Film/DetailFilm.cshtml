@@ -11,6 +11,7 @@
     <script src="~/Content/Assets/js/JQuery3.3.1.js"></script>
     <script src="~/Content/Assets/js/lightslider.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    var category = new DatabaseIO.CategoryFilmDao().getAllCategoryFilm();
 }
 
 <div>
@@ -22,7 +23,14 @@
         <div class="col-6">
             <p><span style="font-weight:bold">Diễn viên : </span>@Model.actor</p><br>
             <p><span style="font-weight:bold">Đạo diễn : </span>@Model.director</p><br>
-            <p><span style="font-weight:bold">Thể loại : </span> </p><br>
+            @foreach (var item in category)
+            {
+                if (item.id == Model.id_cfilm)
+                {
+                    <p><span style="font-weight:bold">Thể loại : </span> @item.name</p><br>
+                }
+            }
+
             <p><span style="font-weight:bold">Thời lượng : </span>@Model.duration </p><br>
             <p><span style="font-weight:bold">Nội dung : </span>@Model.description </p><br>
             <div class="button--movie">
