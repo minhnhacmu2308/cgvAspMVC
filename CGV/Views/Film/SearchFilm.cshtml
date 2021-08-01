@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Model.film>
+@{
+    ViewBag.Title = "SearchFilm";
+    Layout = "~/Views/MyLayout/_LayoutUser.cshtml";
+
+}
+<div style="margin-top:90px">
+    <span style="font-weight: 700; font-size: 20px; color: #bb2d3b">Từ tìm kiếm : </span><span>@ViewBag.keySearch</span>
+</div>
+<section id="movies-list">
+    @foreach (var item in Model)
+    {
+
+
+
+        <div class="movies-box">
+            <!--img------------>
+            <div class="movies-img">
+                <div class="quality">4K</div>
+                <img src="/Content/Assets/images/@item.image" />
+            </div>
+            <!--text--------->
+            <a href="/film/detail/@item.id"> @item.film_name </a>
+            <!-- Button trigger modal -->
+            <div style="margin-bottom:20px" class="button--movie">
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal1"
+                        style="margin-right: 20px">
+                    Trailer
+                </button>
+                <button type="button" class="btn btn-danger">Đặt Vé</button>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <iframe width="1104" height="621" src="@item.trailer" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</section>

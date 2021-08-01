@@ -1,0 +1,15 @@
+D:\Source Code\CGV\DatabaseIO\bin\Debug\DatabaseIO.dll.config
+D:\Source Code\CGV\DatabaseIO\bin\Debug\DatabaseIO.dll
+D:\Source Code\CGV\DatabaseIO\bin\Debug\DatabaseIO.pdb
+D:\Source Code\CGV\DatabaseIO\bin\Debug\EntityFramework.dll
+D:\Source Code\CGV\DatabaseIO\bin\Debug\EntityFramework.SqlServer.dll
+D:\Source Code\CGV\DatabaseIO\bin\Debug\Model.dll
+D:\Source Code\CGV\DatabaseIO\bin\Debug\Model.pdb
+D:\Source Code\CGV\DatabaseIO\bin\Debug\Model.dll.config
+D:\Source Code\CGV\DatabaseIO\bin\Debug\EntityFramework.xml
+D:\Source Code\CGV\DatabaseIO\bin\Debug\EntityFramework.SqlServer.xml
+D:\Source Code\CGV\DatabaseIO\obj\Debug\DatabaseIO.csproj.AssemblyReference.cache
+D:\Source Code\CGV\DatabaseIO\obj\Debug\DatabaseIO.csproj.CoreCompileInputs.cache
+D:\Source Code\CGV\DatabaseIO\obj\Debug\DatabaseIO.csproj.CopyComplete
+D:\Source Code\CGV\DatabaseIO\obj\Debug\DatabaseIO.dll
+D:\Source Code\CGV\DatabaseIO\obj\Debug\DatabaseIO.pdb

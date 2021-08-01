@@ -1,0 +1,18 @@
+﻿ 
+@model List<Model.film>    
+    <!--showcase----------------------->
+<!--heading------------->
+<h1 class="showcase-heading">Phim Sắp Chiếu</h1>
+
+<ul id="autoWidth" class="cs-hidden">
+    <!--box-1--------------------------->
+    @foreach(var item in Model)
+    {
+        <li class="item-c">
+            <div class="showcase-box">
+                <a href="/film/detail/@item.id"> <img src="/Content/Assets/images/@item.image" /></a>
+            </div>
+        </li>
+    }
+  
+</ul>

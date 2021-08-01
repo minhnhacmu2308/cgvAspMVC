@@ -1,0 +1,12 @@
+D:\Source Code\CGV\Model\bin\Debug\Model.dll.config
+D:\Source Code\CGV\Model\bin\Debug\Model.dll
+D:\Source Code\CGV\Model\bin\Debug\Model.pdb
+D:\Source Code\CGV\Model\bin\Debug\EntityFramework.dll
+D:\Source Code\CGV\Model\bin\Debug\EntityFramework.SqlServer.dll
+D:\Source Code\CGV\Model\bin\Debug\EntityFramework.xml
+D:\Source Code\CGV\Model\bin\Debug\EntityFramework.SqlServer.xml
+D:\Source Code\CGV\Model\obj\Debug\Model.csproj.AssemblyReference.cache
+D:\Source Code\CGV\Model\obj\Debug\Model.csproj.CoreCompileInputs.cache
+D:\Source Code\CGV\Model\obj\Debug\Model.csproj.CopyComplete
+D:\Source Code\CGV\Model\obj\Debug\Model.dll
+D:\Source Code\CGV\Model\obj\Debug\Model.pdb

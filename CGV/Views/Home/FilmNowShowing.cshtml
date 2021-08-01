@@ -1,0 +1,34 @@
+﻿@model List<Model.film>
+@foreach (var item in Model)
+{
+    <div class="movies-box">
+        <!--img------------>
+        <div class="movies-img">
+            <div class="quality">4K</div>
+            <img src="/Content/Assets/images/@item.image" />
+        </div>
+        <!--text--------->
+        <a href="/film/detail/@item.id"> @item.film_name </a>
+        <!-- Button trigger modal -->
+        <div style="margin-bottom:20px" class="button--movie">
+             @{ 
+                 var idModel = "exampleModal" + item.id;
+             }
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#@idModel"
+                    style="margin-right: 20px">
+                Trailer
+            </button>
+            <button type="button" class="btn btn-danger">Đặt Vé</button>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="@idModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <iframe width="1104" height="621" src="@item.trailer" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,26 @@
+﻿<nav>
+    <!--logo--------------->
+    <a href="/Home/Film" class="logo">
+        <img src="/Content/Assets/images/logo.png" />
+    </a>
+    <!--menu--btn----------------->
+    <label class="menu-icon" for="menu-btn">
+        <span class="nav-icon"></span>
+    </label>
+    <!--menu-------------->
+    <ul class="menu">
+        <li>@Html.ActionLink("Giới Thiệu", "Promotion", "Post")</li>
+        <li>@Html.ActionLink("Phim", "Film", "Home")</li>
+        <li>@Html.ActionLink("Đăng Nhập", "Login", "Authentication")</li>
+        <li>@Html.ActionLink("Đăng Kí", "Register", "Authentication")</li>
+    </ul>
+    <!--search------------->
+    @using (Html.BeginForm("SearchFilm", "Film", FormMethod.Get))
+    {
+        <div class="search">
+            <input type="text" name="keySearch" value="@ViewBag.keySearch" placeholder="Find Your Favourtie Movies" />
+            <i class="fas fa-search"></i>
+        </div>
+    }
+ 
+</nav>
