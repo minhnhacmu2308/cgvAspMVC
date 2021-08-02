@@ -1,0 +1,137 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/MyLayout/_LayoutAdmin.cshtml";
+}
+@model List<Model.booking>
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Booking</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+            <li class="breadcrumb-item active">Booking</li>
+        </ol>
+
+        <div class="card mb-4">
+
+            <div class="card-body">
+                <table id="datatablesSimple">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Username</th>
+                            <th>Film's Name</th>
+                            <th>Schedule</th>
+                            <th>Showtime</th>
+                            <th>Room</th>
+                            <th>Seat</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            
+
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>STT</th>
+                            <th>Username</th>
+                            <th>Film's Name</th>
+                            <th>Schedule</th>
+                            <th>Showtime</th>
+                            <th>Room</th>
+                            <th>Seat</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.id</td>
+                                <td>
+                                    @{var user = new DatabaseIO.UserDao().getAll();
+                                    }
+                                    @foreach (var item1 in user)
+                                    {
+                                        if (item1.id == item.id_user)
+                                        {
+                                            @item1.username;
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    @{var film = new DatabaseIO.FilmDao().getAll();
+                                    }
+                                    @foreach (var item2 in film)
+                                    {
+                                        if (item2.id == item.film_id)
+                                        {
+                                            @item2.film_name;
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    @{var sche = new DatabaseIO.ScheduleDao().getAll();
+                                    }
+                                    @foreach (var item3 in sche)
+                                    {
+                                        if (item3.id == item.schedule_id)
+                                        {
+                                            @item3.dateschedule;
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    @{var sh = new DatabaseIO.ShowtimeDao().getAll();
+                                    }
+                                    @foreach (var item4 in sh)
+                                    {
+                                        if (item4.id == item.showtime_id)
+                                        {
+                                            @item4.start_time  @item4.end_time;
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    @{var room = new DatabaseIO.RoomDao().getAll();
+                                    }
+                                    @foreach (var item5 in room)
+                                    {
+                                        if (item5.id == item.room_id)
+                                        {
+                                            @item5.room_name;
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    @{var seat = new DatabaseIO.SeatDao().getAll();
+                                    }
+                                    @foreach (var item6 in seat)
+                                    {
+                                        if (item6.id == item.seat_id)
+                                        {
+                                            @item6.seat_name;
+                                        }
+                                    }
+                                </td>
+                                <td>@item.amount</td>
+                                
+                                <td>
+                                    <button type="button" class="btn btn-danger">
+                                        Accept
+                                    </button>
+                                    
+                                </td>
+
+                            </tr>
+                        }
+
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+

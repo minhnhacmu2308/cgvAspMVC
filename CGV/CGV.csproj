@@ -127,6 +127,18 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\Admin\AdminBookingController.cs" />
+    <Compile Include="Controllers\Admin\AdminCategoryFilmController.cs" />
+    <Compile Include="Controllers\Admin\AdminCategoryPostController.cs" />
+    <Compile Include="Controllers\Admin\AdminFilmController.cs" />
+    <Compile Include="Controllers\Admin\AdminHomeController.cs" />
+    <Compile Include="Controllers\Admin\AdminModuleController.cs" />
+    <Compile Include="Controllers\Admin\AdminPostController.cs" />
+    <Compile Include="Controllers\Admin\AdminRoomController.cs" />
+    <Compile Include="Controllers\Admin\AdminScheduleController.cs" />
+    <Compile Include="Controllers\Admin\AdminSeatController.cs" />
+    <Compile Include="Controllers\Admin\AdminShowtimeController.cs" />
+    <Compile Include="Controllers\Admin\AdminUserController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\FilmController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -138,6 +150,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Admin\assets\demo\chart-area-demo.js" />
+    <Content Include="Content\Admin\assets\demo\chart-bar-demo.js" />
+    <Content Include="Content\Admin\assets\demo\chart-pie-demo.js" />
+    <Content Include="Content\Admin\assets\demo\datatables-demo.js" />
+    <Content Include="Content\Admin\assets\img\error-404-monochrome.svg" />
+    <Content Include="Content\Admin\css\styles.css" />
+    <Content Include="Content\Admin\js\datatables-simple-demo.js" />
+    <Content Include="Content\Admin\js\scripts.js" />
     <Content Include="Content\Assets\css\bootstrap.min.css" />
     <Content Include="Content\Assets\css\form.css" />
     <Content Include="Content\Assets\css\lightslider.css" />
@@ -336,6 +356,21 @@
     <Content Include="Views\Film\DetailFilm.cshtml" />
     <Content Include="Views\Post\DetailPromotion.cshtml" />
     <Content Include="Views\Film\SearchFilm.cshtml" />
+    <Content Include="Views\MyLayout\_LayoutAdmin.cshtml" />
+    <Content Include="Views\AdminModule\Header.cshtml" />
+    <Content Include="Views\AdminModule\Menu.cshtml" />
+    <Content Include="Views\AdminModule\Footer.cshtml" />
+    <Content Include="Views\AdminHome\Index.cshtml" />
+    <Content Include="Views\AdminCategoryFilm\Index.cshtml" />
+    <Content Include="Views\AdminBooking\Index.cshtml" />
+    <Content Include="Views\AdminCategoryPost\Index.cshtml" />
+    <Content Include="Views\AdminFilm\Index.cshtml" />
+    <Content Include="Views\AdminPost\Index.cshtml" />
+    <Content Include="Views\AdminRoom\Index.cshtml" />
+    <Content Include="Views\AdminSchedule\Index.cshtml" />
+    <Content Include="Views\AdminSeat\Index.cshtml" />
+    <Content Include="Views\AdminShowtime\Index.cshtml" />
+    <Content Include="Views\AdminUser\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
