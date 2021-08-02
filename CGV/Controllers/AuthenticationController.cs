@@ -12,6 +12,7 @@ namespace CGV.Controllers
     {
         GenericDao genericD = new GenericDao();
         AuthenticationDao authenticationD = new AuthenticationDao();
+        UserDao userD = new UserDao();
         // GET: Authentication
         public ActionResult Index()
         {
@@ -51,7 +52,7 @@ namespace CGV.Controllers
                 else
                 {
                     usercgv user = new usercgv();
-                    user.id = 101;
+                    user.id = 404;
                     user.email = email;
                     user.password = passworodMd5;
                     user.phonenumber = phonenumber;
@@ -69,6 +70,40 @@ namespace CGV.Controllers
         public ActionResult Login()
         {
             return View();
+        }
+        [HttpPost]
+        public ActionResult Login(FormCollection form)
+        {
+            var email = form["email"];
+            var password = form["password"];
+            var passworodMd5 = authenticationD.md5(password);
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+            {
+                ViewBag.message = "Cần điền đầy đủ thông tin";
+                return View();
+            }
+            else
+            {
+
+                bool result = authenticationD.checklogin(email, passworodMd5);
+                if(result)
+                {
+                    var userInformation = userD.getInformation(email);
+                    Session.Add(Constants.Constants.USER_SESSION, userInformation);
+                    return RedirectToAction("IndexUser", "Home");
+                }
+                else
+                {
+                    ViewBag.message = "Tài khoản hoặc mật khẩu không chính xác";
+                    return View();
+                }
+            }
+            
+        }
+        public ActionResult Logout()
+        {
+            Session.Remove(Constants.Constants.USER_SESSION);
+            return Redirect("/");
         }
     }
 }

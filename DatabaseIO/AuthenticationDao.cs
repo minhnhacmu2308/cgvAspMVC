@@ -32,6 +32,19 @@ namespace DatabaseIO
             }
             return false; ;
         }
+        public bool checklogin(string email,string password)
+        {
+            var result = mydb.usercgvs.Where(u => u.email == email && u.password == password).FirstOrDefault();
+            if(result != null)
+            {
+                return true;
+
+            }
+            else
+            {
+                return false;
+            }
+        }
 
     }
 }

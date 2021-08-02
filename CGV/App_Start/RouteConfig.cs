@@ -31,7 +31,7 @@ namespace CGV
              name: "Search film",
              url: "film/search/{keySearch}",
              defaults: new { controller = "Film", action = "SearchFilm", id = UrlParameter.Optional }
-         );
+         ); 
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

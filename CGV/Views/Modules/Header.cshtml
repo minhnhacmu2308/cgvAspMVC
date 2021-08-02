@@ -1,4 +1,5 @@
-﻿<nav>
+﻿
+<nav>
     <!--logo--------------->
     <a href="/Home/Film" class="logo">
         <img src="/Content/Assets/images/logo.png" />
@@ -8,12 +9,24 @@
         <span class="nav-icon"></span>
     </label>
     <!--menu-------------->
-    <ul class="menu">
-        <li>@Html.ActionLink("Giới Thiệu", "Promotion", "Post")</li>
-        <li>@Html.ActionLink("Phim", "Film", "Home")</li>
+    @{ 
+        var userInfomatiom = (Model.usercgv)Session[CGV.Constants.Constants.USER_SESSION];
+    }
+<ul class="menu">
+    <li>@Html.ActionLink("Giới Thiệu", "Promotion", "Post")</li>
+    <li>@Html.ActionLink("Phim", "Film", "Home")</li>
+    @if (userInfomatiom != null)
+    {
+        <li>@Html.ActionLink(@userInfomatiom.username, "ProfileUser", "Home", new { email = @userInfomatiom.email},null)</li>
+        <li>@Html.ActionLink("Đăng Xuất", "Logout", "Authentication")</li>
+    }
+    else
+    {
         <li>@Html.ActionLink("Đăng Nhập", "Login", "Authentication")</li>
         <li>@Html.ActionLink("Đăng Kí", "Register", "Authentication")</li>
-    </ul>
+    }
+
+</ul>
     <!--search------------->
     @using (Html.BeginForm("SearchFilm", "Film", FormMethod.Get))
     {

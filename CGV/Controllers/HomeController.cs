@@ -57,5 +57,11 @@ namespace CGV.Controllers
         {
             return View("IndexUser");
         }
+        public ActionResult ProfileUser(string email)
+        {
+            UserDao userD = new UserDao();
+            var model = userD.getInformation(email);
+            return View(model);
+        }
     }
 }
