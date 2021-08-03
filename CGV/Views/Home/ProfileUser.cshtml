@@ -38,10 +38,34 @@
             </div>
 
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-xl">
+                <div class="modal-dialog ">
                     <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">SỬa thông tin</h5>
+                            <button type="button" id="btn-close" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
                         <div class="modal-body">
-                            <iframe width="1104" height="621" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <form>
+                                <div class="mb-3">
+                                    <label for="schedule" class="col-form-label">Username:</label>
+                                    <input type="text" class="form-control" value="@Model.username" name="username" id="username" />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="showtime" class="col-form-label">Phonenumber:</label>
+                                    <input type="text" class="form-control" value="@Model.phonenumber" name="phonenumber" id="phonenumber" />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="room" class="col-form-label">Email:</label>
+                                    <input type="text" readonly class="form-control" value="@Model.email" name="email" id="email" />
+                                </div>
+
+                                <p style="color: red" id="resultError"></p>
+                                <p style="color: forestgreen" id="resultSuccess"></p>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            <button onclick="editProfile()" type="button" class="btn btn-danger">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -57,7 +81,6 @@
                         <div class="modal-body">
                             <form>
                                 <div class="mb-3">
-
                                     <label for="schedule" class="col-form-label">Mật khẩu cũ:</label>
                                     <input type="password" class="form-control" name="password" id="password" />
                                 </div>
@@ -76,7 +99,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                            <button onclick="testAjax()" type="button" class="btn btn-danger">Submit</button>
+                            <button onclick="changePass()" type="button" class="btn btn-danger">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -100,7 +123,7 @@
             </div>
         </div>
     </div>
-    <script>
+  @*  <script>
         function changePass() {
             var passwordOld = $('#password').val();
             var passwordNew = $('#passwordnew').val();
@@ -138,9 +161,9 @@
             }
            
         }
-    </script>
+    </script>*@
     <script>
-        function testAjax() {
+        function changePass() {
             var passwordOld = $('#password').val();
             var passwordNew = $('#passwordnew').val();
             var rePasswordNew = $('#rePasswordnew').val();
@@ -170,6 +193,11 @@
                 })
             }
             
+        }
+    </script>
+    <script>
+        function editProfile() {
+            alert("dsds")
         }
     </script>
 </div>

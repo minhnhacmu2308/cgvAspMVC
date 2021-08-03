@@ -47,7 +47,7 @@ namespace CGV.Controllers
                 var user = userD.getUpdateProfile(email, passwordMd5);
                 if(user != null)
                 {
-                    userD.updatePrifile(email, passwordMd5, passwordMd5New);
+                    userD.updateProfile(email, passwordMd5, passwordMd5New);
                     js.Data = new
                     {
                         status = "OK",
