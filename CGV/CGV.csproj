@@ -340,11 +340,11 @@
     <Content Include="Views\Post\DetailPromotion.cshtml" />
     <Content Include="Views\Film\SearchFilm.cshtml" />
     <Content Include="Views\Home\ProfileUser.cshtml" />
+    <Content Include="Views\AdminHome\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\AdminHome\" />
     <Folder Include="Views\User\" />
   </ItemGroup>
   <ItemGroup>
