@@ -53,11 +53,17 @@
   <ItemGroup>
     <Compile Include="AuthenticationDao.cs" />
     <Compile Include="CategoryFilmDao.cs" />
+    <Compile Include="CategoryPostDao.cs" />
     <Compile Include="FilmDao.cs" />
     <Compile Include="GenericDao.cs" />
     <Compile Include="HomeDao.cs" />
     <Compile Include="PostDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoleDao.cs" />
+    <Compile Include="RoomDao.cs" />
+    <Compile Include="ScheduleDao.cs" />
+    <Compile Include="SeatDao.cs" />
+    <Compile Include="ShowtimeDao.cs" />
     <Compile Include="UserDao.cs" />
   </ItemGroup>
   <ItemGroup>

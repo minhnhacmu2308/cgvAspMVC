@@ -20,5 +20,9 @@ namespace DatabaseIO
         {
             return mydb.films.Where(f => f.film_name.Contains(keySearch) || f.actor.Contains(keySearch) || f.director.Contains(keySearch));
         }
+        public List<film> getAll()
+        {
+            return mydb.films.ToList();
+        }
     }
 }
