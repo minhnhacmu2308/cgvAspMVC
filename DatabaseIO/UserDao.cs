@@ -25,6 +25,10 @@ namespace DatabaseIO
             u.password = passwordNew;
             mydb.SaveChanges();
         }
-       
+        public List<usercgv> getAll()
+        {
+            return mydb.usercgvs.ToList();
+        }
+
     }
 }

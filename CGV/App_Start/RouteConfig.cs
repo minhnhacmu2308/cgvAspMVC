@@ -31,7 +31,62 @@ namespace CGV
              name: "Search film",
              url: "film/search/{keySearch}",
              defaults: new { controller = "Film", action = "SearchFilm", id = UrlParameter.Optional }
-         ); 
+         );
+            routes.MapRoute(
+            name: "Admin Home",
+            url: "admin/home",
+            defaults: new { controller = "AdminHome", action = "Index", id = UrlParameter.Optional }
+        );
+            routes.MapRoute(
+             name: "Admin Category Film",
+             url: "admin/loaiphim",
+             defaults: new { controller = "AdminCategoryFilm", action = "Index", id = UrlParameter.Optional }
+         );
+            routes.MapRoute(
+             name: "Admin Category Post",
+             url: "admin/loaibv",
+             defaults: new { controller = "AdminCategoryPost", action = "Index", id = UrlParameter.Optional }
+         );
+            routes.MapRoute(
+             name: "Admin Film",
+             url: "admin/film",
+             defaults: new { controller = "AdminFilm", action = "Index", id = UrlParameter.Optional }
+         );
+            routes.MapRoute(
+             name: "Admin Schedule",
+             url: "admin/lichchieu",
+             defaults: new { controller = "AdminSchedule", action = "Index", id = UrlParameter.Optional }
+         );
+            routes.MapRoute(
+             name: "Admin Showtime",
+             url: "admin/suatchieu",
+             defaults: new { controller = "AdminShowtime", action = "Index", id = UrlParameter.Optional }
+         );
+            routes.MapRoute(
+             name: "Admin Room",
+             url: "admin/room",
+             defaults: new { controller = "AdminRoom", action = "Index", id = UrlParameter.Optional }
+         );
+            routes.MapRoute(
+            name: "Admin Seat",
+            url: "admin/ghe",
+            defaults: new { controller = "AdminSeat", action = "Index", id = UrlParameter.Optional }
+        );
+            routes.MapRoute(
+           name: "Admin Post",
+           url: "admin/baiviet",
+           defaults: new { controller = "AdminPost", action = "Index", id = UrlParameter.Optional }
+       );
+            routes.MapRoute(
+             name: "Admin user",
+             url: "admin/user",
+             defaults: new { controller = "AdminUser", action = "Index", id = UrlParameter.Optional }
+         );
+            routes.MapRoute(
+             name: "Admin Booking",
+             url: "admin/booking",
+             defaults: new { controller = "AdminBooking", action = "Index", id = UrlParameter.Optional }
+         );
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
