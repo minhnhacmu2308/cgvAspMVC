@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using Model;
+using System.Data.SqlClient;
 
 namespace DatabaseIO
 {
@@ -45,6 +46,11 @@ namespace DatabaseIO
                 return false;
             }
         }
-
+        public void register(usercgv user)
+        {
+            string SQL = "INSERT INTO usercgv(email,is_active,password,phonenumber,role_id,username) VALUES('" + user.email + "',0,'" + user.password + "','" + user.phonenumber + "','" + user.role_id + "','" + user.username + "')";
+            mydb.Database.ExecuteSqlCommand(SQL);
+            mydb.SaveChanges();
+        }
     }
 }

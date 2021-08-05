@@ -12,7 +12,8 @@
     {
 
 
-
+        var idModel = "exampleModal" + item.id;
+        var idModa = "exampleModa" + item.id;
         <div class="movies-box">
             <!--img------------>
             <div class="movies-img">
@@ -23,11 +24,11 @@
             <a href="/film/detail/@item.id"> @item.film_name </a>
             <!-- Button trigger modal -->
             <div style="margin-bottom:20px" class="button--movie">
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal1"
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#@idModel"
                         style="margin-right: 20px">
                     Trailer
                 </button>
-                <button type="button" class="btn btn-danger">Đặt Vé</button>
+                <button type="button" onclick="getSchedule(@item.id)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#@idModa">Đặt Vé</button>
             </div>
         </div>
         <!-- Modal -->
@@ -36,6 +37,93 @@
                 <div class="modal-content">
                     <div class="modal-body">
                         <iframe width="1104" height="621" src="@item.trailer" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+          
+               
+
+           
+        <!--  Modak Booking -->
+        <div class="modal fade" id="@idModa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    @{
+                        var nameClose = "btn-close" + item.id;
+                    }
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">@item.film_name</h5>
+                        <button type="button" id="@nameClose" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+
+                                <label for="schedule" class="col-form-label">Lịch chiếu:</label>
+                                @{
+                                    var nameSchdule = "schedule" + item.id;
+                                    var nameShowtime = "showtime" + item.id;
+                                    var nameRoom = "room" + item.id;
+                                    var nameSeat = "seat" + item.id;
+                                    var nameError = "resultError" + item.id;
+
+                                }
+                                <select required class="form-select" onchange="getShowtime(@item.id)" id="@nameSchdule" name="schedule" aria-label="Default select example">
+                                    <option value="0">Chọn lịch chiếu</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="showtime" class="col-form-label">Suất chiếu:</label>
+                                <select class="form-select" onchange="getRoom(@item.id)" id="@nameShowtime" name="showtime" aria-label="Default select example">
+                                    <option value="0">Chọn suất chiếu</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="room" class="col-form-label">Phòng chiếu:</label>
+                                <select onchange="getSeat(@item.id)" class="form-select" id="@nameRoom" name="room" aria-label="Default select example">
+                                    <option value="0">Chọn phòng</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="seat" class="col-form-label">Ghế ngồi:</label>
+                                <select multiple="multiple" class="form-select" id="@nameSeat" name="seat" aria-label="Default select example">
+                                    <option value="0">Chọn ghế</option>
+
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="roomaa" class="col-form-label">Giá vé: 65.000 VND / vé</label>
+                            </div>
+                            <p style="color: red" id="@nameError"></p>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button onclick="bookingTicket(@item.id)" type="button" class="btn btn-danger">Đặt vé</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="modal fade" id="exampleModaltest" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div id="result" class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button onclick="closeModel()" type="button" class="btn btn-danger">OK</button>
+
                     </div>
                 </div>
             </div>

@@ -8,5 +8,6 @@ namespace CGV.Constants
     public static class Constants
     {
         public static  string USER_SESSION = "USER_SESSION";
+        public static int PRICE_TICKET = 65000;  
     }
 }

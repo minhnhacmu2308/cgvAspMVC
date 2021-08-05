@@ -19,10 +19,17 @@ namespace DatabaseIO
         {
             return mydb.usercgvs.Where(u => u.email == email && u.password == password).FirstOrDefault();
         }
-        public void updateProfile(string email, string password,string passwordNew)
+        public void updatePassword(string email, string password,string passwordNew)
         {
             usercgv u = getUpdateProfile(email, password);
             u.password = passwordNew;
+            mydb.SaveChanges();
+        }
+        public void updateProfile(string email, usercgv user)
+        {
+            usercgv usercgv = getInformation(email);
+            usercgv.phonenumber = user.phonenumber;
+            usercgv.username = user.username;
             mydb.SaveChanges();
         }
        

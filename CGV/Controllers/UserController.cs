@@ -21,7 +21,7 @@ namespace CGV.Controllers
         }
 
         [HttpPost]
-        public JsonResult EditProfile(string passwordOld, string passwordNew, string rePasswordNew,string email)
+        public JsonResult EditPassword(string passwordOld, string passwordNew, string rePasswordNew,string email)
         {
             JsonResult js = new JsonResult();
             Console.WriteLine(passwordOld);
@@ -47,7 +47,7 @@ namespace CGV.Controllers
                 var user = userD.getUpdateProfile(email, passwordMd5);
                 if(user != null)
                 {
-                    userD.updateProfile(email, passwordMd5, passwordMd5New);
+                    userD.updatePassword(email, passwordMd5, passwordMd5New);
                     js.Data = new
                     {
                         status = "OK",
@@ -58,6 +58,33 @@ namespace CGV.Controllers
             }
           
             return Json(js,JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult updateProfile(string email, string username,string phonenumber)
+        {
+            JsonResult js = new JsonResult();
+            usercgv user = new usercgv();
+            user.phonenumber = phonenumber;
+            user.username = username;
+            if(String.IsNullOrEmpty(email) || String.IsNullOrEmpty(username) || String.IsNullOrEmpty(phonenumber))
+            {
+                js.Data = new
+                {
+                    status = "Error",
+                    message = "Cần điền đầy đủ thông tin"
+                };
+            }
+            else
+            {
+                userD.updateProfile(email, user);
+                js.Data = new
+                {
+                    status = "OK",
+                    message = "Cập nhật thông tin thành công",
+                };
+            }
+
+            return Json(js, JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -22,10 +22,10 @@
             <img class="image3" src="https://vnn-imgs-f.vgcloud.vn/2020/03/23/11/trend-avatar-12.jpg" alt="" />
         </div>
         <div class="col-6">
-            <p><span style="font-weight:bold">Username : </span>@Model.username</p><br>
-            <p><span style="font-weight:bold">Email : </span>@Model.email</p><br>
+            <p id="textUsername"><span style="font-weight:bold">Username : </span>@Model.username</p><br>
+            <p id="textEmail"><span style="font-weight:bold">Email : </span>@Model.email</p><br>
 
-            <p><span style="font-weight:bold">Phone number: </span> @Model.phonenumber</p><br>
+            <p id="textPhonenumber"><span style="font-weight:bold">Phone number: </span> @Model.phonenumber</p><br>
 
             <div class="button--movie">
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal"
@@ -41,7 +41,7 @@
                 <div class="modal-dialog ">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">SỬa thông tin</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Sửa thông tin</h5>
                             <button type="button" id="btn-close" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -52,15 +52,15 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="showtime" class="col-form-label">Phonenumber:</label>
-                                    <input type="text" class="form-control" value="@Model.phonenumber" name="phonenumber" id="phonenumber" />
+                                    <input type="text" class="form-control" value="@Model.phonenumber" name="phonenumber" id="phonenumberedit" />
                                 </div>
                                 <div class="mb-3">
                                     <label for="room" class="col-form-label">Email:</label>
                                     <input type="text" readonly class="form-control" value="@Model.email" name="email" id="email" />
                                 </div>
 
-                                <p style="color: red" id="resultError"></p>
-                                <p style="color: forestgreen" id="resultSuccess"></p>
+                                <p style="color: red" id="resultError1"></p>
+                                <p style="color: forestgreen" id="resultSuccess1"></p>
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -123,45 +123,28 @@
             </div>
         </div>
     </div>
-  @*  <script>
-        function changePass() {
-            var passwordOld = $('#password').val();
-            var passwordNew = $('#passwordnew').val();
-            var rePasswordNew = $('#rePasswordnew').val();
-            var email = $('#emailEdit').val();
-           if (passwordNew != rePasswordNew) {
-                $('#resultError').html("Hai mật khẩu không trùng khớp")
-            } else {
-                
-                        
-                        var xhr = new XMLHttpRequest();
-                        var data = new FormData();
-                        data.append("password", passwordOld);
-                        data.append("passwordnew", passwordNew);
-                        data.append("rePasswordnew", rePasswordNew);
-                        data.append("email", email);
+  <script>
+        function changePass1() {
+            var xhr = new XMLHttpRequest();
 
-                           alert(JSON.stringify(data));
-                        xhr.open("POST", domain + "/User/EditProfile", true)
-                        xhr.onreadystatechange = function () {
-                            if (xhr.readyState == 4 && xhr.status == 200) {
-                                var content = xhr.responseText();
-                                var json_ct = JSON.parse(content);
-                                alert(json_ct)
-                                if (json_ct.Data.status == "OK") {
-                                    $('#resultError').html(json_ct.Data.message);
-                                } else {
-                                    $('#resultError').html(json_ct.Data.message);
-                                }
-                            }
-                          
+            xhr.open("POST", domain + "/Film/getSchedule", true)
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var content = xhr.responseText();
+                    var json_ct = JSON.parse(content);
+                   
+                    if (json_ct.Data.status == "OK") {
+                        console.log(json_ct.Data.message);
+                    } else {
+                        console.log(json_ct.Data.message);
+                    }
+                }
 
-                        }
-                xhr.send(data);
+
             }
-           
+            xhr.send(data);
         }
-    </script>*@
+    </script>
     <script>
         function changePass() {
             var passwordOld = $('#password').val();
@@ -174,22 +157,22 @@
                 $('#resultError').html("Hai mật khẩu không trùng khớp ");
             } else {
                 $.ajax({
-                    url: '/User/EditProfile',
-                    type: "post",
-                    data: {
-                        passwordOld: passwordOld,
-                        passwordNew: passwordNew,
-                        rePasswordNew: rePasswordNew,
-                        email: email
-                    },
-                    success: function (data) {
-                        console.log(data);
-                        $('#resultSuccess').html(data.Data.message);
-                        $('#resultError').html("");
-                    },
-                    error: function (error) {
-                        $('#resultError').html(data.Data.message);
-                    }
+                        url: '/User/EditPassword',
+                        type: "post",
+                        data: {
+                            passwordOld: passwordOld,
+                            passwordNew: passwordNew,
+                            rePasswordNew: rePasswordNew,
+                            email: email
+                        },
+                        success: function (data) {
+                            console.log(data);
+                            $('#resultSuccess').html(data.Data.message);
+                            $('#resultError').html("");
+                        },
+                        error: function (error) {
+                            $('#resultError').html(data.Data.message);
+                        }
                 })
             }
             
@@ -197,7 +180,32 @@
     </script>
     <script>
         function editProfile() {
-            alert("dsds")
+            var username = $("#username").val();
+            var phonenumber = $("#phonenumberedit").val();
+            var email = $('#emailEdit').val();
+            if (username == '' || phonenumber == '' || email == '') {
+                $('#resultError').html("Cần điền đây đủ thông tin");
+            } else {
+                $.ajax({
+                    url: '/User/updateProfile',
+                    type: "post",
+                    data: {
+                        username: username,
+                        phonenumber: phonenumber,
+                        email: email
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        $('#resultSuccess1').html(data.Data.message);
+                        $("#textUsername").html(`<span style="font-weight: bold">Username : </span>` + username );
+                        $("#textPhonenumber").html(`<span style="font-weight: bold">Username : </span>` + phonenumber);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        $('#resultError1').html(data.Data.message);
+                    }
+                })
+            }
         }
     </script>
 </div>

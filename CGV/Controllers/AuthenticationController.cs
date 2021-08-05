@@ -52,15 +52,14 @@ namespace CGV.Controllers
                 else
                 {
                     usercgv user = new usercgv();
-                    user.id = 404;
+                 
                     user.email = email;
                     user.password = passworodMd5;
                     user.phonenumber = phonenumber;
                     user.username = username;
                     user.is_active = 0;
                     user.role_id = 3;
-                    genericD.AddObject<usercgv>(user);
-                    genericD.Save();
+                    authenticationD.register(user);
                     return RedirectToAction("Login");
                 }
                

@@ -53,7 +53,9 @@
     <Compile Include="booking.cs" />
     <Compile Include="category_film.cs" />
     <Compile Include="category_post.cs" />
+    <Compile Include="CommentAjax.cs" />
     <Compile Include="film.cs" />
+    <Compile Include="HistoryBooking.cs" />
     <Compile Include="MyDB.cs" />
     <Compile Include="post.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -61,6 +63,7 @@
     <Compile Include="role.cs" />
     <Compile Include="room.cs" />
     <Compile Include="schedule.cs" />
+    <Compile Include="ScheduleAjax.cs" />
     <Compile Include="seat.cs" />
     <Compile Include="showtime.cs" />
     <Compile Include="usercgv.cs" />

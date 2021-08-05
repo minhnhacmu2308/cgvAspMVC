@@ -17,7 +17,8 @@
     <li>@Html.ActionLink("Phim", "Film", "Home")</li>
     @if (userInfomatiom != null)
     {
-        <li>@Html.ActionLink(@userInfomatiom.username, "ProfileUser", "Home", new { email = @userInfomatiom.email},null)</li>
+        <li>@Html.ActionLink("Lịch sử đặt vé", "HistoryBooking", "Film")</li>
+        <li>@Html.ActionLink(@userInfomatiom.username, "ProfileUser", "Home", new { email = @userInfomatiom.email }, null)</li>
         <li>@Html.ActionLink("Đăng Xuất", "Logout", "Authentication")</li>
     }
     else

@@ -7,20 +7,20 @@ using System.Threading.Tasks;
 
 namespace DatabaseIO
 {
-
-    public class PostDao
+    public  class RoomDao
     {
         MyDB mydb = new MyDB();
-
-        public post getDetailPromotion(string id)
+        public List<room> getRoom()
         {
-            int promotionId = Int32.Parse(id);
-            return mydb.posts.Where(p => p.id == promotionId).FirstOrDefault();
+            return mydb.rooms.ToList();
+        }
+        public List<schedule> getSchedule()
+        {
+            return mydb.schedules.ToList();
         }
         public room getName(int id)
         {
             return mydb.rooms.Where(r => r.id == id).FirstOrDefault();
         }
-
     }
 }

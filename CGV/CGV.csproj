@@ -215,6 +215,7 @@
     <Content Include="Content\Assets\images\signin.jpg" />
     <Content Include="Content\Assets\images\signup.jpg" />
     <Content Include="Content\Assets\images\venom2.jpg" />
+    <Content Include="Content\Assets\js\booking.js" />
     <Content Include="Content\Assets\js\bootstrap.min.js" />
     <Content Include="Content\Assets\js\jquery-3.2.1.slim.min.js" />
     <Content Include="Content\Assets\js\jquery-3.6.0.js" />
@@ -339,6 +340,8 @@
     <Content Include="Views\Post\DetailPromotion.cshtml" />
     <Content Include="Views\Film\SearchFilm.cshtml" />
     <Content Include="Views\Home\ProfileUser.cshtml" />
+    <Content Include="Views\Film\testSchedule.cshtml" />
+    <Content Include="Views\Film\HistoryBooking.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
