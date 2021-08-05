@@ -22,5 +22,25 @@ namespace DatabaseIO
         {
             return mydb.rooms.Where(r => r.id == id).FirstOrDefault();
         }
+        public List<room> getAll()
+        {
+            return mydb.rooms.ToList();
+        }
+        public void Add(string name)
+        {
+            string SQL = "INSERT INTO room(room_name) VALUES('" + name + "')";
+            mydb.Database.ExecuteSqlCommand(SQL);
+
+        }
+        public void Update(string name, string id)
+        {
+            string SQL = "UPDATE room SET room_name = '" + name + "' WHERE id = '" + id + "'";
+            mydb.Database.ExecuteSqlCommand(SQL);
+        }
+        public void Delete(string id)
+        {
+            string SQL = "DELETE FROM room WHERE id = '" + id + "'";
+            mydb.Database.ExecuteSqlCommand(SQL);
+        }
     }
 }
