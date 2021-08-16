@@ -28,15 +28,35 @@ namespace CGV
             defaults: new { controller = "Post", action = "DetailPromotion", id = UrlParameter.Optional }
         );
             routes.MapRoute(
+            name: "Get code",
+            url: "authentication/getcode/{email}",
+            defaults: new { controller = "Authentication", action = "getCodeAgain", email = UrlParameter.Optional }
+        );
+            routes.MapRoute(
              name: "Search film",
              url: "film/search/{keySearch}",
              defaults: new { controller = "Film", action = "SearchFilm", id = UrlParameter.Optional }
+         );
+            routes.MapRoute(
+             name: "qr code",
+             url: "booking/ticket/{dateNow}/{id}",
+             defaults: new { controller = "Film", action = "qrResult", id = UrlParameter.Optional }
          );
             routes.MapRoute(
             name: "history",
             url: "user/history/{id}",
             defaults: new { controller = "Film", action = "HistoryBooking", id = UrlParameter.Optional }
         );
+            routes.MapRoute(
+           name: "paymentsuccess",
+           url: "payment/success",
+           defaults: new { controller = "Film", action = "paymentSuccess", id = UrlParameter.Optional }
+       );
+            routes.MapRoute(
+           name: "paymenterror",
+           url: "payment/error",
+           defaults: new { controller = "Film", action = "paymentError", id = UrlParameter.Optional }
+       );
             routes.MapRoute(
              name: "Admin Home",
              url: "admin/home",
@@ -97,6 +117,7 @@ namespace CGV
             url: "admin/login",
             defaults: new { controller = "AdminAuthen", action = "Index", id = UrlParameter.Optional }
         );
+           
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

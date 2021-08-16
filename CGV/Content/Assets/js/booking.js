@@ -103,11 +103,25 @@ function bookingTicket(id) {
             },
             success: function (data) {
 
-                console.log(data);
+                var tongtien = 0;        
+                var dataHTML = '';
                 if (data.status == "ERROR") {
                     $(nameError).html("❌ Bạn cần phải đăng nhập !");
                 } else {
-                    $('#result').html(data.msg);
+                    dataHTML += `<p ><span style="font-weight:bold">Tên phim : </span>` + data.data1[0].nameFilm + `</p><br>
+										<p ><span style="font-weight:bold">Lịch chiếu : </span>`+ data.data1[0].schedulename+ `</p><br>
+										<p ><span style="font-weight:bold">Suất chiếu : </span>`+ data.data1[0].showtimeName + `</p><br>
+										<p ><span style="font-weight:bold">Phòng chiếu : </span>`+ data.data1[0].roomName + `</p><br>`
+                    dataHTML += `<span style="font-weight:bold">Ghế : `
+                    for (var i = 0; i < data.data2.length; i++) {
+                        dataHTML += `<span>` + data.data2[i] + " " + `</span>`
+                        tongtien = tongtien + 3;
+                    }
+                    dataHTML += `<p style="margin-top: 25px" ><span style="font-weight:bold">Tổng tiền : </span>` + tongtien + `$</p><br>`
+                    
+                    $('#result').html(dataHTML);
+                    $('#linkqr').html(data.data);
+                    $('#sessionId').html(data.data3.Id);
                     $(nameError).html("");
                     document.getElementById(nameModel).click();
                     $(document).ready(function () {

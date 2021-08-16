@@ -28,6 +28,8 @@ namespace Model
 
         public int status { get; set; }
 
+        public string create_time { get; set; }
+
         public virtual film film { get; set; }
 
         public virtual usercgv usercgv { get; set; }

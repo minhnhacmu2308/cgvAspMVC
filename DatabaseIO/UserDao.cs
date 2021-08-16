@@ -25,6 +25,12 @@ namespace DatabaseIO
             u.password = passwordNew;
             mydb.SaveChanges();
         }
+        public void activeAccount(string email)
+        {
+            usercgv u = getInformation(email);
+            u.is_active = 1;
+            mydb.SaveChanges();
+        }
         public void updateProfile(string email, usercgv user)
         {
             usercgv usercgv = getInformation(email);

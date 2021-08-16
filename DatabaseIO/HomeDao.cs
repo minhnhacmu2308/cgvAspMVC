@@ -13,11 +13,11 @@ namespace DatabaseIO
 
         public List<film> getFilmComingSoon()
         {
-            return mydb.films.ToList();
+            return mydb.Database.SqlQuery<film>("SELECT * FROM films WHERE id NOT IN (SELECT film_id FROM schedules)").ToList();
         }
         public List<film> getFilmNowShowing()
         {
-            return mydb.films.ToList();
+            return mydb.Database.SqlQuery<film>("SELECT a.* FROM films as a,schedules as b WHERE b.film_id = a.id AND b.dateschedule = GETDATE()").ToList();
         }
         public List<post> getPromotion()
         {

@@ -3,8 +3,11 @@ using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
+using System.Configuration;
+using System.Net;
 
 namespace CGV.Controllers
 {
@@ -33,7 +36,7 @@ namespace CGV.Controllers
             var passworodMd5 = authenticationD.md5(password);
             if(string.IsNullOrEmpty(email)|| string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(phonenumber) || string.IsNullOrEmpty(rePassword))
             {
-                ViewBag.message = "Cần điền đầy đu thông tin";
+                ViewBag.message = "Cần điền đầy đủ thông tin";
                 return View();
             }
             else if(!password.Equals(rePassword))
@@ -60,16 +63,98 @@ namespace CGV.Controllers
                     user.is_active = 0;
                     user.role_id = 3;
                     authenticationD.register(user);
-                    return RedirectToAction("Login");
+
+                    sendMail(email);
+
+                    ViewBag.email = email;
+                 
+
+                    return View("Verify");
                 }
                
             }
              
         }
+        public int GenerateRandomNo()
+        {
+            int _min = 1000;
+            int _max = 9999;
+            Random _rdm = new Random();
+            return _rdm.Next(_min, _max);
+        }
         public ActionResult Login()
         {
             return View();
         }
+
+        public ActionResult Verify()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult Verify(string code,string email)
+        {
+
+            var codeSession = (string)Session[Constants.Constants.CODE_VERIFY];
+            if (!code.Equals(codeSession))
+            {
+              
+                return Json(new { status = "ERROR", msg = "Mã xác thực không chính xác", JsonRequestBehavior.AllowGet });
+            }
+            else if(codeSession == null || codeSession == "")
+            {
+                return Json(new { status = "ERROR", msg = "Mã xác thực đã quá hạn vui lòng lấy lại mã", JsonRequestBehavior.AllowGet });
+            }
+            else
+            {
+                userD.activeAccount(email);
+                return Json(new { status = "OK", msg = "Xác thực thành công !!", JsonRequestBehavior.AllowGet });
+            }
+
+           
+        }
+        [HttpPost]
+        public ActionResult getCodeAgain(string email)
+        {
+            sendMail(email);
+            ViewBag.msg = "Lấy lại mã thành công vui lòng check mail ";
+            ViewBag.email = email;
+            return View("Verify");
+        }
+
+        [HttpGet]
+        public ActionResult getCodeAgain()
+        {
+          
+            return View("Login");
+        }
+
+        public void sendMail(string email)
+        {
+            var formEmailAddress = ConfigurationManager.AppSettings["FormEmailAddress"].ToString();
+            var formEmailDisplayName = ConfigurationManager.AppSettings["FormEmailDisplayName"].ToString();
+            var formEmailPassword = ConfigurationManager.AppSettings["FormEmailPassword"].ToString();
+            var smtpHost = ConfigurationManager.AppSettings["SMTPHost"].ToString();
+            var smtpPort = ConfigurationManager.AppSettings["SMTPPost"].ToString();
+
+            bool enableSsl = bool.Parse(ConfigurationManager.AppSettings["EnabledSSL"].ToString());
+            string code = GenerateRandomNo().ToString();
+            MailMessage message = new MailMessage(new MailAddress(formEmailAddress, formEmailDisplayName), new MailAddress(email));
+            message.Subject = "Verify Account";
+            message.Body = "This is code verify" + " " + code;
+
+            var client = new SmtpClient();
+            client.Credentials = new NetworkCredential(formEmailAddress, formEmailPassword);
+            client.Host = smtpHost;
+            client.EnableSsl = enableSsl;
+            client.Port = !string.IsNullOrEmpty(smtpPort) ? Convert.ToInt32(smtpPort) : 0;
+            client.Send(message);
+
+            Session.Add(Constants.Constants.CODE_VERIFY, code);
+            Session.Timeout = 2;
+        }
+
         [HttpPost]
         public ActionResult Login(FormCollection form)
         {
@@ -87,9 +172,19 @@ namespace CGV.Controllers
                 bool result = authenticationD.checklogin(email, passworodMd5);
                 if(result)
                 {
-                    var userInformation = userD.getInformation(email);
-                    Session.Add(Constants.Constants.USER_SESSION, userInformation);
-                    return RedirectToAction("IndexUser", "Home");
+                    bool resultActive = authenticationD.checkActive(email);
+                    if (resultActive)
+                    {
+                        var userInformation = userD.getInformation(email);
+                        Session.Add(Constants.Constants.USER_SESSION, userInformation);
+                        return RedirectToAction("IndexUser", "Home");
+                    }
+                    else
+                    {
+                        ViewBag.email = email;
+                        return View("Verify");
+                    }
+                   
                 }
                 else
                 {

@@ -1,5 +1,7 @@
 ﻿using DatabaseIO;
 using Model;
+using Stripe;
+using Stripe.Checkout;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +14,39 @@ namespace CGV.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            StripeConfiguration.ApiKey = "sk_test_51Itn76AY7zpl2tqotBGt23IEZmOSCZOmOnpgAhVQWIvua4g5c4G74Au5P54rWqNofPUw1DZ7TdHzlBhCWJCJa81W00V76C7Z2n";
+            var options = new SessionCreateOptions
+            {
+                PaymentMethodTypes = new List<string>
+                {
+                    "card",
+            },
+                LineItems = new List<SessionLineItemOptions>
+            {
+                    new SessionLineItemOptions
+                    {
+                        Name = "Nha",
+                        Description ="sdsd",
+                        Amount = 900,
+                        Currency ="usd",
+                        Quantity =1
+                    },
+            },
+                SuccessUrl = "https://example.com/success",
+                CancelUrl = "https://example.com/cancel",
+                PaymentIntentData = new SessionPaymentIntentDataOptions
+                {
+                    Metadata = new Dictionary<string, string>
+                    {
+                         {"Order_id","1234" },
+                         {"sdsd","hello" },
+                    }
+
+                }
+            };
+            var service = new SessionService();
+            Session session = service.Create(options);
+            return View(session);
         }
 
         public ActionResult About()
@@ -35,14 +69,14 @@ namespace CGV.Controllers
         public ActionResult FilmComingSoon()
         {
             HomeDao homeDao = new HomeDao();
-            List<film> list = homeDao.getFilmComingSoon();
+            List<film> list = homeDao.getFilmComingSoon().Distinct().ToList();
             return PartialView(list);
         }
         [ChildActionOnly]
         public ActionResult FilmNowShowing()
         {
             HomeDao homeDao = new HomeDao();
-            List<film> list = homeDao.getFilmNowShowing();
+            List<film> list = homeDao.getFilmNowShowing().Distinct().ToList();
             return PartialView(list);
         }
         [ChildActionOnly]
