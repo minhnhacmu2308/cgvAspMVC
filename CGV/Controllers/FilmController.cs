@@ -1,11 +1,22 @@
 ﻿using DatabaseIO;
 using Model;
+using QRCoder;
+using Stripe;
+using Stripe.Checkout;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
 
 namespace CGV.Controllers
 {
@@ -110,32 +121,191 @@ namespace CGV.Controllers
             }
             else
             {
-                booking book = new booking();
-                for (int i = 0; i< seat_id.Length; i++)
+                int amount = 0;
+                var listHis = new List<HistoryBooking>();
+                var listG = new List<String>();
+                int lengthSeat = seat_id.Length;
+                for (int i = 0; i < lengthSeat; i++)
                 {
-                    
-                    book.schedule_id = schedule_id;
-                    book.seat_id = seat_id[i];
-                    book.film_id = film_id;
-                    book.room_id = room_id;
-                    book.showtime_id = showtime_id;
-                    book.id_user = userInfomatiom.id;
-                    book.status = 0;
-                    book.amount = Constants.Constants.PRICE_TICKET;
-                    filmD.bookingTicket(book);
-                   
+                    HistoryBooking his = new HistoryBooking();
+                    his.nameFilm = filmD.getName(film_id).film_name;
+                    his.id = i + 1;
+                    his.roomName = roomD.getName(room_id).room_name;
+                    his.seatName = seatD.getName(seat_id[i]).seat_name;
+                    his.schedulename = scheduleD.getName(schedule_id).dateschedule.ToString();
+                    amount += Constants.Constants.PRICE_TICKET;
+                    his.amount = amount.ToString();
+
+
+                    string ngay = showtimeD.getName(showtime_id).start_time + "-" + showtimeD.getName(showtime_id).end_time;
+                    his.showtimeName = ngay;
+                    listHis.Add(his);
+                    listG.Add(seatD.getName(seat_id[i]).seat_name);
+
                 }
-                return Json(new { status = "OK", msg = "✅ Đặt vé thành công", JsonRequestBehavior.AllowGet });
+
+                StripeConfiguration.ApiKey = "sk_test_51Itn76AY7zpl2tqotBGt23IEZmOSCZOmOnpgAhVQWIvua4g5c4G74Au5P54rWqNofPUw1DZ7TdHzlBhCWJCJa81W00V76C7Z2n";
+                var options = new SessionCreateOptions
+                {
+                    PaymentMethodTypes = new List<string>
+                {
+                    "card",
+                },
+                    LineItems = new List<SessionLineItemOptions>
+                {
+                    new SessionLineItemOptions
+                    {
+                        Name = filmD.getName(film_id).film_name,
+                        Description ="Phim hot 2021",
+                        Amount = Constants.Constants.PRICE_TICKET,
+                        Currency ="usd",
+                        Quantity = lengthSeat,
+                        Images = new List<string>
+                        {
+                            HttpUtility.UrlPathEncode("https://ci4.googleusercontent.com/proxy/HYuBnblArUYo9VwBr3QIRdi26frt7JG-rbJ2s5fYfFeNu8i_SVLXb4SQWPxsZNj-qVOmbFJT3Sy_XmSJQPmVCDPX3MFJCcE1ct5YGZ8O_E6vw-uL3Hr7vK22FOVrqgs=s0-d-e1-ft#https://i.pinimg.com/originals/fb/45/ba/fb45baac1eed3c1b19d4aad23b054fa8.jpg")
+                        }
+                    },
+                },
+                    SuccessUrl = "https://localhost:44313/payment/success",
+                    CancelUrl = "https://localhost:44313/payment/error",
+                    PaymentIntentData = new SessionPaymentIntentDataOptions
+                    {
+                        Metadata = new Dictionary<string, string>
+                    {
+                         {"Order_id","1234" },
+                         {"sdsd","hello" },
+                    }
+
+                    }
+                };
+                DateTime now = DateTime.Now;
+                booking book = new booking();
+                book.schedule_id = schedule_id;
+                book.film_id = film_id;
+                book.room_id = room_id;
+                book.showtime_id = showtime_id;
+                book.id_user = userInfomatiom.id;
+                book.status = 0;
+                book.create_time = now.Ticks.ToString();
+                book.amount = 3;
+                
+                Session.Add(Constants.Constants.DATE_NOW_STRING, now.Ticks.ToString());
+                Session.Add(Constants.Constants.ORDER, book);
+                Session.Add(Constants.Constants.LENGTH_SEAT, seat_id);
+                var service = new SessionService();
+                Session session = service.Create(options);
+               
+                return Json(new { status = "OK", data1 = listHis, data2 = listG, data3 = session, msg = "✅ Đặt vé thành công", JsonRequestBehavior.AllowGet });
+           
+
             }
            
         }
+        public void sendMailQR(string email,string body)
+        {
 
+            var formEmailAddress = ConfigurationManager.AppSettings["FormEmailAddress"].ToString();
+            var formEmailDisplayName = ConfigurationManager.AppSettings["FormEmailDisplayName"].ToString();
+            var formEmailPassword = ConfigurationManager.AppSettings["FormEmailPassword"].ToString();
+            var smtpHost = ConfigurationManager.AppSettings["SMTPHost"].ToString();
+            var smtpPort = ConfigurationManager.AppSettings["SMTPPost"].ToString();
+            bool enableSsl = bool.Parse(ConfigurationManager.AppSettings["EnabledSSL"].ToString());
+            MailMessage message = new MailMessage(new MailAddress(formEmailAddress, formEmailDisplayName), new MailAddress(email));
+            message.Subject = "QR về hóa đơn của quý khách";
+            message.IsBodyHtml = true;
+            message.Body = body;
+            var client = new SmtpClient();
+            client.Credentials = new NetworkCredential(formEmailAddress, formEmailPassword);
+            client.Host = smtpHost;
+            client.EnableSsl = enableSsl;
+            client.Port = !string.IsNullOrEmpty(smtpPort) ? Convert.ToInt32(smtpPort) : 0;
+            client.Send(message);
+        }
+        public ActionResult paymentSuccess()
+        {
+            var userInfomatiom = (usercgv)Session[Constants.Constants.USER_SESSION];
+            var arrSeat = (int[])Session[Constants.Constants.LENGTH_SEAT];
+            var order = (booking)Session[Constants.Constants.ORDER];
+            var dateNowString = (string)Session[Constants.Constants.DATE_NOW_STRING];
+            if (order != null && dateNowString != null)
+            {
+                booking book = new booking();
+                for(int i = 0;i< arrSeat.Length; i++)
+                {
+                    book.schedule_id = order.schedule_id;
+                    book.film_id = order.film_id;
+                    book.seat_id = arrSeat[i];
+                    book.room_id = order.room_id;
+                    book.showtime_id = order.showtime_id;
+                    book.id_user = userInfomatiom.id;
+                    book.status = 0;
+                    book.create_time = order.create_time;
+                    book.amount = 3;
+                    filmD.bookingTicket(book, dateNowString);
+                }
+               
+                string a = "https://localhost:44313/booking/ticket/" + dateNowString + "/" + userInfomatiom.id;
+                ViewBag.link = a;
+                var link = "https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=" + a;
+                string content = System.IO.File.ReadAllText(Server.MapPath("~/Content/Assets/html/sendQRMail.html"));
+                content = content.Replace("{{link}}", link);
+                sendMailQR(userInfomatiom.email, content);
+                Session.Remove(Constants.Constants.ORDER);
+                Session.Remove(Constants.Constants.DATE_NOW_STRING);
+                return View();
+
+            }
+            else
+            {
+                return RedirectToAction("IndexUser", "Home");
+            }
+         
+           
+           
+        }
+        public ActionResult paymentError()
+        {
+            
+            var order = (booking)Session[Constants.Constants.ORDER];
+            var dateNowString = (string)Session[Constants.Constants.DATE_NOW_STRING];
+            if (order != null && dateNowString != null)
+            {
+                return View();
+
+            }
+            else
+            {
+                return RedirectToAction("IndexUser", "Home");
+            }
+          
+        }
+
+        public ActionResult qrResult(string dateNow,int id)
+        {
+
+            var list = filmD.getOrder(dateNow, id);
+            var listHis = new List<HistoryBooking>();
+            for (int i = 0; i < list.Count; i++)
+            {
+                HistoryBooking his = new HistoryBooking();
+                his.nameFilm = filmD.getName(list[i].film_id).film_name;
+                his.id = i + 1;
+                his.roomName = roomD.getName(list[i].room_id).room_name;
+                his.seatName = seatD.getName(list[i].seat_id).seat_name;
+                his.status = list[i].status;
+                his.schedulename = scheduleD.getName(list[i].schedule_id).dateschedule.ToString();
+                his.amount = list[i].amount.ToString();
+                string ngay = showtimeD.getName(list[i].showtime_id).start_time + "-" + showtimeD.getName(list[i].showtime_id).end_time;
+                his.showtimeName = ngay;
+                listHis.Add(his);
+
+            }
+            return View(listHis);
+        }
 
         public ActionResult testSchedule()
         {
             MyDB mydb = new MyDB();
-
-
             List<schedule> listSchedule = mydb.schedules.ToList();
             return View(listSchedule);
         }
@@ -196,7 +366,7 @@ namespace CGV.Controllers
                 his.seatName = seatD.getName(list[i].seat_id).seat_name;
                 his.status = list[i].status;
                 his.schedulename = scheduleD.getName(list[i].schedule_id).dateschedule.ToString();
-                his.amount = list[i].amount.ToString();
+                his.amount = 3.ToString();
                 string ngay = showtimeD.getName(list[i].showtime_id).start_time + "-" + showtimeD.getName(list[i].showtime_id).end_time;
                 his.showtimeName = ngay;
                 listHis.Add(his);

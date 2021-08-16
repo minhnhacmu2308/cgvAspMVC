@@ -52,10 +52,32 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="QRCoder, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\QRCoder.1.4.1\lib\net40\QRCoder.dll</HintPath>
+    </Reference>
+    <Reference Include="Stripe.net, Version=39.63.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Stripe.net.39.63.0\lib\net461\Stripe.net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -117,6 +139,7 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
@@ -128,6 +151,19 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Constants\Constants.cs" />
+    <Compile Include="Controllers\Admin\AdminAuthenController.cs" />
+    <Compile Include="Controllers\Admin\AdminBookingController.cs" />
+    <Compile Include="Controllers\Admin\AdminCategoryFilmController.cs" />
+    <Compile Include="Controllers\Admin\AdminCategoryPostController.cs" />
+    <Compile Include="Controllers\Admin\AdminFilmController.cs" />
+    <Compile Include="Controllers\Admin\AdminHomeController.cs" />
+    <Compile Include="Controllers\Admin\AdminModuleController.cs" />
+    <Compile Include="Controllers\Admin\AdminPostController.cs" />
+    <Compile Include="Controllers\Admin\AdminRoomController.cs" />
+    <Compile Include="Controllers\Admin\AdminScheduleController.cs" />
+    <Compile Include="Controllers\Admin\AdminSeatController.cs" />
+    <Compile Include="Controllers\Admin\AdminShowtimeController.cs" />
+    <Compile Include="Controllers\Admin\AdminUserController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\FilmController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -140,6 +176,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Admin\assets\demo\chart-area-demo.js" />
+    <Content Include="Content\Admin\assets\demo\chart-bar-demo.js" />
+    <Content Include="Content\Admin\assets\demo\chart-pie-demo.js" />
+    <Content Include="Content\Admin\assets\demo\datatables-demo.js" />
+    <Content Include="Content\Admin\assets\img\error-404-monochrome.svg" />
+    <Content Include="Content\Admin\css\styles.css" />
+    <Content Include="Content\Admin\js\datatables-simple-demo.js" />
+    <Content Include="Content\Admin\js\scripts.js" />
     <Content Include="Content\Assets\css\bootstrap.min.css" />
     <Content Include="Content\Assets\css\form.css" />
     <Content Include="Content\Assets\css\lightslider.css" />
@@ -172,6 +216,7 @@
     <Content Include="Content\Assets\fonts\poppins\roboto-condensed-v16-latin-700italic.svg" />
     <Content Include="Content\Assets\fonts\poppins\roboto-condensed-v16-latin-italic.svg" />
     <Content Include="Content\Assets\fonts\poppins\roboto-condensed-v16-latin-regular.svg" />
+    <Content Include="Content\Assets\html\sendQRMail.html" />
     <Content Include="Content\Assets\images\48h.jpg" />
     <Content Include="Content\Assets\images\anquy.jpg" />
     <Content Include="Content\Assets\images\baby.jpg" />
@@ -223,6 +268,7 @@
     <Content Include="Content\Assets\js\JQuery3.3.1.js" />
     <Content Include="Content\Assets\js\lightslider.js" />
     <Content Include="Content\Assets\js\popper.min.js" />
+    <Content Include="Content\Assets\js\qrcode.min.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -342,6 +388,26 @@
     <Content Include="Views\Home\ProfileUser.cshtml" />
     <Content Include="Views\Film\testSchedule.cshtml" />
     <Content Include="Views\Film\HistoryBooking.cshtml" />
+    <Content Include="Views\MyLayout\_LayoutAdmin.cshtml" />
+    <Content Include="Views\AdminAuthen\Index.cshtml" />
+    <Content Include="Views\AdminBooking\Index.cshtml" />
+    <Content Include="Views\AdminCategoryFilm\Index.cshtml" />
+    <Content Include="Views\AdminCategoryPost\Index.cshtml" />
+    <Content Include="Views\AdminFilm\Index.cshtml" />
+    <Content Include="Views\AdminHome\Index.cshtml" />
+    <Content Include="Views\AdminModule\Footer.cshtml" />
+    <Content Include="Views\AdminModule\Header.cshtml" />
+    <Content Include="Views\AdminModule\Menu.cshtml" />
+    <Content Include="Views\AdminPost\Index.cshtml" />
+    <Content Include="Views\AdminRoom\Index.cshtml" />
+    <Content Include="Views\AdminSchedule\Index.cshtml" />
+    <Content Include="Views\AdminSeat\Index.cshtml" />
+    <Content Include="Views\AdminShowtime\Index.cshtml" />
+    <Content Include="Views\AdminUser\Index.cshtml" />
+    <Content Include="Views\Authentication\Verify.cshtml" />
+    <Content Include="Views\Film\qrResult.cshtml" />
+    <Content Include="Views\Film\PaymentSuccess.cshtml" />
+    <Content Include="Views\Film\PaymentError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

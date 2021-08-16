@@ -1,7 +1,23 @@
-﻿@{
+﻿@model Stripe.Checkout.Session
+@{
     ViewBag.Title = "Home Page";
-}
 
+}
+<script src="https://js.stripe.com/v3/"></script>
+<br />
+<button  class="btn btn-info" id="btnPay">Paynow</button>
+<script>
+    var stripe = Stripe("pk_test_51Itn76AY7zpl2tqohPq6YilgoGQtljYobrItYBaIvyrVXOjq5Lff6djQeMgBcLvRIGHvgrx9OwmC3ZZcHV6TepuG00KgREPMiI");
+    var element = document.getElementById('btnPay');
+    element.addEventListener('click', function () {
+        stripe.redirectToCheckout({
+            sessionId: '@Model.Id'
+        }).then(function (result) {
+            console.log(result)
+        });
+    })
+   
+</script>
 <div class="jumbotron">
     <h1>ASP.NET</h1>
     <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>

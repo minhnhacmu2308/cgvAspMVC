@@ -21,6 +21,9 @@ namespace DatabaseIO
         {
             return mydb.rooms.Where(r => r.id == id).FirstOrDefault();
         }
-
+        public List<post> getAll()
+        {
+            return mydb.posts.ToList();
+        }
     }
 }

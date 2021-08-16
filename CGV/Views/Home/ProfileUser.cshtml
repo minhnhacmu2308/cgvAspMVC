@@ -33,7 +33,7 @@
                     Edit profile
                 </button>
                 <input type="hidden" class="form-control" name="idFilmT" id="idFilmT" value="@Model.id" placeholder="Password">
-                <button onclick="getSchedule();" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModa" data-bs-whatever="mdo">Đổi mật khẩu</button>
+                <button  type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModa" data-bs-whatever="mdo">Đổi mật khẩu</button>
 
             </div>
 
@@ -124,26 +124,7 @@
         </div>
     </div>
   <script>
-        function changePass1() {
-            var xhr = new XMLHttpRequest();
-
-            xhr.open("POST", domain + "/Film/getSchedule", true)
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    var content = xhr.responseText();
-                    var json_ct = JSON.parse(content);
-                   
-                    if (json_ct.Data.status == "OK") {
-                        console.log(json_ct.Data.message);
-                    } else {
-                        console.log(json_ct.Data.message);
-                    }
-                }
-
-
-            }
-            xhr.send(data);
-        }
+       
     </script>
     <script>
         function changePass() {
