@@ -15,14 +15,22 @@ namespace CGV.Controllers.Admin
         // GET: AdminCategoryFilm
         public ActionResult Index()
         {
-            List<category_film> list = db.category_film.ToList();  
-            return View(list);
+            if (Session["usr"] == null)
+            {
+                return RedirectToAction("Index", "AdminAuthen");
+            }
+            List<category_film> list = db.category_film.ToList();
+            ViewBag.Data = list;
+            return View();
         }
         [HttpPost]
         public ActionResult Add(FormCollection form)
         {
             var name = form["categoryfilm"];
             cfilm.Add(name);
+            ViewBag.Msg = "Thêm thành công";
+            List<category_film> list = db.category_film.ToList();
+            ViewBag.Data = list;
             return RedirectToAction("Index");
         }
         public ActionResult Update(FormCollection form)
@@ -30,6 +38,9 @@ namespace CGV.Controllers.Admin
             var name = form["categoryfilm"];
             var id = form["id"];
             cfilm.Update(name, id);
+            ViewBag.Msg = "Sửa thành công";
+            List<category_film> list = db.category_film.ToList();
+            ViewBag.Data = list;
             return RedirectToAction("Index");
         }
         public ActionResult Delete(FormCollection form)
@@ -37,7 +48,10 @@ namespace CGV.Controllers.Admin
            
             var id = form["id"];
             cfilm.Delete(id);
-            return RedirectToAction("Index");
+            ViewBag.Msg = "Xóa thành công";
+            List<category_film> list = db.category_film.ToList();
+            ViewBag.Data = list;
+            return View("Index");
 
         }
     }

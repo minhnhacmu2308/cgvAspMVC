@@ -14,7 +14,12 @@
 
         <div class="card mb-4">
             <div class="card-header">
-
+                @if (ViewBag.Msg != null)
+                {
+                    <div class="alert alert-success">
+                        <strong>@ViewBag.Msg</strong>
+                    </div>
+                }
 
             </div>
             <div class="card-body">
@@ -52,7 +57,8 @@
                                     {
                                         if (item1.id == item.schedule_id)
                                         {
-                                            @item1.dateschedule;
+                                            string dateschedule = String.Format("{0:yyyy-MM-dd}", item1.dateschedule);
+                                            @dateschedule;
                                         }
                                     }
 

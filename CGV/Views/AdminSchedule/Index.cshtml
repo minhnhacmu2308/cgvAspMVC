@@ -14,7 +14,12 @@
 
         <div class="card mb-4">
             <div class="card-header">
-
+                @if (ViewBag.Msg != null)
+                {
+                    <div class="alert alert-success">
+                        <strong>@ViewBag.Msg</strong>
+                    </div>
+                }
                 <button type="button" class="btn btn-success" data-bs-toggle="modal"
                         data-bs-target="#exampleModalAdd">
                     Thêm mới

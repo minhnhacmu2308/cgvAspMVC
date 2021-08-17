@@ -12,8 +12,13 @@ namespace CGV.Controllers.Admin
         ScheduleDao sche = new ScheduleDao();
         public MyDB db = new MyDB();
         // GET: AdminSchedule
-        public ActionResult Index()
+        public ActionResult Index(string mess)
         {
+            if (Session["usr"] == null)
+            {
+                return RedirectToAction("Index", "AdminAuthen");
+            }
+            ViewBag.Msg = mess;
             List<schedule> list = db.schedules.OrderByDescending(s => s.dateschedule ).ToList();
             return View(list);
         }
@@ -23,7 +28,8 @@ namespace CGV.Controllers.Admin
             var dateschedule = form["dateschedule"];
             var filmid = form["filmid"];
             sche.Add(filmid,dateschedule);
-            return RedirectToAction("Index");
+            var message = "Thêm thành công";
+            return RedirectToAction("Index", new { mess = message });
         }
         public ActionResult Update(FormCollection form)
         {
@@ -31,14 +37,16 @@ namespace CGV.Controllers.Admin
             var filmid = form["filmid"];
             var id = form["id"];
             sche.Update(filmid, dateschedule,id);
-            return RedirectToAction("Index");
+            var message = "Cập nhập thành công";
+            return RedirectToAction("Index", new { mess = message });
         }
         public ActionResult Delete(FormCollection form)
         {
 
             var id = form["id"];
             sche.Delete(id);
-            return RedirectToAction("Index");
+            var message = "Xóa thành công";
+            return RedirectToAction("Index", new { mess = message });
 
         }
     }

@@ -117,7 +117,7 @@ namespace CGV
             url: "admin/login",
             defaults: new { controller = "AdminAuthen", action = "Index", id = UrlParameter.Optional }
         );
-           
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

@@ -14,7 +14,12 @@
 
         <div class="card mb-4">
             <div class="card-header">
-
+                @if (ViewBag.Msg != null)
+                {
+                <div class="alert alert-success">
+                    <strong>@ViewBag.Msg</strong>
+                </div>
+                }
                 <button type="button" class="btn btn-success" data-bs-toggle="modal"
                         data-bs-target="#exampleModalAdd">
                     Thêm mới
@@ -38,10 +43,11 @@
                         </tr>
                     </tfoot>
                     <tbody>
+                        @{var stt = 1; }
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td>@item.id</td>
+                                <td>@stt</td>
                                 <td>@item.name</td>
                                 <td>
                                     @{
@@ -91,7 +97,8 @@
                                 </div>
                             </div>
                             <!-- Modal Update-->
-                        }
+                                            stt++;
+                                        }
                     </tbody>
                 </table>
             </div>

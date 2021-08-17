@@ -46,10 +46,11 @@
                         </tr>
                     </tfoot>
                     <tbody>
+                        @{var stt = 1; }
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td>@item.id</td>
+                                <td>@stt</td>
                                 <td>
                                     @{var user = new DatabaseIO.UserDao().getAll();
                                     }
@@ -90,7 +91,7 @@
                                     {
                                         if (item4.id == item.showtime_id)
                                         {
-                                            @item4.start_time <span>-</span>  @item4.end_time;
+                                            @item4.start_time <span>-</span> @item4.end_time;
                                         }
                                     }
                                 </td>
@@ -117,26 +118,27 @@
                                     }
                                 </td>
                                 <td>@item.amount</td>
-                                
-                                <td>
-                                    @if (item.status == 0)
-                                    {
-                                    <form action="/AdminBooking/Accept" class="btn btn-danger" method="post">
-                                        <input type="hidden" class="form-control" id="id" name="id" value="@item.id">
-                                        <button type="submit" style="background:none;border:none;color:white"> Accept</button>
-                                    </form>
-                                    }
-                                    else
-                                    {
-                                        <span>Đã xác nhận</span>
-                                    }
 
+                                <td>
+                                    <!-- @if (item.status == 0)
+                 {
+                 <form action="/AdminBooking/Accept" class="btn btn-danger" method="post">
+                     <input type="hidden" class="form-control" id="id" name="id" value="@item.id">
+                     <button type="submit" style="background:none;border:none;color:white"> Accept</button>
+                 </form>
+                 }
+                 else
+                 {
+                     <span>Đã xác nhận</span>
+                 }-->
+                                    Đã thanh toán
                                 </td>
 
                             </tr>
-                        }
+                                            stt++;
+                                        }
 
-                        </tbody>
+                    </tbody>
                 </table>
             </div>
         </div>

@@ -184,6 +184,8 @@
     <Content Include="Content\Admin\css\styles.css" />
     <Content Include="Content\Admin\js\datatables-simple-demo.js" />
     <Content Include="Content\Admin\js\scripts.js" />
+    <Content Include="Content\Admin\mail\mailbody.html" />
+    <Content Include="Content\Admin\mail\payment.html" />
     <Content Include="Content\Assets\css\bootstrap.min.css" />
     <Content Include="Content\Assets\css\form.css" />
     <Content Include="Content\Assets\css\lightslider.css" />
@@ -389,6 +391,10 @@
     <Content Include="Views\Film\testSchedule.cshtml" />
     <Content Include="Views\Film\HistoryBooking.cshtml" />
     <Content Include="Views\MyLayout\_LayoutAdmin.cshtml" />
+    <Content Include="Views\Authentication\Verify.cshtml" />
+    <Content Include="Views\Film\qrResult.cshtml" />
+    <Content Include="Views\Film\PaymentSuccess.cshtml" />
+    <Content Include="Views\Film\PaymentError.cshtml" />
     <Content Include="Views\AdminAuthen\Index.cshtml" />
     <Content Include="Views\AdminBooking\Index.cshtml" />
     <Content Include="Views\AdminCategoryFilm\Index.cshtml" />
@@ -404,10 +410,6 @@
     <Content Include="Views\AdminSeat\Index.cshtml" />
     <Content Include="Views\AdminShowtime\Index.cshtml" />
     <Content Include="Views\AdminUser\Index.cshtml" />
-    <Content Include="Views\Authentication\Verify.cshtml" />
-    <Content Include="Views\Film\qrResult.cshtml" />
-    <Content Include="Views\Film\PaymentSuccess.cshtml" />
-    <Content Include="Views\Film\PaymentError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

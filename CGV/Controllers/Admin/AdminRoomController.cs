@@ -12,8 +12,13 @@ namespace CGV.Controllers.Admin
         RoomDao room = new RoomDao();
         public MyDB db = new MyDB();
         // GET: AdminRoom
-        public ActionResult Index()
+        public ActionResult Index(string mess)
         {
+            if (Session["usr"] == null)
+            {
+                return RedirectToAction("Index", "AdminAuthen");
+            }
+            ViewBag.Msg = mess;
             List<room> list = db.rooms.ToList();
             return View(list);
         }
@@ -22,21 +27,24 @@ namespace CGV.Controllers.Admin
         {
             var name = form["roomname"];
             room.Add(name);
-            return RedirectToAction("Index");
+            var message = "Thêm thành công";
+            return RedirectToAction("Index", new { mess = message });
         }
         public ActionResult Update(FormCollection form)
         {
             var name = form["roomname"];
             var id = form["id"];
             room.Update(name, id);
-            return RedirectToAction("Index");
+            var message = "Cập nhập thành công";
+            return RedirectToAction("Index", new { mess = message });
         }
         public ActionResult Delete(FormCollection form)
         {
 
             var id = form["id"];
             room.Delete(id);
-            return RedirectToAction("Index");
+            var message = "Xóa thành công";
+            return RedirectToAction("Index", new { mess = message });
 
         }
     }

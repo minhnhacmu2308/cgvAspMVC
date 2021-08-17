@@ -14,7 +14,12 @@
 
         <div class="card mb-4">
             <div class="card-header">
-
+                @if (ViewBag.Msg != null)
+                {
+                    <div class="alert alert-success">
+                        <strong>@ViewBag.Msg</strong>
+                    </div>
+                }
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModalAdd">
                     Thêm mới
                 </button>
@@ -24,7 +29,8 @@
                     <thead>
                         <tr>
                             <th>STT</th>
-                            <th>Film</th>
+                            <th>Poster</th>
+                            <th>Filmname</th>
                             <th>Actor</th>
                             <th>Director</th>
                             <th>Duration</th>
@@ -38,7 +44,8 @@
                     <tfoot>
                         <tr>
                             <th>STT</th>
-                            <th>Film</th>
+                            <th>Poster</th>
+                            <th>Filmname</th>
                             <th>Actor</th>
                             <th>Director</th>
                             <th>Duration</th>
@@ -49,11 +56,11 @@
                         </tr>
                     </tfoot>
                     <tbody>
-                 
+                        @{var stt = 1; }
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td>@item.id</td>
+                                <td>@stt</td>
                                 <td>
                                     @{
                                         var idModel = "exampleModalImg" + item.id;
@@ -63,6 +70,7 @@
                                     </a>
 
                                 </td>
+                                <td>@item.film_name</td>
                                 <td>@item.actor</td>
                                 <td>@item.director</td>
                                 <td>@item.duration</td>
@@ -90,13 +98,17 @@
                                     <a href="" data-bs-toggle="modal" data-bs-target="#@idModelView">Link</a>
                                 </td>
                                 <td>
+                                    @{
+                                        var idModelUp = "exampleModal" + item.id;
+                                    }
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal">
+                                            data-bs-target="#@idModelUp">
                                         Update
                                     </button>
-                                    <button type="button" class="btn btn-danger">
-                                        Delete
-                                    </button>
+                                    <form action="/AdminFilm/Delete" class="btn btn-danger" method="post">
+                                        <input type="hidden" class="form-control" id="id" name="id" value="@item.id">
+                                        <button type="submit" style="background:none;border:none;color:white"> Delete</button>
+                                    </form>
                                 </td>
 
                             </tr>
@@ -143,72 +155,9 @@
                                 </div>
                             </div>
                             <!-- Modal Descrup-->
-                            <!-- Modal Add-->
-                            <div class="modal fade" id="exampleModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                 aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Thêm mới</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form>
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <div class="">
-                                                            <label for="category-film" class="col-form-label">Tên Phim:</label>
-                                                            <input type="text" class="form-control" id="category-film">
-                                                        </div>
-                                                        <div class="">
-                                                            <label for="category-film" class="col-form-label">Diễn viên:</label>
-                                                            <input type="text" class="form-control" id="category-film">
-                                                        </div>
-                                                        <div class="">
-                                                            <label for="category-film" class="col-form-label">Đạo diễn:</label>
-                                                            <input type="text" class="form-control" id="category-film">
-                                                        </div>
-                                                        <div class="">
-                                                            <label for="category-film" class="col-form-label">Thời lượng:</label>
-                                                            <input type="text" class="form-control" id="category-film">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6 ">
-                                                        <div class="">
-                                                            <label for="category-film" class="col-form-label">Thể loại:</label>
-                                                            <select class="form-select" aria-label="Default select example">
-                                                                <option selected>Open this select menu</option>
-                                                                <option value="1">One</option>
-                                                                <option value="2">Two</option>
-                                                                <option value="3">Three</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="mb-4 mt-4">
-                                                            <label for="exampleFormControlFile1">Ảnh Thumbnail</label>
-                                                            <input type="file" class="form-control-file" id="exampleFormControlFile1">
-                                                        </div>
-                                                        <div class="">
-                                                            <label for="category-film" class="col-form-label">Trailer:</label>
-                                                            <input type="text" class="form-control" id="category-film">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="">
-                                                    <label for="category-film" class="col-form-label">Nội dung:</label>
-                                                    <textarea name="description" id="editor" cols="30" rows="30"></textarea>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Save </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Modal Add-->
+
                             <!-- Modal Update-->
-                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            <div class="modal fade" id="@idModelUp" tabindex="-1" aria-labelledby="exampleModalLabel"
                                  aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
@@ -217,65 +166,144 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form>
+                                            <form enctype="multipart/form-data" action="/AdminFilm/Update" method="post">
+                                                <input type="hidden" value="@item.id" name="id">
                                                 <div class="row">
                                                     <div class="col-6">
                                                         <div class="">
                                                             <label for="category-film" class="col-form-label">Tên Phim:</label>
-                                                            <input type="text" class="form-control" id="category-film">
+                                                            <input type="text" class="form-control" id="category-film" name="tenphim" value="@item.film_name">
                                                         </div>
                                                         <div class="">
                                                             <label for="category-film" class="col-form-label">Diễn viên:</label>
-                                                            <input type="text" class="form-control" id="category-film">
+                                                            <input type="text" class="form-control" id="category-film" name="dienvien" value="@item.actor">
                                                         </div>
                                                         <div class="">
                                                             <label for="category-film" class="col-form-label">Đạo diễn:</label>
-                                                            <input type="text" class="form-control" id="category-film">
+                                                            <input type="text" class="form-control" id="category-film" name="daodien" value="@item.director">
                                                         </div>
                                                         <div class="">
                                                             <label for="category-film" class="col-form-label">Thời lượng:</label>
-                                                            <input type="text" class="form-control" id="category-film">
+                                                            <input type="text" class="form-control" id="category-film" name="thoiluong" value="@item.duration">
                                                         </div>
                                                     </div>
                                                     <div class="col-6 ">
                                                         <div class="">
                                                             <label for="category-film" class="col-form-label">Thể loại:</label>
-                                                            <select class="form-select" aria-label="Default select example">
-                                                                <option selected>Open this select menu</option>
-                                                                <option value="1">One</option>
-                                                                <option value="2">Two</option>
-                                                                <option value="3">Three</option>
+                                                            <select class="form-select" aria-label="Default select example" name="theloai">
+                                                                @foreach (var item1 in category)
+                                                                {
+                                                                    if (item1.id == item.id_cfilm)
+                                                                    {
+                                                                        <option value="@item1.id" selected>@item1.name</option>
+                                                                    }
+                                                                    <option value="@item1.id">@item1.name</option>
+                                                                }
                                                             </select>
                                                         </div>
                                                         <div class="mb-4 mt-4">
                                                             <label for="exampleFormControlFile1">Ảnh Thumbnail</label>
-                                                            <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                                                            <input type="file" class="form-control-file"
+                                                                   name="file" id="exampleFormControlFile1">
+                                                            <p>@item.image</p>
+                                                            <input type="hidden" value="@item.image" name="anh">
                                                         </div>
                                                         <div class="">
                                                             <label for="category-film" class="col-form-label">Trailer:</label>
-                                                            <input type="text" class="form-control" id="category-film">
+                                                            <input type="text" class="form-control" id="category-film" name="trailer" value="@item.trailer">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="">
                                                     <label for="category-film" class="col-form-label">Nội dung:</label>
-                                                    <textarea name="description" id="editor1" cols="30" rows="30"></textarea>
+                                                    <textarea name="noidung" cols="105" rows="5">@item.description</textarea>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Save changes</button>
                                                 </div>
                                             </form>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Save changes</button>
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
                             <!-- Modal Update-->
-                        }
-                        </tbody>
+                                            stt++;
+                                        }
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
 </main>
-
+<!-- Modal Add-->
+<div class="modal fade" id="exampleModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thêm mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form enctype="multipart/form-data" action="/AdminFilm/Add" method="post">
+                    
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="">
+                                <label for="category-film" class="col-form-label">Tên Phim:</label>
+                                <input type="text" class="form-control" id="category-film" name="tenphim">
+                            </div>
+                            <div class="">
+                                <label for="category-film" class="col-form-label">Diễn viên:</label>
+                                <input type="text" class="form-control" id="category-film" name="dienvien">
+                            </div>
+                            <div class="">
+                                <label for="category-film" class="col-form-label">Đạo diễn:</label>
+                                <input type="text" class="form-control" id="category-film" name="daodien">
+                            </div>
+                            <div class="">
+                                <label for="category-film" class="col-form-label">Thời lượng:</label>
+                                <input type="text" class="form-control" id="category-film" name="thoiluong">
+                            </div>
+                        </div>
+                        <div class="col-6 ">
+                            <div class="">
+                                <label for="category-film" class="col-form-label">Thể loại:</label>
+                                <select class="form-select" aria-label="Default select example" name="theloai">
+                                    @{var cate = new DatabaseIO.CategoryFilmDao().getAllCategoryFilm();
+                                    }
+                                    @foreach (var item1 in cate)
+                                    {
+                                        <option value="@item1.id">@item1.name</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="mb-4 mt-4">
+                                <label for="exampleFormControlFile1">Ảnh Thumbnail</label>
+                                <input type="file" class="form-control-file"
+                                       name="file" id="file" accept="image/*" required>
+                                
+                            </div>
+                            <div class="">
+                                <label for="category-film" class="col-form-label">Trailer:</label>
+                                <input type="text" class="form-control" id="category-film" name="trailer">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <label for="category-film" class="col-form-label">Nội dung:</label>
+                        <textarea name="noidung" cols="105" rows="5"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save </button>
+                    </div>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<!-- Modal Add-->

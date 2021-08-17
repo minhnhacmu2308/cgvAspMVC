@@ -12,8 +12,13 @@ namespace CGV.Controllers.Admin
         CategoryPostDao cpost = new CategoryPostDao();
         public MyDB db = new MyDB();
         // GET: AdminCategoryPost
-        public ActionResult Index()
+        public ActionResult Index(string mess)
         {
+            if (Session["usr"] == null)
+            {
+                return RedirectToAction("Index", "AdminAuthen");
+            }
+            ViewBag.Msg = mess;
             List<category_post> list = db.category_post.ToList();
             return View(list);
         }
@@ -22,21 +27,24 @@ namespace CGV.Controllers.Admin
         {
             var name = form["categorypost"];
             cpost.Add(name);
-            return RedirectToAction("Index");
+            var message = "Thêm thành công";
+            return RedirectToAction("Index", new { mess = message });
         }
         public ActionResult Update(FormCollection form)
         {
             var name = form["categorypost"];
             var id = form["id"];
             cpost.Update(name, id);
-            return RedirectToAction("Index");
+            var message = "Cập nhập thành công";
+            return RedirectToAction("Index", new { mess = message });
         }
         public ActionResult Delete(FormCollection form)
         {
 
             var id = form["id"];
             cpost.Delete(id);
-            return RedirectToAction("Index");
+            var message = "Xóa thành công";
+            return RedirectToAction("Index", new { mess = message });
 
         }
     }

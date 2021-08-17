@@ -13,8 +13,13 @@ namespace CGV.Controllers.Admin
         AuthenticationDao authen = new AuthenticationDao();
         public MyDB db = new MyDB();
         // GET: AdminUser
-        public ActionResult Index()
+        public ActionResult Index(string mess)
         {
+            if (Session["usr"] == null)
+            {
+                return RedirectToAction("Index", "AdminAuthen");
+            }
+            ViewBag.Msg = mess;
             List<usercgv> list = db.usercgvs.OrderBy(u => u.role_id).ToList();
             return View(list);
         }
@@ -30,14 +35,15 @@ namespace CGV.Controllers.Admin
             bool result = authen.checkEmail(email);
             if (result)
             {
-                ViewBag.loznha = "Email đã tôn tại ";
-                return RedirectToAction("Index");
+                var message = "Email đã tồn tại";
+                return RedirectToAction("Index", new { mess = message });
             }
             else
             {
-                ViewBag.loznha = "Ok đã tôn tại ";
+                
                 user.Add(email,passworodMd5,phonenumber,roleid,username);
-                return RedirectToAction("Index");
+                var message = "Thêm thành công";
+                return RedirectToAction("Index", new { mess = message });
             }
            
         }
@@ -49,17 +55,36 @@ namespace CGV.Controllers.Admin
             var roleid = form["roleid"];
             var phonenumber = form["phonenumber"];
             var id = form["id"];
+            var idu = Int32.Parse(id);
             var passworodMd5 = authen.md5(password);
-            user.Update(email,passworodMd5,phonenumber,roleid,username,id);
-            return RedirectToAction("Index");
+            usercgv u = db.usercgvs.Where(p => p.id == idu).FirstOrDefault();
+            if (password == u.password)
+            {
+                user.Update(email, password, phonenumber, roleid, username, id);
+                var message = "Cập nhập thành công";
+                return RedirectToAction("Index", new { mess = message });
+            }
+            else
+            {
+                user.Update(email, passworodMd5, phonenumber, roleid, username, id);
+                var message = "Cập nhập thành công";
+                return RedirectToAction("Index", new { mess = message });
+            }
         }
-        public ActionResult Delete(FormCollection form)
+        [HttpPost]
+        public JsonResult Delete(int id)
         {
 
-            var id = form["id"];
+           
             user.Delete(id);
-            return RedirectToAction("Index");
+            return Json(new { status = "SUCCESS", msg = "THÀNH CÔNG", JsonRequestBehavior.AllowGet });
 
+        }
+        [HttpPost]
+        public JsonResult ChangeStatus(int id)
+        {
+            user.ChangStatus(id);
+            return Json(new { status = "SUCCESS", msg = "THÀNH CÔNG", JsonRequestBehavior.AllowGet });
         }
     }
 }

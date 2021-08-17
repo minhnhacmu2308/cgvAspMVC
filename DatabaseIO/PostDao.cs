@@ -25,5 +25,21 @@ namespace DatabaseIO
         {
             return mydb.posts.ToList();
         }
+        public void Add(string title, string idcate, string image, string description)
+        {
+            string SQL = "INSERT INTO post(title, description, image, id_cpost) VALUES('" + title + "','" + description + "','" + image + "','" + idcate + "')";
+            mydb.Database.ExecuteSqlCommand(SQL);
+
+        }
+        public void Update(string title, string idcate, string image, string description, string id)
+        {
+            string SQL = "UPDATE post SET title = '" + title + "',description = '" + description + "',image = '" + image + "',id_cpost = '" + idcate + "' WHERE id = '" + id + "'";
+            mydb.Database.ExecuteSqlCommand(SQL);
+        }
+        public void Delete(string id)
+        {
+            string SQL = "DELETE FROM post WHERE id = '" + id + "'";
+            mydb.Database.ExecuteSqlCommand(SQL);
+        }
     }
 }

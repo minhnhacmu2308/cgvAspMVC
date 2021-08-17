@@ -4,12 +4,27 @@ Chart.defaults.global.defaultFontColor = '#292b2c';
 
 // Area Chart Example
 var ctx = document.getElementById("myAreaChart");
+var c1 = document.getElementById("c1").innerHTML;
+var c2 = document.getElementById("c2").innerHTML;
+var c3 = document.getElementById("c3").innerHTML;
+var c4 = document.getElementById("c4").innerHTML;
+var c5 = document.getElementById("c5").innerHTML;
+var c6 = document.getElementById("c6").innerHTML;
+var c7 = document.getElementById("c7").innerHTML;
+var c8 = document.getElementById("c8").innerHTML;
+var c9 = document.getElementById("c9").innerHTML;
+var c10 = document.getElementById("c10").innerHTML;
+var c11 = document.getElementById("c11").innerHTML;
+var c12 = document.getElementById("c12").innerHTML;
+var array = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12];
+var maxInNumbers = Math.max.apply(Math, array);
+var minInNumbers = Math.min.apply(Math, array);
 var myLineChart = new Chart(ctx, {
   type: 'line',
   data: {
-    labels: ["Mar 1", "Mar 2", "Mar 3", "Mar 4", "Mar 5", "Mar 6", "Mar 7", "Mar 8", "Mar 9", "Mar 10", "Mar 11", "Mar 12", "Mar 13"],
+      labels: [" January", " February", " March", " April", "May", " June", " July", " August", " September", " October", " November", " December"],
     datasets: [{
-      label: "Sessions",
+      label: "Number",
       lineTension: 0.3,
       backgroundColor: "rgba(2,117,216,0.2)",
       borderColor: "rgba(2,117,216,1)",
@@ -20,7 +35,7 @@ var myLineChart = new Chart(ctx, {
       pointHoverBackgroundColor: "rgba(2,117,216,1)",
       pointHitRadius: 50,
       pointBorderWidth: 2,
-      data: [10000, 30162, 26263, 18394, 18287, 28682, 31274, 33259, 25849, 24159, 32651, 31984, 38451],
+        data: [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12],
     }],
   },
   options: {
@@ -33,14 +48,14 @@ var myLineChart = new Chart(ctx, {
           display: false
         },
         ticks: {
-          maxTicksLimit: 7
+          maxTicksLimit: 12
         }
       }],
       yAxes: [{
         ticks: {
-          min: 0,
-          max: 40000,
-          maxTicksLimit: 5
+          min: minInNumbers,
+          max: maxInNumbers,
+          maxTicksLimit: 1
         },
         gridLines: {
           color: "rgba(0, 0, 0, .125)",

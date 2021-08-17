@@ -53,10 +53,18 @@ namespace DatabaseIO
             string SQL = "UPDATE usercgv SET email = '" + email + "',password = '" + password + "', phonenumber = '" + phonenumber + "', role_id = '" + role_id + "', username = '" + username + "' WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
         }
-        public void Delete(string id)
+        public void Delete(int id)
         {
             string SQL = "DELETE FROM usercgv WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
+        }
+        public void ChangStatus(int id)
+        {
+            var user = mydb.usercgvs.Where((u) => u.id == id).FirstOrDefault();
+            user.is_active = user.is_active == 1 ? user.is_active = 0 : user.is_active = 1;
+            mydb.SaveChanges();
+
+
         }
     }
 }
