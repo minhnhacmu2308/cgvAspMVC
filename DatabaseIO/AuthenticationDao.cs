@@ -36,6 +36,7 @@ namespace DatabaseIO
         public bool checklogin(string email,string password)
         {
             var result = mydb.usercgvs.Where(u => u.email == email && u.password == password).FirstOrDefault();
+           
             if(result != null)
             {
                 return true;
@@ -44,6 +45,19 @@ namespace DatabaseIO
             else
             {
                 return false;
+            }
+        }
+        public bool checkActive(string email)
+        {
+            var result = mydb.usercgvs.Where(u => u.email == email).FirstOrDefault();
+
+            if(result.is_active == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
         public void register(usercgv user)

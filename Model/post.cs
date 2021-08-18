@@ -16,7 +16,7 @@ namespace Model
         [StringLength(250)]
         public string title { get; set; }
 
-        [Column(TypeName = "text")]
+        [StringLength(250)]
         [Required]
         public string description { get; set; }
 

@@ -13,3 +13,33 @@ D:\Source Code\CGV\DatabaseIO\obj\Debug\DatabaseIO.csproj.CoreCompileInputs.cach
 D:\Source Code\CGV\DatabaseIO\obj\Debug\DatabaseIO.csproj.CopyComplete
 D:\Source Code\CGV\DatabaseIO\obj\Debug\DatabaseIO.dll
 D:\Source Code\CGV\DatabaseIO\obj\Debug\DatabaseIO.pdb
+D:\dđ\cgvAspMVC\DatabaseIO\bin\Debug\DatabaseIO.dll.config
+D:\dđ\cgvAspMVC\DatabaseIO\bin\Debug\DatabaseIO.dll
+D:\dđ\cgvAspMVC\DatabaseIO\bin\Debug\DatabaseIO.pdb
+D:\dđ\cgvAspMVC\DatabaseIO\bin\Debug\EntityFramework.dll
+D:\dđ\cgvAspMVC\DatabaseIO\bin\Debug\EntityFramework.SqlServer.dll
+D:\dđ\cgvAspMVC\DatabaseIO\bin\Debug\Model.dll
+D:\dđ\cgvAspMVC\DatabaseIO\bin\Debug\Model.pdb
+D:\dđ\cgvAspMVC\DatabaseIO\bin\Debug\Model.dll.config
+D:\dđ\cgvAspMVC\DatabaseIO\bin\Debug\EntityFramework.xml
+D:\dđ\cgvAspMVC\DatabaseIO\bin\Debug\EntityFramework.SqlServer.xml
+D:\dđ\cgvAspMVC\DatabaseIO\obj\Debug\DatabaseIO.csproj.AssemblyReference.cache
+D:\dđ\cgvAspMVC\DatabaseIO\obj\Debug\DatabaseIO.csproj.CoreCompileInputs.cache
+D:\dđ\cgvAspMVC\DatabaseIO\obj\Debug\DatabaseIO.csproj.CopyComplete
+D:\dđ\cgvAspMVC\DatabaseIO\obj\Debug\DatabaseIO.dll
+D:\dđ\cgvAspMVC\DatabaseIO\obj\Debug\DatabaseIO.pdb
+D:\.NET MVC\Github\cgvAspMVC\DatabaseIO\bin\Debug\DatabaseIO.dll.config
+D:\.NET MVC\Github\cgvAspMVC\DatabaseIO\bin\Debug\DatabaseIO.dll
+D:\.NET MVC\Github\cgvAspMVC\DatabaseIO\bin\Debug\DatabaseIO.pdb
+D:\.NET MVC\Github\cgvAspMVC\DatabaseIO\bin\Debug\EntityFramework.dll
+D:\.NET MVC\Github\cgvAspMVC\DatabaseIO\bin\Debug\EntityFramework.SqlServer.dll
+D:\.NET MVC\Github\cgvAspMVC\DatabaseIO\bin\Debug\Model.dll
+D:\.NET MVC\Github\cgvAspMVC\DatabaseIO\bin\Debug\Model.pdb
+D:\.NET MVC\Github\cgvAspMVC\DatabaseIO\bin\Debug\Model.dll.config
+D:\.NET MVC\Github\cgvAspMVC\DatabaseIO\bin\Debug\EntityFramework.xml
+D:\.NET MVC\Github\cgvAspMVC\DatabaseIO\bin\Debug\EntityFramework.SqlServer.xml
+D:\.NET MVC\Github\cgvAspMVC\DatabaseIO\obj\Debug\DatabaseIO.csprojAssemblyReference.cache
+D:\.NET MVC\Github\cgvAspMVC\DatabaseIO\obj\Debug\DatabaseIO.csproj.CoreCompileInputs.cache
+D:\.NET MVC\Github\cgvAspMVC\DatabaseIO\obj\Debug\DatabaseIO.csproj.CopyComplete
+D:\.NET MVC\Github\cgvAspMVC\DatabaseIO\obj\Debug\DatabaseIO.dll
+D:\.NET MVC\Github\cgvAspMVC\DatabaseIO\obj\Debug\DatabaseIO.pdb
