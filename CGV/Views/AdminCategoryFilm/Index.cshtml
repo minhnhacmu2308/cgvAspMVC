@@ -16,7 +16,7 @@
         <div class="card mb-4">
             @if (ViewBag.Msg != null)
             {
-                <div class="alert alert-success">
+                <div class="alert alert-info">
                     <strong>@ViewBag.Msg</strong>
                 </div>
             }
@@ -46,7 +46,7 @@
                     </tfoot>
                     <tbody>
                         @{var stt = 1; }
-                        @foreach (var item in ViewBag.Data)
+                        @foreach (var item in Model)
                         {
                             <tr>
                                 <td>@stt</td>
@@ -83,7 +83,7 @@
                                                 <div class="mb-3">
                                                     <label for="category-film"
                                                            class="col-form-label">Name:</label>
-                                                    <input type="text" class="form-control" id="category-film" name="categoryfilm" value="@item.name">
+                                                    <input type="text" class="form-control" id="category-film" name="categoryfilm" value="@item.name" required>
                                                 </div>
                                                 <button type="button" class="btn btn-secondary"
                                                         data-bs-dismiss="modal">
@@ -99,8 +99,8 @@
                                 </div>
                             </div>
                             <!-- Modal Update-->
-                                            stt++;
-                                        }
+                            stt++;
+                        }
                     </tbody>
                 </table>
             </div>
@@ -122,7 +122,7 @@
                     <div class="mb-3">
                         <label for="category-film"
                                class="col-form-label">Name:</label>
-                        <input type="text" class="form-control" id="category-film" name="categoryfilm">
+                        <input type="text" class="form-control" id="category-film" name="categoryfilm" required>
                     </div>
                     <button type="button" class="btn btn-secondary"
                             data-bs-dismiss="modal">

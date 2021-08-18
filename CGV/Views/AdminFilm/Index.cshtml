@@ -16,7 +16,7 @@
             <div class="card-header">
                 @if (ViewBag.Msg != null)
                 {
-                    <div class="alert alert-success">
+                    <div class="alert alert-info">
                         <strong>@ViewBag.Msg</strong>
                     </div>
                 }
@@ -172,19 +172,19 @@
                                                     <div class="col-6">
                                                         <div class="">
                                                             <label for="category-film" class="col-form-label">Tên Phim:</label>
-                                                            <input type="text" class="form-control" id="category-film" name="tenphim" value="@item.film_name">
+                                                            <input type="text" class="form-control" id="category-film" name="tenphim" value="@item.film_name" required>
                                                         </div>
                                                         <div class="">
                                                             <label for="category-film" class="col-form-label">Diễn viên:</label>
-                                                            <input type="text" class="form-control" id="category-film" name="dienvien" value="@item.actor">
+                                                            <input type="text" class="form-control" id="category-film" name="dienvien" value="@item.actor" required>
                                                         </div>
                                                         <div class="">
                                                             <label for="category-film" class="col-form-label">Đạo diễn:</label>
-                                                            <input type="text" class="form-control" id="category-film" name="daodien" value="@item.director">
+                                                            <input type="text" class="form-control" id="category-film" name="daodien" value="@item.director" required>
                                                         </div>
                                                         <div class="">
                                                             <label for="category-film" class="col-form-label">Thời lượng:</label>
-                                                            <input type="text" class="form-control" id="category-film" name="thoiluong" value="@item.duration">
+                                                            <input type="text" class="form-control" id="category-film" name="thoiluong" value="@item.duration" required>
                                                         </div>
                                                     </div>
                                                     <div class="col-6 ">
@@ -253,19 +253,19 @@
                         <div class="col-6">
                             <div class="">
                                 <label for="category-film" class="col-form-label">Tên Phim:</label>
-                                <input type="text" class="form-control" id="category-film" name="tenphim">
+                                <input type="text" class="form-control" id="category-film" name="tenphim" required>
                             </div>
                             <div class="">
                                 <label for="category-film" class="col-form-label">Diễn viên:</label>
-                                <input type="text" class="form-control" id="category-film" name="dienvien">
+                                <input type="text" class="form-control" id="category-film" name="dienvien" required>
                             </div>
                             <div class="">
                                 <label for="category-film" class="col-form-label">Đạo diễn:</label>
-                                <input type="text" class="form-control" id="category-film" name="daodien">
+                                <input type="text" class="form-control" id="category-film" name="daodien" required>
                             </div>
                             <div class="">
                                 <label for="category-film" class="col-form-label">Thời lượng:</label>
-                                <input type="text" class="form-control" id="category-film" name="thoiluong">
+                                <input type="text" class="form-control" id="category-film" name="thoiluong" required>
                             </div>
                         </div>
                         <div class="col-6 ">

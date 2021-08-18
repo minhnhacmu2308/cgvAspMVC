@@ -16,7 +16,7 @@
             <div class="card-header">
                 @if (ViewBag.Msg != null)
                 {
-                    <div class="alert alert-success">
+                    <div class="alert alert-info">
                         <strong>@ViewBag.Msg</strong>
                     </div>
                 }
@@ -81,7 +81,7 @@
                                                 <div class="mb-3">
                                                     <label for="category-film"
                                                            class="col-form-label">Name:</label>
-                                                    <input type="text" class="form-control" id="category-film" name="seatname" value="@item.seat_name">
+                                                    <input type="text" class="form-control" id="category-film" name="seatname" value="@item.seat_name" required>
                                                 </div>
                                                 <button type="button" class="btn btn-secondary"
                                                         data-bs-dismiss="modal">
@@ -119,7 +119,7 @@
                     <div class="mb-3">
                         <label for="category-film"
                                class="col-form-label">Name:</label>
-                        <input type="text" class="form-control" id="category-film" name="seatname">
+                        <input type="text" class="form-control" id="category-film" name="seatname" required>
                     </div>
                     <button type="button" class="btn btn-secondary"
                             data-bs-dismiss="modal">

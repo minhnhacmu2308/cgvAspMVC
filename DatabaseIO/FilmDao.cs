@@ -54,19 +54,30 @@ namespace DatabaseIO
         }
         public void Add(string description, string director, string actor, string duration, string film_name, string image, string trailer, string idcfilm)
         {
-            string SQL = "INSERT INTO films(description, director, actor, duration, film_name, image, trailer, id_cfilm ) VALUES('" + description + "','" + director + "','" + actor + "','" + duration + "','" + film_name + "','" + image + "','" + trailer + "','" + idcfilm + "')";
+            string SQL = "INSERT INTO films(description, director, actor, duration, film_name, image, trailer, id_cfilm ) VALUES(N'" + description + "',N'" + director + "',N'" + actor + "',N'" + duration + "',N'" + film_name + "','" + image + "',N'" + trailer + "','" + idcfilm + "')";
             mydb.Database.ExecuteSqlCommand(SQL);
 
         }
         public void Update(string description, string director, string actor, string duration, string film_name, string image, string trailer, string idcfilm, string id)
         {
-            string SQL = "UPDATE films SET description = '" + description + "',director = '" + director + "',actor = '" + actor + "',duration = '" + duration + "',film_name = '" + film_name + "',image = '" + image + "',trailer = '" + trailer + "',id_cfilm= '" + idcfilm + "'  WHERE id = '" + id + "'";
+            string SQL = "UPDATE films SET description = N'" + description + "',director = N'" + director + "',actor = N'" + actor + "',duration = N'" + duration + "',film_name = N'" + film_name + "',image = '" + image + "',trailer = N'" + trailer + "',id_cfilm= '" + idcfilm + "'  WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
         }
         public void Delete(string id)
         {
             string SQL = "DELETE FROM films WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
+        }
+        public bool checkName(string name)
+        {
+            string namef = "%" + name + "%";
+            string sql = "SELECT * FROM films WHERE film_name LIKE @name";
+            var user = mydb.Database.SqlQuery<film>(sql, new SqlParameter("@name", namef)).FirstOrDefault();
+            if (user != null)
+            {
+                return true;
+            }
+            return false; ;
         }
     }
 }

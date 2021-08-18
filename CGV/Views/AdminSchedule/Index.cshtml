@@ -16,7 +16,7 @@
             <div class="card-header">
                 @if (ViewBag.Msg != null)
                 {
-                    <div class="alert alert-success">
+                    <div class="alert alert-info">
                         <strong>@ViewBag.Msg</strong>
                     </div>
                 }
@@ -115,7 +115,7 @@
                                                             đầu:
                                                         </label>
                                                         <input type="time" class="form-control"
-                                                               id="category-film" name="start">
+                                                               id="category-film" name="start" required>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="category-film" class="col-form-label">
@@ -123,7 +123,7 @@
                                                             thúc:
                                                         </label>
                                                         <input type="time" class="form-control"
-                                                               id="category-film" name="end">
+                                                               id="category-film" name="end" required>
                                                     </div>
                                                 </div>
                                                 <button type="button" class="btn btn-secondary"
@@ -175,7 +175,7 @@
                                                         Ngày
                                                         chiếu:
                                                     </label>
-                                                    <input type="date" class="form-control" id="category-film" name="dateschedule" min="@dtnow" value="@dateschedule">
+                                                    <input type="date" class="form-control" id="category-film" name="dateschedule" min="@dtnow" value="@dateschedule" required>
                                                 </div>
                                                 <button type="button" class="btn btn-secondary"
                                                         data-bs-dismiss="modal">
@@ -215,7 +215,7 @@
                         <label for="category-film"
                                class="col-form-label">Phim:</label>
                         <select class="form-select"
-                                aria-label="Default select example" name="filmid">
+                                aria-label="Default select example" name="filmid" required>
 
                             <option selected>Open this select menu</option>
 
@@ -230,7 +230,7 @@
                             Ngày
                             chiếu:
                         </label>
-                        <input type="date" class="form-control" id="category-film" name="dateschedule" min="@dtnow">
+                        <input type="date" class="form-control" id="category-film" name="dateschedule" min="@dtnow" required>
                     </div>
                     <button type="button" class="btn btn-secondary"
                             data-bs-dismiss="modal">

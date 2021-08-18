@@ -26,9 +26,19 @@ namespace CGV.Controllers.Admin
         public ActionResult Add(FormCollection form)
         {
             var name = form["categorypost"];
-            cpost.Add(name);
-            var message = "Thêm thành công";
-            return RedirectToAction("Index", new { mess = message });
+            bool result = cpost.checkName(name);
+            if (result)
+            {
+                var message = "Loại bài viết đã tồn tại";
+                return RedirectToAction("Index", new { mess = message });
+            }
+            else
+            {
+                cpost.Add(name);
+                var message = "Thêm thành công";
+                return RedirectToAction("Index", new { mess = message });
+            }
+            
         }
         public ActionResult Update(FormCollection form)
         {

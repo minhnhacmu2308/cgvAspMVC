@@ -28,9 +28,20 @@ namespace CGV.Controllers.Admin
             var start = form["start"];
             var end = form["end"];
             var scheid = form["id"];
-            show.Add(scheid, start,end);
-            var message = "Thêm thành công";
-            return RedirectToAction("Index", new { mess = message });
+            var result = show.checkShow(start,end,scheid);
+            if (result != null)
+            {
+                var message = "Thời gian trùng";
+                return RedirectToAction("Index", new { mess = message });
+
+            }
+            else
+            {
+                show.Add(scheid, start, end);
+                var message = "Thêm thành công";
+                return RedirectToAction("Index", new { mess = message });
+                
+            }
         }
         public ActionResult Update(FormCollection form)
         {

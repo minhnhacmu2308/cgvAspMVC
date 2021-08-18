@@ -13,45 +13,48 @@ namespace CGV.Controllers.Admin
         
         private MyDB db = new MyDB();
         // GET: AdminCategoryFilm
-        public ActionResult Index()
+        public ActionResult Index(string mess)
         {
             if (Session["usr"] == null)
             {
                 return RedirectToAction("Index", "AdminAuthen");
             }
+            ViewBag.Msg = mess;
             List<category_film> list = db.category_film.ToList();
-            ViewBag.Data = list;
-            return View();
+            return View(list);
         }
         [HttpPost]
         public ActionResult Add(FormCollection form)
         {
             var name = form["categoryfilm"];
-            cfilm.Add(name);
-            ViewBag.Msg = "Thêm thành công";
-            List<category_film> list = db.category_film.ToList();
-            ViewBag.Data = list;
-            return RedirectToAction("Index");
+            bool result = cfilm.checkName(name);
+            if (result)
+            {
+                var message = "Loại phim đã tồn tại";
+                return RedirectToAction("Index", new { mess = message });
+            }
+            else
+            {
+                cfilm.Add(name);
+                var message = "Thêm thành công";
+                return RedirectToAction("Index", new { mess = message });
+            }
         }
         public ActionResult Update(FormCollection form)
         {
             var name = form["categoryfilm"];
             var id = form["id"];
             cfilm.Update(name, id);
-            ViewBag.Msg = "Sửa thành công";
-            List<category_film> list = db.category_film.ToList();
-            ViewBag.Data = list;
-            return RedirectToAction("Index");
+            var message = "Cập nhập thành công";
+            return RedirectToAction("Index", new { mess = message });
         }
         public ActionResult Delete(FormCollection form)
         {
            
             var id = form["id"];
             cfilm.Delete(id);
-            ViewBag.Msg = "Xóa thành công";
-            List<category_film> list = db.category_film.ToList();
-            ViewBag.Data = list;
-            return View("Index");
+            var message = "Xóa thành công";
+            return RedirectToAction("Index", new { mess = message });
 
         }
     }

@@ -26,9 +26,18 @@ namespace CGV.Controllers.Admin
         public ActionResult Add(FormCollection form)
         {
             var name = form["seatname"];
-            seat.Add(name);
-            var message = "Thêm thành công";
-            return RedirectToAction("Index", new { mess = message });
+            bool result = seat.checkName(name);
+            if (result)
+            {
+                var message = "Ghế đã tồn tại";
+                return RedirectToAction("Index", new { mess = message });
+            }
+            else
+            {
+                seat.Add(name);
+                var message = "Thêm thành công";
+                return RedirectToAction("Index", new { mess = message });
+            }
         }
         public ActionResult Update(FormCollection form)
         {

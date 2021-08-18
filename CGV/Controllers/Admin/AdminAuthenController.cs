@@ -52,7 +52,8 @@ namespace CGV.Controllers.Admin
                     }
                     else
                     {
-                        return RedirectToAction("Index");
+                        var messs = "Vui lòng vượt qua Captcha";
+                        return RedirectToAction("Index", new { mess = messs });
                     }
                 }
             }

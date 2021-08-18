@@ -44,13 +44,13 @@ namespace DatabaseIO
         }
         public void Add(string email, string password, string phonenumber, string role_id, string username)
         {
-            string SQL = "INSERT INTO usercgv(email,is_active,password,phonenumber,role_id,username) VALUES('" + email + "',0,'" + password + "','" + phonenumber + "','" + role_id + "','" + username + "')";
+            string SQL = "INSERT INTO usercgv(email,is_active,password,phonenumber,role_id,username) VALUES('" + email + "',0,'" + password + "','" + phonenumber + "','" + role_id + "',N'" + username + "')";
             mydb.Database.ExecuteSqlCommand(SQL);
 
         }
         public void Update(string email, string password, string phonenumber, string role_id, string username, string id)
         {
-            string SQL = "UPDATE usercgv SET email = '" + email + "',password = '" + password + "', phonenumber = '" + phonenumber + "', role_id = '" + role_id + "', username = '" + username + "' WHERE id = '" + id + "'";
+            string SQL = "UPDATE usercgv SET email = '" + email + "',password = '" + password + "', phonenumber = '" + phonenumber + "', role_id = '" + role_id + "', username = N'" + username + "' WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
         }
         public void Delete(int id)

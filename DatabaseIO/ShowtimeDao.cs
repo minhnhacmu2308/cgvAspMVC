@@ -1,6 +1,7 @@
 ﻿using Model;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,6 +39,14 @@ namespace DatabaseIO
         {
             string SQL = "DELETE FROM showtimes WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
+        }
+        public showtime checkShow(string start,string end,string id)
+        {
+            
+            string sql = "Select  * From showtimes where schedule_id = @id AND start_time BETWEEN @start AND @end  OR start_time = @end OR end_time = @start AND end_time BETWEEN @start AND @end";
+            return mydb.Database.SqlQuery<showtime>(sql, new SqlParameter("@start", start),new SqlParameter("@end", end),new SqlParameter("@id",id)).FirstOrDefault();
+            
+            
         }
     }
 }
