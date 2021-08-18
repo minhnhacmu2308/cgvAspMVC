@@ -64,10 +64,20 @@
                                     @{
                                         var idModel = "exampleModalImg" + item.id;
                                     }
-                                    <a href="" data-bs-toggle="modal" data-bs-target="#@idModel">
-                                        <img style="width: 120px !important;height: 150px !important;" src="/Content/Assets/images/@item.image" class="img-fluid">
-                                    </a>
-
+                                    @if (item.image == "")
+                                    {
+                                       
+                                            <img style="width: 120px !important;height: 150px !important;" src="https://i.pinimg.com/originals/fb/45/ba/fb45baac1eed3c1b19d4aad23b054fa8.jpg" class="img-fluid">
+                                        
+                                    }
+                                    else
+                                    {
+                                        
+                                            <a href="" data-bs-toggle="modal" data-bs-target="#@idModel">
+                                            <img style="width: 120px !important;height: 150px !important;" src="/Content/Assets/images/@item.image" class="img-fluid">
+                                             </a>
+                                        
+                                    }
                                 </td>
                                 <td>@item.title</td>
                                 <td>

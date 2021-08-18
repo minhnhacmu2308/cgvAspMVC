@@ -31,7 +31,9 @@
                                 @item.nameFilm
                             </td>
                             <td>
-                                @item.schedulename
+                                @{string dateschedule = String.Format("{0:yyyy-MM-dd}", item.schedulename);
+                                }
+                                @dateschedule
                             </td>
                             <td>
                                 @item.showtimeName
@@ -42,17 +44,9 @@
                             <td>
                                 @item.seatName
                             </td>
-                            <td>@item.amount VND</td>
+                            <td>@item.amount $</td>
                             <td>
-                                @if (@item.status == 1)
-                                {
-                                    <p>Đã xác nhận</p>
-                                }
-                                else
-                                {
-                                    <p>  Chưa xác nhận</p>
-
-                                }
+                                Đã thanh toán
 
                             </td>
 

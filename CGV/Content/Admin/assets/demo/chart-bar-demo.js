@@ -18,7 +18,7 @@ var m11 = document.getElementById("m11").innerHTML;
 var m12 = document.getElementById("m12").innerHTML;
 var array = [m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12];
 var maxInNumbers = Math.max.apply(Math, array);
-var num = maxInNumbers / 65000;
+var num = maxInNumbers / 9;
 var minInNumbers = Math.min.apply(Math, array);
 var myLineChart = new Chart(ctx, {
   type: 'bar',

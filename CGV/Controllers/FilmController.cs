@@ -67,7 +67,8 @@ namespace CGV.Controllers
                 {
                     foreach (var item in list)
                     {
-                        html += "<option value=" + item.id + ">" + item.dateschedule + "</option>";
+                    string dateschedule = String.Format("{0:yyyy-MM-dd}", item.dateschedule);
+                    html += "<option value=" + item.id + ">" + dateschedule + "</option>";
                     }
                     return Json(new { status = "OK", data = html, msg = "thanhcong", JsonRequestBehavior.AllowGet });
                  }
@@ -132,7 +133,8 @@ namespace CGV.Controllers
                     his.id = i + 1;
                     his.roomName = roomD.getName(room_id).room_name;
                     his.seatName = seatD.getName(seat_id[i]).seat_name;
-                    his.schedulename = scheduleD.getName(schedule_id).dateschedule.ToString();
+                    string dateschedule = String.Format("{0:yyyy-MM-dd}", scheduleD.getName(schedule_id).dateschedule);
+                    his.schedulename = dateschedule;
                     amount += Constants.Constants.PRICE_TICKET;
                     his.amount = amount.ToString();
 
@@ -365,7 +367,8 @@ namespace CGV.Controllers
                 his.roomName = roomD.getName(list[i].room_id).room_name;
                 his.seatName = seatD.getName(list[i].seat_id).seat_name;
                 his.status = list[i].status;
-                his.schedulename = scheduleD.getName(list[i].schedule_id).dateschedule.ToString();
+                string dateschedule = String.Format("{0:yyyy-MM-dd}", scheduleD.getName(list[i].schedule_id).dateschedule);
+                his.schedulename = dateschedule;
                 his.amount = 3.ToString();
                 string ngay = showtimeD.getName(list[i].showtime_id).start_time + "-" + showtimeD.getName(list[i].showtime_id).end_time;
                 his.showtimeName = ngay;

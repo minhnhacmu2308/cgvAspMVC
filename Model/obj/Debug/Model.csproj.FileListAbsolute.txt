@@ -22,3 +22,15 @@ D:\dđ\cgvAspMVC\Model\obj\Debug\Model.csproj.CoreCompileInputs.cache
 D:\dđ\cgvAspMVC\Model\obj\Debug\Model.csproj.CopyComplete
 D:\dđ\cgvAspMVC\Model\obj\Debug\Model.dll
 D:\dđ\cgvAspMVC\Model\obj\Debug\Model.pdb
+D:\.NET MVC\Github\cgvAspMVC\Model\bin\Debug\Model.dll.config
+D:\.NET MVC\Github\cgvAspMVC\Model\bin\Debug\Model.dll
+D:\.NET MVC\Github\cgvAspMVC\Model\bin\Debug\Model.pdb
+D:\.NET MVC\Github\cgvAspMVC\Model\bin\Debug\EntityFramework.dll
+D:\.NET MVC\Github\cgvAspMVC\Model\bin\Debug\EntityFramework.SqlServer.dll
+D:\.NET MVC\Github\cgvAspMVC\Model\bin\Debug\EntityFramework.xml
+D:\.NET MVC\Github\cgvAspMVC\Model\bin\Debug\EntityFramework.SqlServer.xml
+D:\.NET MVC\Github\cgvAspMVC\Model\obj\Debug\Model.csprojAssemblyReference.cache
+D:\.NET MVC\Github\cgvAspMVC\Model\obj\Debug\Model.csproj.CoreCompileInputs.cache
+D:\.NET MVC\Github\cgvAspMVC\Model\obj\Debug\Model.csproj.CopyComplete
+D:\.NET MVC\Github\cgvAspMVC\Model\obj\Debug\Model.dll
+D:\.NET MVC\Github\cgvAspMVC\Model\obj\Debug\Model.pdb

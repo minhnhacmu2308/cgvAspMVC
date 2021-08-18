@@ -12,7 +12,7 @@
         <h1 style="color:forestgreen;margin-bottom:10px">Payment Success !!!</h1>
         <div style="z-index:2000;margin-bottom:10px" id="id_qrcode"></div>
         <p style="color:red">Bạn có thể lấy mã QR ở đây , hoặc check mail để nhận </p>
-        <button class="btn btn-danger" onclick="onReady()" type="button">Lấy QR</button>
+        <button class="btn btn-danger" onclick="onReady()" type="button" id="btnqr">Lấy QR</button>
     </div>
     
 
@@ -20,6 +20,7 @@
 <script type="text/javascript">
     function onReady() {
         var text = $('#link').val();
+        document.getElementById("btnqr").disabled = true; 
         var qrcode = new QRCode("id_qrcode", {
             text: text,
             width: 150,

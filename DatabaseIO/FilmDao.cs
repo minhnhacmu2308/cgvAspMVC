@@ -46,7 +46,7 @@ namespace DatabaseIO
         }
         public List<booking> getBooking(int id)
         {
-            return mydb.bookings.Where(b => b.id_user == id).ToList();
+            return mydb.bookings.Where(b => b.id_user == id).OrderByDescending(b => b.id).ToList();
         }
         public List<film> getAll()
         {

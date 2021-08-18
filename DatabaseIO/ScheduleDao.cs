@@ -13,7 +13,9 @@ namespace DatabaseIO
         public List<schedule> getSchedule(string id)
         {
             int filmId = Int32.Parse(id);
-            return mydb.schedules.Where(s => s.film_id == filmId).ToList();
+            string SQL = "Select * from schedules where film_id = '" + id + "' and FORMAT(dateschedule, 'dd/MM/yyyy' ) <= FORMAT(getdate(), 'dd/MM/yyyy' )";
+
+           return mydb.Database.SqlQuery<schedule>(SQL).ToList();
         }
         public schedule getName(int id)
         {
