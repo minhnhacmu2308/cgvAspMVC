@@ -1,0 +1,335 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/MyLayout/_LayoutAdmin.cshtml";
+}
+@model List<Model.post>
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Danh sách bài viết</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+            <li class="breadcrumb-item active">Bài viết</li>
+        </ol>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                @if (ViewBag.Msg != null)
+                {
+                    <div class="alert alert-info">
+                        <strong>@ViewBag.Msg</strong>
+                    </div>
+                }
+                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                        data-bs-target="#exampleModalAdd">
+                    Thêm mới
+                </button>
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Image</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Created at</th>
+                            <th>Action</th>
+
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>STT</th>
+                            <th>Image</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Created at</th>
+                            <th>Action</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                       
+                        <input type="hidden" value="@Model.Count()" id="dodai">
+
+                        @{ var stt = 1;}
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>@stt</td>
+                                <td>
+                                    @{
+                                        var idModel = "exampleModalImg" + item.id;
+                                    }
+                                    @if (item.image == "")
+                                    {
+                                       
+                                            <img style="width: 120px !important;height: 150px !important;" src="https://i.pinimg.com/originals/fb/45/ba/fb45baac1eed3c1b19d4aad23b054fa8.jpg" class="img-fluid">
+                                        
+                                    }
+                                    else
+                                    {
+                                        
+                                            <a href="" data-bs-toggle="modal" data-bs-target="#@idModel">
+                                            <img style="width: 120px !important;height: 150px !important;" src="/Content/Assets/images/@item.image" class="img-fluid">
+                                             </a>
+                                        
+                                    }
+                                </td>
+                                <td>@item.title</td>
+                                <td>
+                                    @{var category = new DatabaseIO.CategoryPostDao().getAll();
+                                    }
+                                    @foreach (var item1 in category)
+                                    {
+                                        if (item1.id == item.id_cpost)
+                                        {
+                                            @item1.name;
+                                        }
+                                    }
+
+                                </td>
+                                <td>
+                                    @{
+                                        var idModelDes = "exampleModalDes" + item.id;
+                                    }
+                                    <a href="" data-bs-toggle="modal" data-bs-target="#@idModelDes">Chi tiết</a>
+                                </td>
+                                <td>@item.created_at</td>
+                                <td>
+                                    @{
+                                        var idModelUp = "exampleModal" + item.id;
+                                    }
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#@idModelUp">
+                                        Update
+                                    </button>
+                                    <form action="/AdminPost/Delete" class="btn btn-danger" method="post">
+                                        <input type="hidden" class="form-control" id="id" name="id" value="@item.id">
+                                        <button type="submit" style="background:none;border:none;color:white"> Delete</button>
+                                    </form>
+                                </td>
+
+                            </tr>
+                            <!-- Modal img-->
+                            <div class="modal fade" id="@idModel" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-m">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <img style="width: 460px !important;height: 580px !important;"
+                                                 src="/Content/Assets/images/@item.image" class="img-fluid">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal img-->
+                            <!-- Modal Descrip-->
+                            <div class="modal fade" id="@idModelDes" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">@item.title</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>@item.description</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal Descrup-->
+
+                            <!-- Modal Update-->
+                            <div class="modal fade" id="@idModelUp" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Cập nhập</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form enctype="multipart/form-data" action="/AdminPost/Update" method="post">
+                                                <input type="hidden" value="@item.id" name="id">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="">
+                                                            <label for="category-film"
+                                                                   class="col-form-label">Tiêu đề:</label>
+                                                            <input type="text" class="form-control"
+                                                                   name="title" value="@item.title" id="category-film" required>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-6 ">
+                                                        <div class="">
+                                                            <label for="category-film"
+                                                                   class="col-form-label">Thể loại:</label>
+                                                            <select name="theloai" class="form-select"
+                                                                    aria-label="Default select example" required>
+
+
+                                                                @foreach (var item1 in category)
+                                                                {
+                                                                    if (item1.id == item.id_cpost)
+                                                                    {
+                                                                        <option value="@item1.id" selected>@item1.name</option>
+                                                                    }
+                                                                    <option value="@item1.id">@item1.name</option>
+                                                                }
+
+
+
+                                                            </select>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="mb-4 mt-4">
+                                                    <label for="exampleFormControlFile1">
+                                                        Ảnh
+                                                        Thumbnail
+                                                    </label><br>
+                                                    <input type="file" class="form-control-file"
+                                                           name="file" id="exampleFormControlFile1" >
+                                                    <p>@item.image</p>
+                                                    <input type="hidden" value="@item.image" name="anh">
+                                                </div>
+                                                @{
+                                                    var edit = "editor" + stt;
+                                                }
+                                                <div class="">
+                                                    <label for="category-film" class="col-form-label">Nội dung:</label>
+                                                    <textarea name="noidung" cols="105" rows="5">@item.description</textarea>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">
+                                                        Close
+                                                    </button>
+                                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal Update-->
+                            stt++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+    <!-- Modal Add-->
+    <div class="modal fade" id="exampleModalAdd" tabindex="-1"
+         aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Thêm mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form enctype="multipart/form-data" action="/AdminPost/Add" method="post">
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="">
+                                    <label for="category-film"
+                                           class="col-form-label">Tiêu đề:</label>
+                                    <input type="text" class="form-control"
+                                           name="title" id="category-film" required>
+                                </div>
+                                </div>
+                                <div class="col-6 ">
+                                    <div class="">
+                                        <label for="category-film"
+                                               class="col-form-label">Thể loại:</label>
+                                        <select name="theloai" class="form-select"
+                                                aria-label="Default select example" required>
+                                            <option selected>Open this select menu</option>
+                                            @{var cate = new DatabaseIO.CategoryPostDao().getAll();
+                                            }
+                                            @foreach (var item1 in cate)
+                                            {
+                                                <option value="@item1.id">@item1.name</option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </div>
+                        <div class="mb-4 mt-4">
+                            <label for="exampleFormControlFile1">
+                                Ảnh
+                                Thumbnail
+                            </label><br>
+                            <input type="file" class="form-control-file"
+                                   name="file" id="file" accept="image/*" required>
+                        </div>
+                        <div class="">
+                            <label for="category-film" class="col-form-label">
+                                Nội
+                                dung:
+                            </label><br />
+                            <textarea name="noidung" cols="105" rows="5"></textarea>
+                        </div>
+                        <button type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-primary">Save </button>
+                    </form>
+                        <div class="modal-footer">
+                           
+                        </div>
+
+</div>
+
+            </div>
+        </div>
+    </div>
+          
+    <script>
+
+        ClassicEditor.create(document.querySelector('#editor')).then(eidt => {
+            console.log("da" + eidt);
+        })
+            .catch(error => {
+                                                console.error(error);
+                                            });
+
+    </script>
+    <!-- Modal Add-->
+    <script>
+
+        var dodai = document.getElementById("dodai").value;
+
+        for (var i = 1; i < dodai; i++) {
+            var name = "#editor" + i
+            ClassicEditor.create(document.querySelector(name)).then(eidt => {
+                console.log("da" + eidt);
+            })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+
+    </script>
+
+
+

@@ -86,7 +86,7 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="roomaa" class="col-form-label">Giá vé: 65.000 VND / vé</label>
+                            <label for="roomaa" class="col-form-label">Giá vé: 3$ / vé</label>
                         </div>
                         <p style="color: red" id="@nameError"></p>
                     </form>
@@ -105,17 +105,48 @@
 
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Thông tin chi tiết</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div id="result" class="modal-body">
-
-                </div>
+                <div id="result" class="modal-body"></div>
+                <div style="display:none" id="linkqr" class="modal-body"></div>
+                <div style="margin-bottom:20px" id="id_qrcode"></div>
+                <div style="display:none" id="sessionId" class="modal-body"></div>
+               
                 <div class="modal-footer">
-                    <button onclick="closeModel()" type="button" class="btn btn-danger">OK</button>
+                   
+                    <button class="btn btn-danger" id="btnPay">Paynow</button>
 
                 </div>
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        function onReady() {
+            var text = document.getElementById('linkqr').innerHTML;
+            var qrcode = new QRCode("id_qrcode", {
+                text: text,
+                width: 150,
+                height: 150,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+    </script>
+    
+    <script>
+        var stripe = Stripe("pk_test_51Itn76AY7zpl2tqohPq6YilgoGQtljYobrItYBaIvyrVXOjq5Lff6djQeMgBcLvRIGHvgrx9OwmC3ZZcHV6TepuG00KgREPMiI");
+       
+        var element = document.getElementById('btnPay');
+        element.addEventListener('click', function () {
+        var text = document.getElementById('sessionId').innerHTML;
+        stripe.redirectToCheckout({
+            sessionId: text
+        }).then(function (result) {
+            console.log(result)
+        });
+    })
+
+    </script>
 }

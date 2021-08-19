@@ -35,6 +35,9 @@
                 var idModel = "exampleModal" + Model.id;
                 var idModa = "exampleModa" + Model.id;
 
+
+                var userInfomatiom = (Model.usercgv)Session[CGV.Constants.Constants.USER_SESSION];
+
             }
             <p><span style="font-weight:bold">Thời lượng : </span>@Model.duration </p><br>
             <p><span style="font-weight:bold">Nội dung : </span>@Model.description </p><br>
@@ -54,7 +57,7 @@
                         </div>
                     </div>
                 </div>
-                <input  type="hidden" value="@Model.id" id="idFilmT"/>
+                <input type="hidden" value="@Model.id" id="idFilmT" />
             </div>
             <!--  Modak Booking -->
             <!--  Modak Booking -->
@@ -108,7 +111,7 @@
                                     </select>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="roomaa" class="col-form-label">Giá vé: 65.000 VND / vé</label>
+                                    <label for="roomaa" class="col-form-label">Giá vé: 3$/ vé</label>
                                 </div>
                                 <p style="color: red" id="@nameError"></p>
                             </form>
@@ -127,47 +130,105 @@
 
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Thông tin chi tiết</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div id="result" class="modal-body">
+                        <div id="result" class="modal-body"></div>
+                        <div style="display:none" id="linkqr" class="modal-body"></div>
+                        <div style="margin-bottom:20px" id="id_qrcode"></div>
+                        <div style="display:none" id="sessionId" class="modal-body"></div>
 
-                        </div>
                         <div class="modal-footer">
-                            <button onclick="closeModel()" type="button" class="btn btn-danger">OK</button>
+
+                            <button class="btn btn-danger" id="btnPay">Paynow</button>
 
                         </div>
                     </div>
                 </div>
             </div>
+            <script type="text/javascript">
+                function onReady() {
+                    var text = document.getElementById('linkqr').innerHTML;
+                    var qrcode = new QRCode("id_qrcode", {
+                        text: text,
+                        width: 150,
+                        height: 150,
+                        colorDark: "#000000",
+                        colorLight: "#ffffff",
+                        correctLevel: QRCode.CorrectLevel.H
+                    });
+                }
+            </script>
+
+            <script>
+                var stripe = Stripe("pk_test_51Itn76AY7zpl2tqohPq6YilgoGQtljYobrItYBaIvyrVXOjq5Lff6djQeMgBcLvRIGHvgrx9OwmC3ZZcHV6TepuG00KgREPMiI");
+
+                var element = document.getElementById('btnPay');
+                element.addEventListener('click', function () {
+                    var text = document.getElementById('sessionId').innerHTML;
+                    stripe.redirectToCheckout({
+                        sessionId: text
+                    }).then(function (result) {
+                        console.log(result)
+                    });
+                })
+
+            </script>
         </div>
     </div>
     <div>
             <div class="container mt-5">
                 <div class="row d-flex justify-content-center">
                     <div class="col-md-8">
+                        <input type="hidden" value="@userInfomatiom.id" id="idUser" />
                         <div id="responeAjax">
                             <div class="headings d-flex justify-content-between align-items-center mb-3">
-                                <h5> Comments @listcomment.Count()</h5>
+                                <h5 id="numberComment"> Comments @listcomment.Count()</h5>
 
                             </div>
 
                             @foreach (var item1 in listcomment)
                             {
-                                <div class="card p-3">
+                               
+                                <div class="card p-3" id="@item1.id">
                                     <div class="d-flex justify-content-between align-items-center">
+                                        <input type="hidden" value="@item1.film_id" id="idFilm" />
+                                        <div class="user d-flex flex-row align-items-center">
+                                            <img src="https://i.imgur.com/hczKIze.jpg"
+                                                 width="30" class="user-img rounded-circle mr-2"> <span></span><h5 style="margin-left: 10px">@item1.name_user</h5>
+                                            </div> <small>@item1.created_time</small>
 
-                                        <div class="user d-flex flex-row align-items-center"> <img src="https://i.imgur.com/hczKIze.jpg" 
-                                         width="30" class="user-img rounded-circle mr-2"> <span></span><h5 style="margin-left: 10px">@item1.name_user</h5></div> <small>@item1.created_time</small>
+                                        </div>
+                                        <div class="action d-flex justify-content-between mt-2 align-items-center">
+                                            <div class="reply px-4"> <p>@item1.rate</p></div>
+
+
+                                            <div class="icons align-items-center"> <i class="fa fa-star text-warning"></i> <i class="fa fa-check-circle-o check-icon"></i> </div>
+                                        </div>
+                                        <div class="action d-flex justify-content-between mt-2 align-items-center">
+                                            <div class="reply px-4"></div>
+                                            @{
+                                                var nameId = "idComment" + item1.id;
+                                            }
+                                            @if (userInfomatiom != null)
+                                            {
+                                                if (userInfomatiom.id == item1.id_user)
+                                                {
+
+                                                    <input type="hidden" value="@item1.id" id="@nameId" />
+
+
+                                                    <p onclick="deleteComment(@item1.id)" value="Xóa" class="btn btn-danger">Xóa</p>
+
+
+                                                }
+                                            }
+                                        </div>
+
 
                                     </div>
-                                    <div class="action d-flex justify-content-between mt-2 align-items-center">
-                                        <div class="reply px-4"> <p>@item1.rate</p></div>
-                                        <div class="icons align-items-center"> <i class="fa fa-star text-warning"></i> <i class="fa fa-check-circle-o check-icon"></i> </div>
-                                    </div>
 
-                                </div>
-                            }
+                                }
 
 
 
@@ -194,10 +255,17 @@
 
                         <script type="text/javascript">
                             function postComment() {
+
                                 var idFilm = document.getElementById("idFilmT").value;
+
                                 var comment = document.getElementById("comment").value;
+
                                 var row1 = document.getElementById("error");
+
                                 var row = document.getElementById("responeAjax");
+
+                                var idUser = document.getElementById("idUser").value;
+
                                 if (comment == '') {
                                     row1.innerHTML = "❌ Bạn cần điền bình luận !"
                                 } else {
@@ -214,42 +282,68 @@
                                             } else if (data.status == "SUCCESS") {
 
                                                 var htmlData = `<div class="headings d-flex justify-content-between align-items-center mb-3">
-                                                                <h5> Comments `+ data.data.length + `</h5>
-                             
-                                                            </div>`
+                                                                                        <h5 id="numberComment"> Comments `+ data.data.length + `</h5>
+
+                                                                                    </div>`
                                                 for (var i = 0; i < data.data.length; i++) {
+                                                    var nameId = "idComment" + data.data[i].id ;
+                                                    if (idUser == data.data[i].id_user) {
+                                                        htmlData += ` <div class="card p-3" id="`+data.data[i].id+`">
+                                                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                                             <input type="hidden" value="`+ data.data[i].film_id +`" id="idFilm" />
+                                                                                            <div class="user d-flex flex-row align-items-center"> <img src="https://i.imgur.com/hczKIze.jpg" width="30" class="user-img rounded-circle mr-2"> <span>
+                                                                                            <h5 style="margin-left: 10px">`+ data.data[i].name_user + `</h5></div> <small>` + data.data[i].created_time + `</small>
 
-                                                    htmlData += ` <div class="card p-3">
-                                                                    <div class="d-flex justify-content-between align-items-center">
+                                                                                    </div>
+                                                                                    <div class="action d-flex justify-content-between mt-2 align-items-center">
+                                                                                        <div class="reply px-4"> <p>`+ data.data[i].rate + `</p></div>
+                                                                                        <input type="hidden" value="`+ data.data[i].id + `" id="` + data.data[i].id + `"/>
+                                                                                        <div class="icons align-items-center"> <i class="fa fa-star text-warning"></i> <i class="fa fa-check-circle-o check-icon"></i> </div>
+                                                                                    </div>
+                                                                                 <div class="action d-flex justify-content-between mt-2 align-items-center">
+                                                                                        <div class="reply px-4"></div>
 
-                                                                    <div class="user d-flex flex-row align-items-center"> <img src="https://i.imgur.com/hczKIze.jpg" width="30" class="user-img rounded-circle mr-2"> <span>
-                                                                    <h5 style="margin-left: 10px">`+ data.data[i].name_user + `</h5></div> <small>` +   data.data[i].created_time + `</small>
 
-                                                            </div>
-                                                            <div class="action d-flex justify-content-between mt-2 align-items-center">
-                                                                <div class="reply px-4"> <p>`+ data.data[i].rate + `</p></div>
-                                                                <div class="icons align-items-center"> <i class="fa fa-star text-warning"></i> <i class="fa fa-check-circle-o check-icon"></i> </div>
-                                                            </div>
+                                                                                            <input type="hidden" value="`+ data.data[i].id + `"  id="` + nameId + `" />
 
-                                                        </div>
-                                                           `
+                                                                                            <p onclick="deleteComment(`+data.data[i].id+`)" value="Xóa" class="btn btn-danger" >Xóa</p>
+
+
+                                                                                    </div>
+                                                                                </div>
+                                                                                   `
+                                                    } else {
+                                                        htmlData += ` <div class="card p-3">
+                                                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                                            <input type="hidden" value="`+ data.data[i].film_id +`" id="idFilm" />
+                                                                                            <div class="user d-flex flex-row align-items-center"> <img src="https://i.imgur.com/hczKIze.jpg" width="30" class="user-img rounded-circle mr-2"> <span>
+                                                                                            <h5 style="margin-left: 10px">`+ data.data[i].name_user + `</h5></div> <small>` + data.data[i].created_time + `</small>
+
+                                                                                    </div>
+                                                                                    <div class="action d-flex justify-content-between mt-2 align-items-center">
+                                                                                        <div class="reply px-4"> <p>`+ data.data[i].rate + `</p></div>
+                                                                                        <input type="hidden" value="`+ data.data[i].id + `" id="` + data.data[i].id + `"/>
+                                                                                        <div class="icons align-items-center"> <i class="fa fa-star text-warning"></i> <i class="fa fa-check-circle-o check-icon"></i> </div>
+                                                                                    </div>
+
+                                                                                </div>
+                                                                                   `
+                                                    }
                                                 }
                                                 htmlData += `<div class="card p-3">
-                                                               <form class="form-inline">
-                                                                <div class="row">
-                                                                 <div class="form-group  col-10">
-                                                                <label for="inputPassword2" class="sr-only">Password</label>
-                                                                <input type="text" class="form-control" name="comment" id="comment" placeholder="Password">
-                                                                <p style="color: red;margin-top: 10px" id="error"></p>
-                                                              </div>
-                                                              <div class="col-2">
-                                                                <button type="button" onclick="postComment()" class="btn btn-primary mb-2">Post</button>
-                                                              </div>
-                                                                </div>
-
-
-                                                            </form>
-                                                        </div>`
+                                                                                       <form class="form-inline">
+                                                                                        <div class="row">
+                                                                                         <div class="form-group  col-10">
+                                                                                        <label for="inputPassword2" class="sr-only">Password</label>
+                                                                                        <input type="text" class="form-control" name="comment" id="comment" placeholder="Password">
+                                                                                        <p style="color: red;margin-top: 10px" id="error"></p>
+                                                                                      </div>
+                                                                                      <div class="col-2">
+                                                                                        <button type="button" onclick="postComment()" class="btn btn-primary mb-2">Post</button>
+                                                                                      </div>
+                                                                                        </div>
+                                                                                    </form>
+                                                                                </div>`
                                                 row.innerHTML = htmlData
                                                 row1.innerHTML = ""
                                             } else if (data.status == "ErrorLogin") {
@@ -258,7 +352,34 @@
                                         }
                                     });
                                 }
-                              
+
+
+                            }
+                            function deleteComment(id) {
+                                var idFilm = document.getElementById("idFilm").value;
+                               
+                                var nameId = "idComment" + id;
+                                var idComment = document.getElementById(nameId).value;
+
+                                var row1 = document.getElementById("error");
+                                var row = document.getElementById("numberComment");
+                                if (idComment == '') {
+                                    row1.innerHTML = "❌ Bạn cần điền bình luận !"
+                                } else {
+                                    $.ajax({
+                                        url: "/Film/deleteComment",
+                                        type: "post",
+                                        data: {
+                                            idFilm: idFilm,
+                                            id: idComment
+                                        },
+                                        success: function (data) {
+                                            row.innerHTML = "Comments" + " " + data.data
+                                            document.getElementById(id).style.display = 'none';
+                                        }
+                                    });
+                                }
+
 
                             }
                         </script>

@@ -16,6 +16,10 @@ namespace DatabaseIO
         {
             return mydb.ratings.Where(r => r.film_id == id).ToList();
         }
+        public rating getObjectCommentById(int id)
+        {
+            return mydb.ratings.Where(r => r.id == id).FirstOrDefault();
+        }
         public void comment(rating rating)
         {
             string SQL = "INSERT INTO ratings( film_id, rate,id_user,name_user) VALUES (@filmId,@rate,@userId,@nameuser)";
@@ -24,6 +28,12 @@ namespace DatabaseIO
                 new SqlParameter("@userId", rating.id_user),
                 new SqlParameter("@nameuser", rating.name_user)
             );
+        }
+        public void deleteComment(int id)
+        {
+            var ObjectM = getObjectCommentById(id);
+            mydb.ratings.Remove(ObjectM);
+            mydb.SaveChanges();
         }
     }
 }
