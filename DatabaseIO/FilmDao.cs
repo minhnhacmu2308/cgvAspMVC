@@ -19,7 +19,10 @@ namespace DatabaseIO
         }
         public IEnumerable<film> searchFilm(string keySearch)
         {
-            return mydb.films.Where(f => f.film_name.Contains(keySearch) || f.actor.Contains(keySearch) || f.director.Contains(keySearch));
+           String nameSearch = "%" + keySearch + "%";
+            string sql = "select * from films WHERE film_name LIKE @keysearch or actor LIKE @keysearch or director LIKE @keysearch ";
+
+            return mydb.Database.SqlQuery<film>(sql, new SqlParameter("@keysearch", nameSearch)).ToList();
         }
         public void bookingTicket(booking book,string createTime)
         {

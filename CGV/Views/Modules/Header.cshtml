@@ -11,14 +11,16 @@
     <!--menu-------------->
     @{ 
         var userInfomatiom = (Model.usercgv)Session[CGV.Constants.Constants.USER_SESSION];
+        
     }
 <ul class="menu">
     <li>@Html.ActionLink("Giới Thiệu", "Promotion", "Post")</li>
     <li>@Html.ActionLink("Phim", "Film", "Home")</li>
     @if (userInfomatiom != null)
     {
+        var profile = new DatabaseIO.UserDao().getInformation(userInfomatiom.email);
         <li>@Html.ActionLink("Lịch sử đặt vé", "HistoryBooking", "Film")</li>
-        <li>@Html.ActionLink(@userInfomatiom.username, "ProfileUser", "Home", new { email = @userInfomatiom.email }, null)</li>
+        <li>@Html.ActionLink(profile.username, "ProfileUser", "Home", new { email = @userInfomatiom.email }, null)</li>
         <li>@Html.ActionLink("Đăng Xuất", "Logout", "Authentication")</li>
     }
     else

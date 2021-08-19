@@ -341,6 +341,7 @@ namespace CGV.Controllers
                 for(int i = 0; i < listcomment.Count; ++i)
                 {
                     CommentAjax commentA = new CommentAjax();
+                    commentA.id = listcomment[i].id;
                     commentA.film_id = listcomment[i].film_id;
                     commentA.id_user = listcomment[i].id_user;
                     commentA.rate = listcomment[i].rate;
@@ -352,6 +353,15 @@ namespace CGV.Controllers
                 return Json(new { status = "SUCCESS",data = listAjax, msg = "Thanh cong !", JsonRequestBehavior.AllowGet });
 
             }
+        }
+        [HttpPost]
+        public JsonResult deleteComment(int id,int idFilm)
+        {
+           
+            commentD.deleteComment(id);
+            var listcomment = commentD.getCommentById(idFilm);
+            int lengthList = listcomment.Count;
+            return Json(new { status = "SUCCESS",data = lengthList,  msg = "Thanh cong !", JsonRequestBehavior.AllowGet });
         }
         public ActionResult HistoryBooking()
         {
