@@ -47,11 +47,14 @@
                     <tbody>
                         @{var film = new DatabaseIO.FilmDao().getAll();
                         }
-                        @{string dtnow = DateTime.Today.ToString("yyyy-MM-dd"); }
+                        @{string dtnow = DateTime.Today.ToString("yyyyMMdd"); }
+                        @{ int todayd = Int32.Parse(dtnow);}
                         @{var stt = 1; }
                         @foreach (var item in Model)
                         {
                             string dateschedule = String.Format("{0:yyyy-MM-dd}", item.dateschedule);
+                            string dateint = String.Format("{0:yyyyMMdd}", item.dateschedule);
+                            int datesche = Int32.Parse(dateint);
                             <tr>
                                 <td>@stt</td>
                                 <td>
@@ -66,13 +69,79 @@
                                 </td>
                                 <td>@dateschedule</td>
                                 <td>
-                                    @{
-                                        var idModelS = "exampleModalAddS" + item.id;
+                                    @if (datesche < todayd)
+                                    {
+
+
+
+                                        <button type="button" class="btn btn-success" disabled>
+                                            Add showtime
+                                        </button>
+
                                     }
-                                    <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                                            data-bs-target="#@idModelS">
-                                        Add showtime
-                                    </button>
+                                    else
+                                    {
+                                        var idModelS = "exampleModalAddS" + item.id;
+
+                                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                                data-bs-target="#@idModelS">
+                                            Add showtime
+                                        </button>
+                                        <!-- Modal AddShow-->
+                                        <div class="modal fade" id="@idModelS" tabindex="-1"
+                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Thêm mới</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form method="POST" action="/AdminShowtime/Add" class="register-form" id="register-form">
+                                                            <input type="hidden" class="form-control" id="id" name="id" value="@item.id">
+                                                            <div class="mb-3">
+                                                                <div class="mb-3">
+                                                                    <label for="category-film" class="col-form-label">
+                                                                        Ngày
+                                                                        chiếu:
+                                                                    </label>
+                                                                    <input type="text" class="form-control"
+                                                                           id="category-film" value="@dateschedule" disabled>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="category-film" class="col-form-label">
+                                                                        Bắt
+                                                                        đầu:
+                                                                    </label>
+                                                                    <input type="time" class="form-control"
+                                                                           id="category-film" name="start" required>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="category-film" class="col-form-label">
+                                                                        Kết
+                                                                        thúc:
+                                                                    </label>
+                                                                    <input type="time" class="form-control"
+                                                                           id="category-film" name="end" required>
+                                                                </div>
+                                                            </div>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">
+                                                                Close
+                                                            </button>
+                                                            <button type="submit" class="btn btn-primary">Save </button>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Modal Show-->
+                                    }
+
                                     @{
                                         var idModel = "exampleModal" + item.id;
                                     }
@@ -87,59 +156,7 @@
                                 </td>
 
                             </tr>
-                            <!-- Modal AddShow-->
-                            <div class="modal fade" id="@idModelS" tabindex="-1"
-                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Thêm mới</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form method="POST" action="/AdminShowtime/Add" class="register-form" id="register-form">
-                                                <input type="hidden" class="form-control" id="id" name="id" value="@item.id">
-                                                <div class="mb-3">
-                                                    <div class="mb-3">
-                                                        <label for="category-film" class="col-form-label">
-                                                            Ngày
-                                                            chiếu:
-                                                        </label>
-                                                        <input type="text" class="form-control"
-                                                               id="category-film" value="@dateschedule" disabled>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="category-film" class="col-form-label">
-                                                            Bắt
-                                                            đầu:
-                                                        </label>
-                                                        <input type="time" class="form-control"
-                                                               id="category-film" name="start" required>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="category-film" class="col-form-label">
-                                                            Kết
-                                                            thúc:
-                                                        </label>
-                                                        <input type="time" class="form-control"
-                                                               id="category-film" name="end" required>
-                                                    </div>
-                                                </div>
-                                                <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">
-                                                    Close
-                                                </button>
-                                                <button type="submit" class="btn btn-primary">Save </button>
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Modal Show-->
+                         
 
                             <!-- Modal Update-->
                             <div class="modal fade" id="@idModel" tabindex="-1"
@@ -159,7 +176,7 @@
                                                            class="col-form-label">Phim:</label>
                                                     <select class="form-select"
                                                             aria-label="Default select example" name="filmid" required>
-                                                       
+
                                                         @foreach (var item1 in film)
                                                         {
                                                             if (item1.id == item.film_id)
