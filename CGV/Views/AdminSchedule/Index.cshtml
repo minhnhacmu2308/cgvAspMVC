@@ -47,6 +47,7 @@
                         @{var film = new DatabaseIO.FilmDao().getAll();
                         }
                         @{string dtnow = DateTime.Today.ToString("yyyyMMdd"); }
+                        @{string dtnoww = DateTime.Today.ToString("yyyy-MM-dd"); }
                         @{ int todayd = Int32.Parse(dtnow);}
                         @{var stt = 1; }
                         @foreach (var item in Model)
@@ -191,7 +192,7 @@
                                                         Ngày
                                                         chiếu:
                                                     </label>
-                                                    <input type="date" class="form-control" id="category-film" name="dateschedule" min="@dtnow" value="@dateschedule" required>
+                                                    <input type="date" class="form-control" id="category-film" name="dateschedule" min="@dtnoww" value="@dateschedule" required>
                                                 </div>
                                                 <button type="button" class="btn btn-secondary"
                                                         data-bs-dismiss="modal">
@@ -246,7 +247,7 @@
                             Ngày
                             chiếu:
                         </label>
-                        <input type="date" class="form-control" id="category-film" name="dateschedule" min="@dtnow" required>
+                        <input type="date" class="form-control" id="category-film" name="dateschedule" min="@dtnoww" required>
                     </div>
                     <button type="button" class="btn btn-secondary"
                             data-bs-dismiss="modal">

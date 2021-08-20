@@ -41,5 +41,14 @@ namespace DatabaseIO
             string SQL = "DELETE FROM schedules WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
         }
+        public bool checkName(DateTime datesche,int id)
+        {
+            var user = mydb.schedules.Where(u => u.dateschedule == datesche && u.film_id == id).FirstOrDefault();
+            if (user != null)
+            {
+                return true;
+            }
+            return false; ;
+        }
     }
 }

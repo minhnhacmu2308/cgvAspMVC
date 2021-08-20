@@ -80,7 +80,8 @@
                                     {
                                         if (item3.id == item.schedule_id)
                                         {
-                                            @item3.dateschedule;
+                                            string dateschedule = String.Format("{0:yyyy-MM-dd}", item3.dateschedule);
+                                            @dateschedule
                                         }
                                     }
                                 </td>

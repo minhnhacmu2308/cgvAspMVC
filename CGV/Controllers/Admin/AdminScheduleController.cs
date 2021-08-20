@@ -26,10 +26,21 @@ namespace CGV.Controllers.Admin
         public ActionResult Add(FormCollection form)
         {
             var dateschedule = form["dateschedule"];
+            DateTime datesche =  DateTime.Parse(dateschedule);
             var filmid = form["filmid"];
-            sche.Add(filmid,dateschedule);
-            var message = "Thêm thành công";
-            return RedirectToAction("Index", new { mess = message });
+            int idf = Int32.Parse(filmid);
+            bool result = sche.checkName(datesche, idf);
+            if (result)
+            {
+                var message = "Lịch chiếu của phim đã tồn tại";
+                return RedirectToAction("Index", new { mess = message });
+            }
+            else
+            {
+                sche.Add(filmid, dateschedule);
+                var message = "Thêm thành công";
+                return RedirectToAction("Index", new { mess = message });
+            }
         }
         public ActionResult Update(FormCollection form)
         {
