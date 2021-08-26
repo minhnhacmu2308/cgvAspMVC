@@ -46,3 +46,15 @@ D:\dđ\New\cgvAspMVC\Model\obj\Debug\Model.csproj.CoreCompileInputs.cache
 D:\dđ\New\cgvAspMVC\Model\obj\Debug\Model.csproj.CopyComplete
 D:\dđ\New\cgvAspMVC\Model\obj\Debug\Model.dll
 D:\dđ\New\cgvAspMVC\Model\obj\Debug\Model.pdb
+D:\dđ\Final\cgvAspMVC\Model\bin\Debug\Model.dll.config
+D:\dđ\Final\cgvAspMVC\Model\bin\Debug\Model.dll
+D:\dđ\Final\cgvAspMVC\Model\bin\Debug\Model.pdb
+D:\dđ\Final\cgvAspMVC\Model\bin\Debug\EntityFramework.dll
+D:\dđ\Final\cgvAspMVC\Model\bin\Debug\EntityFramework.SqlServer.dll
+D:\dđ\Final\cgvAspMVC\Model\bin\Debug\EntityFramework.xml
+D:\dđ\Final\cgvAspMVC\Model\bin\Debug\EntityFramework.SqlServer.xml
+D:\dđ\Final\cgvAspMVC\Model\obj\Debug\Model.csproj.AssemblyReference.cache
+D:\dđ\Final\cgvAspMVC\Model\obj\Debug\Model.csproj.CoreCompileInputs.cache
+D:\dđ\Final\cgvAspMVC\Model\obj\Debug\Model.csproj.CopyComplete
+D:\dđ\Final\cgvAspMVC\Model\obj\Debug\Model.dll
+D:\dđ\Final\cgvAspMVC\Model\obj\Debug\Model.pdb

@@ -11126,14 +11126,14 @@ body {
 .dataTable-top > div:first-child,
 .dataTable-bottom > nav:first-child,
 .dataTable-bottom > div:first-child {
-  float: left;
+
 }
 
 .dataTable-top > nav:last-child,
 .dataTable-top > div:last-child,
 .dataTable-bottom > nav:last-child,
 .dataTable-bottom > div:last-child {
-  float: right;
+
 }
 
 .dataTable-selector {

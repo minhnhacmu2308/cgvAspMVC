@@ -25,7 +25,10 @@ namespace CGV.Controllers
         {
             JsonResult js = new JsonResult();
             Console.WriteLine(passwordOld);
-            if(String.IsNullOrEmpty(passwordOld) || String.IsNullOrEmpty(passwordNew) || String.IsNullOrEmpty(rePasswordNew))
+            var userSession = Session[Constants.Constants.USER_SESSION];
+            if (userSession != null)
+            {
+                if (String.IsNullOrEmpty(passwordOld) || String.IsNullOrEmpty(passwordNew) || String.IsNullOrEmpty(rePasswordNew))
             {
                 js.Data = new
                 {
@@ -56,7 +59,15 @@ namespace CGV.Controllers
                     };
                 }
             }
-          
+            }
+            else
+            {
+                js.Data = new
+                {
+                    status = "Error",
+                    message = "Bạn đã bị đăng xuất ở nơi khác vui lòng reload lại trang"
+                };
+            }
             return Json(js,JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
@@ -66,23 +77,36 @@ namespace CGV.Controllers
             usercgv user = new usercgv();
             user.phonenumber = phonenumber;
             user.username = username;
-            if(String.IsNullOrEmpty(email) || String.IsNullOrEmpty(username) || String.IsNullOrEmpty(phonenumber))
+            var userSession = Session[Constants.Constants.USER_SESSION];
+            if(userSession != null)
+            {
+                if (String.IsNullOrEmpty(email) || String.IsNullOrEmpty(username) || String.IsNullOrEmpty(phonenumber))
+                {
+                    js.Data = new
+                    {
+                        status = "Error",
+                        message = "Cần điền đầy đủ thông tin"
+                    };
+                }
+                else
+                {
+                    userD.updateProfile(email, user);
+                    js.Data = new
+                    {
+                        status = "OK",
+                        message = "Cập nhật thông tin thành công",
+                    };
+                }
+            }
+            else
             {
                 js.Data = new
                 {
                     status = "Error",
-                    message = "Cần điền đầy đủ thông tin"
+                    message = "Bạn đã bị đăng xuất ở nơi khác vui lòng reload lại trang"
                 };
             }
-            else
-            {
-                userD.updateProfile(email, user);
-                js.Data = new
-                {
-                    status = "OK",
-                    message = "Cập nhật thông tin thành công",
-                };
-            }
+           
 
             return Json(js, JsonRequestBehavior.AllowGet);
         }

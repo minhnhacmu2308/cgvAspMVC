@@ -63,9 +63,12 @@
     <Compile Include="Recaptcha.cs" />
     <Compile Include="role.cs" />
     <Compile Include="room.cs" />
+    <Compile Include="roomseat.cs" />
     <Compile Include="schedule.cs" />
     <Compile Include="ScheduleAjax.cs" />
+    <Compile Include="scheduleroom.cs" />
     <Compile Include="seat.cs" />
+    <Compile Include="SeatActive.cs" />
     <Compile Include="showtime.cs" />
     <Compile Include="usercgv.cs" />
   </ItemGroup>

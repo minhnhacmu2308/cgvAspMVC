@@ -12,6 +12,7 @@ namespace CGV.Controllers
 {
     public class HomeController : Controller
     {
+        SeatDao seatD = new SeatDao();
         public ActionResult Index()
         {
             StripeConfiguration.ApiKey = "sk_test_51Itn76AY7zpl2tqotBGt23IEZmOSCZOmOnpgAhVQWIvua4g5c4G74Au5P54rWqNofPUw1DZ7TdHzlBhCWJCJa81W00V76C7Z2n";
@@ -77,6 +78,8 @@ namespace CGV.Controllers
         {
             HomeDao homeDao = new HomeDao();
             List<film> list = homeDao.getFilmNowShowing().Distinct().ToList();
+            var listSeat = seatD.getAll();
+            ViewBag.listseat = listSeat;
             return PartialView(list);
         }
         [ChildActionOnly]
@@ -92,9 +95,18 @@ namespace CGV.Controllers
         }
         public ActionResult ProfileUser(string email)
         {
-            UserDao userD = new UserDao();
-            var model = userD.getInformation(email);
-            return View(model);
+            var user = Session[Constants.Constants.USER_SESSION];
+            if (user == null)
+            {
+                return RedirectToAction("IndexUser", "Home");
+            }
+            else
+            {
+                UserDao userD = new UserDao();
+                var model = userD.getInformation(email);
+                return View(model);
+            }
+           
         }
     }
 }

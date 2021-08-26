@@ -66,5 +66,28 @@ namespace DatabaseIO
             mydb.Database.ExecuteSqlCommand(SQL);
             mydb.SaveChanges();
         }
+        static bool IsNumeric(string value)
+        {
+            try
+            {
+                char[] chars = value.ToCharArray();
+                foreach (char c in chars)
+                {
+                    if (char.IsNumber(c))
+                        return true;
+                }
+                return false;
+            }
+            catch (Exception ex) { return false; }
+        }
+        public string checkPasswordStrong(string password)
+        {
+            bool check = IsNumeric(password);
+            if (password.Length < 6)
+            {
+                return "Mật khẩu phải ít nhất 6 kí tự";
+            }
+            return "";
+        }
     }
 }

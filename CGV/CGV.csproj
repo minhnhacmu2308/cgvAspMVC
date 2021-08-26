@@ -411,6 +411,7 @@
     <Content Include="Views\AdminSeat\Index.cshtml" />
     <Content Include="Views\AdminShowtime\Index.cshtml" />
     <Content Include="Views\AdminUser\Index.cshtml" />
+    <Content Include="Views\Film\paymentAtCine.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

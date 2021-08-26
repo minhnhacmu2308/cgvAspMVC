@@ -4,6 +4,7 @@ using QRCoder;
 using Stripe;
 using Stripe.Checkout;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
@@ -36,6 +37,8 @@ namespace CGV.Controllers
         public ActionResult DetailFilm(string id)
         {
             film film = filmD.getDetailFilm(id);
+            var listSeat = seatD.getAll();
+            ViewBag.listseat = listSeat;
             return View(film);
         }
         public ActionResult SearchFilm(string keySearch)
@@ -48,6 +51,8 @@ namespace CGV.Controllers
             {
                 var listSearch = filmD.searchFilm(keySearch);
                 ViewBag.keySearch = keySearch;
+                var listSeat = seatD.getAll();
+                ViewBag.listseat = listSeat;
                 return View(listSearch);
             }
            
@@ -77,10 +82,10 @@ namespace CGV.Controllers
           
         } 
         [HttpPost]
-        public JsonResult getShowtime(string id)
+        public JsonResult getShowtime(string id,int idRoom)
         {
            
-            List<showtime> listShowtime = showtimeD.getShowtime(id);
+            List<showtime> listShowtime = showtimeD.getShowtime(id,idRoom);
             string html = " <option>Chọn suất chiếu</option>";
             foreach(var item in listShowtime)
             {
@@ -90,9 +95,9 @@ namespace CGV.Controllers
             return Json(new { status = "OK", data = html, msg = "thanhcong", JsonRequestBehavior.AllowGet });
         }
         [HttpPost]
-        public JsonResult getRoom()
+        public JsonResult getRoom(int id)
         {
-            List<room> listRoom = roomD.getRoom();
+            List<room> listRoom = roomD.getRoom(id);
             string html = " <option>Chọn phòng</option>";
             foreach (var item in listRoom)
             {
@@ -104,12 +109,52 @@ namespace CGV.Controllers
         [HttpPost]
         public JsonResult getSeat(int roomId, int showtimeId, int filmId, int scheduleId)
         {
-            List<seat> listSeat = seatD.getSeat(roomId, showtimeId, filmId, scheduleId);
-            string html = "";
-            foreach(var item in listSeat)
+            List<seat> listSeat = seatD.getSeatDone(roomId, showtimeId, filmId, scheduleId);
+            List<seat> listAllSeat = seatD.getAll();
+            List<seat> listSeatRoom = seatD.getSeatRoom(roomId);
+            var listSeatActive = new List<SeatActive>();
+            for(int i = 0; i< listSeatRoom.Count; i++)
             {
-                html += " <option value=" + item.id + ">" + item.seat_name + "</option>";
+                SeatActive sa = new SeatActive();
+                sa.id = listSeatRoom[i].id;
+                sa.seat_name = listSeatRoom[i].seat_name;
+                sa.active = 0;
+                listSeatActive.Add(sa);
             }
+            for (int k = 0; k < listSeatActive.Count; k++)
+            {
+                for (int j = 0; j < listSeat.Count; j++)
+                {
+
+                    if (listSeatActive[k].id == listSeat[j].id)
+                    {
+                        listSeatActive[k].active = 1;
+                    }
+
+                }
+            }
+            string html = "";
+         
+                for(int j = 0; j < listSeatActive.Count; j++)
+                {
+                      var nameId = "in" + listSeatActive[j].id;
+                      var nameIdDiv = "div" + listSeatActive[j].id;
+                      var nameIdSeat = "id" + listSeatActive[j].id;
+                      var check = "false";
+                if (listSeatActive[j].active == 0)
+                        {
+                            html += "<div style='display: flex; align-content: center; justify-content: center; justify-items: center; border: 1px solid; background-color:#DDDDDD;line-height: 50px; height: 50px; width: 104.2px; margin-right: 6.4px; margin-bottom: 6.4px '><p>🪑" + listSeatActive[j].seat_name + "</p></div>";
+
+                        }
+                        else
+                        {
+                            html += "<div id='"+ nameIdDiv + "' onclick=onChoose("+listSeatActive[j].id + ") style='display: flex; align-content: center; justify-content: center;justify-items: center; border: 1px solid red; line-height: 50px; height: 50px; width: 104.2px; margin-right: 6.4px; margin-bottom: 6.4px '><p>🪑" + listSeatActive[j].seat_name + "</p><input type='hidden' value='"+ check + "' id='"+ nameId + "'/><input type='hidden' value='"+ listSeatActive[j].id + "' id='"+ nameIdSeat + "' /></div>";
+                         }
+               
+                   
+                }
+          
+           
             return Json(new { status = "OK", data = html, msg = "thanhcong", JsonRequestBehavior.AllowGet });
         }
         [HttpPost]
@@ -240,7 +285,7 @@ namespace CGV.Controllers
                     book.room_id = order.room_id;
                     book.showtime_id = order.showtime_id;
                     book.id_user = userInfomatiom.id;
-                    book.status = 0;
+                    book.status = 1;
                     book.create_time = order.create_time;
                     book.amount = 3;
                     filmD.bookingTicket(book, dateNowString);
@@ -264,6 +309,45 @@ namespace CGV.Controllers
          
            
            
+        }
+        public ActionResult paymentAtCine()
+        {
+
+            var userInfomatiom = (usercgv)Session[Constants.Constants.USER_SESSION];
+            var arrSeat = (int[])Session[Constants.Constants.LENGTH_SEAT];
+            var order = (booking)Session[Constants.Constants.ORDER];
+            var dateNowString = (string)Session[Constants.Constants.DATE_NOW_STRING];
+            if (order != null && dateNowString != null && userInfomatiom !=null)
+            {
+                booking book = new booking();
+                for (int i = 0; i < arrSeat.Length; i++)
+                {
+                    book.schedule_id = order.schedule_id;
+                    book.film_id = order.film_id;
+                    book.seat_id = arrSeat[i];
+                    book.room_id = order.room_id;
+                    book.showtime_id = order.showtime_id;
+                    book.id_user = userInfomatiom.id;
+                    book.status = 0;
+                    book.create_time = order.create_time;
+                    book.amount = 3;
+                    filmD.bookingTicket(book, dateNowString);
+                }
+
+                string a = "https://localhost:44313/booking/ticket/" + dateNowString + "/" + userInfomatiom.id;
+                ViewBag.link = a;
+                var link = "https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=" + a;
+                string content = System.IO.File.ReadAllText(Server.MapPath("~/Content/Assets/html/sendQRMail.html"));
+                content = content.Replace("{{link}}", link);
+                sendMailQR(userInfomatiom.email, content);
+                Session.Remove(Constants.Constants.ORDER);
+                Session.Remove(Constants.Constants.DATE_NOW_STRING);
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("IndexUser", "Home");
+            }
         }
         public ActionResult paymentError()
         {
@@ -319,8 +403,8 @@ namespace CGV.Controllers
             List<schedule> list = mydb.schedules.ToList();
             return Json(new { status = "OK", data = list, msg = "thanhcong", JsonRequestBehavior.AllowGet });
         }
-       [HttpPost]
-       public JsonResult postCommnet(int idFilm,string textComment)
+        [HttpPost]
+        public JsonResult postCommnet(int idFilm, string textComment, int numberstar)
         {
             var userInfomatiom = (usercgv)Session[Constants.Constants.USER_SESSION];
             if (userInfomatiom == null)
@@ -334,6 +418,7 @@ namespace CGV.Controllers
                 rating.id_user = userInfomatiom.id;
                 rating.name_user = userInfomatiom.username;
                 rating.rate = textComment;
+                rating.number_start = numberstar;
                 commentD.comment(rating);
                 var listcomment = commentD.getCommentById(idFilm);
                
@@ -344,6 +429,7 @@ namespace CGV.Controllers
                     commentA.id = listcomment[i].id;
                     commentA.film_id = listcomment[i].film_id;
                     commentA.id_user = listcomment[i].id_user;
+                    commentA.number_start = listcomment[i].number_start;
                     commentA.rate = listcomment[i].rate;
                     commentA.name_user = listcomment[i].name_user;
                     commentA.created_time =  listcomment[i].created_time.ToString();
@@ -365,27 +451,35 @@ namespace CGV.Controllers
         }
         public ActionResult HistoryBooking()
         {
-           
-            var userInfomatiom = (usercgv)Session[Constants.Constants.USER_SESSION];
-            var list = filmD.getBooking(userInfomatiom.id);
-            var listHis = new List<HistoryBooking>();
-            for(int i = 0;i < list.Count; i++)
+            var user = Session[Constants.Constants.USER_SESSION];
+            if (user == null)
             {
-                HistoryBooking his = new HistoryBooking();
-                his.nameFilm = filmD.getName(list[i].film_id).film_name;
-                his.id = i + 1;
-                his.roomName = roomD.getName(list[i].room_id).room_name;
-                his.seatName = seatD.getName(list[i].seat_id).seat_name;
-                his.status = list[i].status;
-                string dateschedule = String.Format("{0:yyyy-MM-dd}", scheduleD.getName(list[i].schedule_id).dateschedule);
-                his.schedulename = dateschedule;
-                his.amount = 3.ToString();
-                string ngay = showtimeD.getName(list[i].showtime_id).start_time + "-" + showtimeD.getName(list[i].showtime_id).end_time;
-                his.showtimeName = ngay;
-                listHis.Add(his);
-
+                return RedirectToAction("IndexUser", "Home");
             }
-            return View(listHis);
+            else
+            {
+                var userInfomatiom = (usercgv)Session[Constants.Constants.USER_SESSION];
+                var list = filmD.getBooking(userInfomatiom.id);
+                var listHis = new List<HistoryBooking>();
+                for (int i = 0; i < list.Count; i++)
+                {
+                    HistoryBooking his = new HistoryBooking();
+                    his.nameFilm = filmD.getName(list[i].film_id).film_name;
+                    his.id = i + 1;
+                    his.roomName = roomD.getName(list[i].room_id).room_name;
+                    his.seatName = seatD.getName(list[i].seat_id).seat_name;
+                    his.status = list[i].status;
+                    string dateschedule = String.Format("{0:yyyy-MM-dd}", scheduleD.getName(list[i].schedule_id).dateschedule);
+                    his.schedulename = dateschedule;
+                    his.amount = 3.ToString();
+                    string ngay = showtimeD.getName(list[i].showtime_id).start_time + "-" + showtimeD.getName(list[i].showtime_id).end_time;
+                    his.showtimeName = ngay;
+                    listHis.Add(his);
+
+                }
+                return View(listHis);
+            }
+            
         }
 
     }

@@ -21,14 +21,18 @@
     })
 }
 function getShowtime(id) {
+
     var nameShowtime = "#showtime" + id;
     var nameSchedule = "#schedule" + id;
+    var nameRoom = "#room" + id;
     var idSchedule = $(nameSchedule).val();
+    var idRoom = $(nameRoom).val();
     $.ajax({
         url: '/Film/getShowtime',
         type: "post",
         data: {
-            id: idSchedule
+            id: idSchedule,
+            idRoom: idRoom
         },
         success: function (data) {
             $(nameShowtime).html(data.data);
@@ -41,9 +45,14 @@ function getShowtime(id) {
 }
 function getRoom(id) {
     var nameRoom = "#room" + id;
+    var nameSchedule = "#schedule" + id;
+    var idSchedule = $(nameSchedule).val();
     $.ajax({
         url: '/Film/getRoom',
         type: "post",
+        data: {
+            id: idSchedule
+        },
         success: function (data) {
             $(nameRoom).html(data.data);
             console.log(data);
@@ -76,6 +85,29 @@ function getSeat(id) {
         }
     })
 }
+var arr = [];
+function onChoose(id) {
+    var nameIdInput = "in" + id;
+    var nameIDinput = "#in" + id;
+    var nameIdSeat = "id" + id;
+    var valueCheck = document.getElementById(nameIdInput).value;
+    var idSeat = document.getElementById(nameIdSeat).value;
+
+    var nameId = "#div" + id;
+    if (valueCheck == "false") {
+        $(nameId).css('background-color', '#d42304')
+        $(nameId).css('color', '#ffff')
+        $(nameIDinput).val('true');
+        arr.push(idSeat);
+    } else {
+        arr.splice(arr.indexOf(idSeat), 1);
+        $(nameId).css('background-color', 'white')
+        $(nameId).css('color', 'black')
+        $(nameIDinput).val('false');
+    }
+
+
+}
 function bookingTicket(id) {
     var nameShowtime = "#showtime" + id;
     var nameSchedule = "#schedule" + id;
@@ -83,11 +115,10 @@ function bookingTicket(id) {
     var nameSeat = "#seat" + id;
     var nameError = "#resultError" + id;
     var nameModel = "btn-close" + id;
-    var idSeat = $(nameSeat).val();
     var idRoom = $(nameRoom).val();
     var idSchedule = $(nameSchedule).val();
     var idShowtime = $(nameShowtime).val();
-    if (idSeat.length == 0 || idRoom == '' || idSchedule == '' || idShowtime == '' || idSchedule == 0 || idShowtime == 0 || idRoom == 0) {
+    if (arr.length == 0 || idRoom == '' || idSchedule == '' || idShowtime == '' || idSchedule == 0 || idShowtime == 0 || idRoom == 0) {
         $(nameError).html("❌ Cần chọn đầy đủ thông tin");
     } else {
         $.ajax({
@@ -99,7 +130,7 @@ function bookingTicket(id) {
                 schedule_id: idSchedule,
                 showtime_id: idShowtime,
                 room_id: idRoom,
-                seat_id: idSeat
+                seat_id: arr
             },
             success: function (data) {
 
@@ -127,6 +158,7 @@ function bookingTicket(id) {
                     $(document).ready(function () {
                         $('#exampleModaltest').modal('show');
                     });
+                    arr = [];
                 }
             },
             error: function (error) {

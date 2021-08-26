@@ -11,9 +11,10 @@ namespace DatabaseIO
     public  class RoomDao
     {
         MyDB mydb = new MyDB();
-        public List<room> getRoom()
+        public List<room> getRoom(int id)
         {
-            return mydb.rooms.ToList();
+            string sql = "SELECT * from room WHERE id IN (SELECT id_room FROM scheduleroom WHERE id_schedule = @idSchedule) ";
+            return mydb.Database.SqlQuery<room>(sql, new SqlParameter("@idSchedule", id)).ToList();
         }
         public List<schedule> getSchedule()
         {

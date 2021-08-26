@@ -22,17 +22,17 @@
             <img class="image3" src="https://vnn-imgs-f.vgcloud.vn/2020/03/23/11/trend-avatar-12.jpg" alt="" />
         </div>
         <div class="col-6">
-            <p id="textUsername"><span style="font-weight:bold">Username : </span>@Model.username</p><br>
+            <p id="textUsername"><span style="font-weight:bold">Tên người dùng: </span>@Model.username</p><br>
             <p id="textEmail"><span style="font-weight:bold">Email : </span>@Model.email</p><br>
 
-            <p id="textPhonenumber"><span style="font-weight:bold">Phone number: </span> @Model.phonenumber</p><br>
+            <p id="textPhonenumber"><span style="font-weight:bold">Số điện thoại: </span> @Model.phonenumber</p><br>
 
             <div class="button--movie">
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal"
                         style="margin-right: 20px">
-                    Edit profile
+                   Sửa thông tin cá nhân
                 </button>
-                <input type="hidden" class="form-control" name="idFilmT" id="idFilmT" value="@Model.id" placeholder="Password">
+                <input type="hidden" class="form-control" name="idFilmT" id="idFilmT" value="@Model.id" placeholder="Mật khẩu">
                 <button  type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModa" data-bs-whatever="mdo">Đổi mật khẩu</button>
 
             </div>
@@ -52,7 +52,9 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="showtime" class="col-form-label">Phonenumber:</label>
-                                    <input type="text" class="form-control" value="@Model.phonenumber" name="phonenumber" id="phonenumberedit" />
+                                    <input type="text" class="form-control" name="phonenumber"  id="phonenumberedit" value="@Model.phonenumber" pattern="[0-9]{3}[0-9]{4}[0-9]{3}"
+                                           placeholder="Số điện thoại" />
+                                 
                                 </div>
                                 <div class="mb-3">
                                     <label for="room" class="col-form-label">Email:</label>
@@ -134,8 +136,10 @@
             var email = $('#emailEdit').val();
             if (passwordOld == '' || passwordNew == '' || rePasswordNew == '') {
                 $('#resultError').html("Cần điền đây đủ thông tin");
+                $('#resultSuccess').html("");
             } else if (passwordNew != rePasswordNew) {
                 $('#resultError').html("Hai mật khẩu không trùng khớp ");
+                $('#resultSuccess').html("");
             } else {
                 $.ajax({
                         url: '/User/EditPassword',
@@ -153,6 +157,7 @@
                         },
                         error: function (error) {
                             $('#resultError').html(data.Data.message);
+                            $('#resultSuccess').html("");
                         }
                 })
             }
@@ -162,10 +167,13 @@
     <script>
         function editProfile() {
             var username = $("#username").val();
+           
             var phonenumber = $("#phonenumberedit").val();
             var email = $('#emailEdit').val();
-            if (username == '' || phonenumber == '' || email == '') {
-                $('#resultError').html("Cần điền đây đủ thông tin");
+            if (username == "" || phonenumber == "" || email == "") {
+              
+                $('#resultError1').html("Cần điền đây đủ thông tin");
+                $('#resultSuccess1').html("");
             } else {
                 $.ajax({
                     url: '/User/updateProfile',
@@ -177,9 +185,15 @@
                     },
                     success: function (data) {
                         console.log(data);
-                        $('#resultSuccess1').html(data.Data.message);
-                        $("#textUsername").html(`<span style="font-weight: bold">Username : </span>` + username );
-                        $("#textPhonenumber").html(`<span style="font-weight: bold">Username : </span>` + phonenumber);
+                        if (data.Data.status = "OK") {
+                            $('#resultError1').html("");
+                            $('#resultSuccess1').html(data.Data.message);
+                            $("#textUsername").html(`<span style="font-weight: bold">Username : </span>` + username);
+                            $("#textPhonenumber").html(`<span style="font-weight: bold">Username : </span>` + phonenumber);
+                        } else {
+                            $('#resultError1').html(data.Data.message);
+                        }
+                     
                     },
                     error: function (error) {
                         console.log(error);

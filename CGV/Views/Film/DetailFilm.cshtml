@@ -84,7 +84,7 @@
                                         var nameError = "resultError" + Model.id;
 
                                     }
-                                    <select required class="form-select" onchange="getShowtime(@Model.id)" id="@nameSchdule" name="schedule" aria-label="Default select example">
+                                    <select required class="form-select" onchange="getRoom(@Model.id)" id="@nameSchdule" name="schedule" aria-label="Default select example">
                                         <option value="0">Chọn lịch chiếu</option>
                                         <option value="1">One</option>
                                         <option value="2">Two</option>
@@ -92,24 +92,49 @@
                                     </select>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="showtime" class="col-form-label">Suất chiếu:</label>
-                                    <select class="form-select" onchange="getRoom(@Model.id)" id="@nameShowtime" name="showtime" aria-label="Default select example">
-                                        <option value="0">Chọn suất chiếu</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
                                     <label for="room" class="col-form-label">Phòng chiếu:</label>
-                                    <select onchange="getSeat(@Model.id)" class="form-select" id="@nameRoom" name="room" aria-label="Default select example">
+                                    <select onchange="getShowtime(@Model.id)" class="form-select" id="@nameRoom" name="room" aria-label="Default select example">
                                         <option value="0">Chọn phòng</option>
                                     </select>
                                 </div>
                                 <div class="mb-3">
+                                    <label for="showtime" class="col-form-label">Suất chiếu:</label>
+                                    <select class="form-select" onchange="getSeat(@Model.id)"  id="@nameShowtime" name="showtime" aria-label="Default select example">
+                                        <option value="0">Chọn suất chiếu</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+
+                                    <label for="room" class="col-form-label">Vị trí ghế ngồi trong rạp:</label>
+                                    <div style="align-content:center;align-items:center">
+                                        <div style="height:50px;line-height:50px; border: 1px solid; justify-content: center; display: flex; align-content: center; justify-items: center; margin-bottom: 40px; background-color: #d42304;color:#ffff">
+                                            <p style="font-weight:bold;font-size:20px">MÀN HÌNH</p>
+                                        </div>
+                                        <div id="@nameSeat" style="display: flex; flex-direction: row; flex-wrap: wrap;">
+                                            @foreach(var item1 in ViewBag.listseat)                         
+                                            {
+                                              
+                                            <div id=""  style="display: flex; align-content: center;  justify-content: center; justify-items: center; border: 1px solid black; line-height: 50px; height: 50px; width: 104.2px; margin-right: 6.4px; margin-bottom: 6.4px ;">
+                                                <p> 🪑 @item1.seat_name</p>
+                                               
+                                            </div>
+
+                                            }
+                                        </div>
+                                    </div>
+
+                                </div>
+                                @* <div class="mb-3">
                                     <label for="seat" class="col-form-label">Ghế ngồi:</label>
                                     <select multiple="multiple" class="form-select" id="@nameSeat" name="seat" aria-label="Default select example">
                                         <option value="0">Chọn ghế</option>
 
                                     </select>
-                                </div>
+                                </div>*@
+                                <script>
+                                  
+                                </script>
                                 <div class="mb-3">
                                     <label for="roomaa" class="col-form-label">Giá vé: 3$/ vé</label>
                                 </div>
@@ -139,14 +164,44 @@
                         <div style="display:none" id="sessionId" class="modal-body"></div>
 
                         <div class="modal-footer">
-
-                            <button class="btn btn-danger" id="btnPay">Paynow</button>
+                            <a href="/Film/paymentAtCine" class="btn btn-danger" >Thanh toán tại rạp </a>
+                            <button class="btn btn-danger" id="btnPay">Thanh toán online</button>
 
                         </div>
                     </div>
                 </div>
             </div>
             <script type="text/javascript">
+                function myFunction(id) {
+                    var r = confirm("Bạn có chắc muốn xóa không!");
+                    if (r == true) {
+                        var idFilm = document.getElementById("idFilm").value;
+
+                        var nameId = "idComment" + id;
+                        var idComment = document.getElementById(nameId).value;
+
+                        var row1 = document.getElementById("error");
+                        var row = document.getElementById("numberComment");
+                        if (idComment == '') {
+                            row1.innerHTML = "❌ Bạn cần điền bình luận !"
+                        } else {
+                            $.ajax({
+                                url: "/Film/deleteComment",
+                                type: "post",
+                                data: {
+                                    idFilm: idFilm,
+                                    id: idComment
+                                },
+                                success: function (data) {
+                                    row.innerHTML = "Comments" + " " + data.data
+                                    document.getElementById(id).style.display = 'none';
+                                }
+                            });
+                        }
+                    } else {
+                       
+                    }
+                }
                 function onReady() {
                     var text = document.getElementById('linkqr').innerHTML;
                     var qrcode = new QRCode("id_qrcode", {
@@ -166,6 +221,7 @@
                 var element = document.getElementById('btnPay');
                 element.addEventListener('click', function () {
                     var text = document.getElementById('sessionId').innerHTML;
+
                     stripe.redirectToCheckout({
                         sessionId: text
                     }).then(function (result) {
@@ -210,7 +266,12 @@
                                             <div class="reply px-4"> <p>@item1.rate</p></div>
 
 
-                                            <div class="icons align-items-center"> <i class="fa fa-star text-warning"></i> <i class="fa fa-check-circle-o check-icon"></i> </div>
+                                            <div class="icons align-items-center">
+                                                @for (int i = 0; i < item1.number_start; i++)
+                                                {
+                                                    <i class="fa fa-star text-warning"></i>
+                                                }
+                                            </div>
                                         </div>
                                         <div class="action d-flex justify-content-between mt-2 align-items-center">
                                             <div class="reply px-4"></div>
@@ -225,7 +286,7 @@
                                                     <input type="hidden" value="@item1.id" id="@nameId" />
 
 
-                                                    <p onclick="deleteComment(@item1.id)" value="Xóa" class="btn btn-danger">Xóa</p>
+                                                    <p onclick="myFunction(@item1.id)" value="Xóa" class="btn btn-danger">Xóa</p>
 
 
                                                 }
@@ -241,6 +302,20 @@
 
                             <div class="card p-3">
                                 <form class="form-inline">
+                                    <div style="margin-bottom:15px;width:100%;display:flex;justify-content:center">
+
+
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            var nameI = "iclass" + i;
+                                          
+                                        
+
+                                            <i onclick="onChooseStar(@i)" id="@nameI" style="margin-left:5px" class="fa fa-star-o" text-warning aria-hidden="true"></i>
+                                        }
+                                        <input type="hidden" value="0" id="checkStar" />
+                                    </div>
+                                   
                                     <div class="row">
                                         <div class="form-group  col-10">
 
@@ -248,7 +323,7 @@
                                             <p style="color: red;margin-top: 10px" id="error"></p>
                                         </div>
                                         <div class="col-2">
-                                            <button type="button" onclick="postComment()" class="btn btn-primary mb-2">Post</button>
+                                            <button type="button" onclick="postComment()" class="btn btn-danger mb-2">Post</button>
                                         </div>
                                     </div>
 
@@ -261,6 +336,33 @@
 
 
                         <script type="text/javascript">
+                            var number_star = 0;
+                            function onChooseStar(id) {
+                               
+
+                                var check = $('#checkStar').val();
+                                $('#checkStar').val(id);
+                             
+                                number_star = id;
+                             
+                                if (id > check) {
+                                    for (var i = 1; i <= id; i++) {
+                                        var nameI = "i#iclass" + i;
+                                        $(nameI).attr("class", "fa fa-star text-warning");
+
+                                    }
+
+                                }
+                                else {
+                                    for (var i = id + 1; i <= check; i++) {
+                                        var nameI = "i#iclass" + i;
+                                        $(nameI).attr("class", "fa fa-star-o ");
+
+                                    }
+                                }
+
+
+                            }
                             function postComment() {
 
                                 var idFilm = document.getElementById("idFilmT").value;
@@ -275,27 +377,37 @@
 
                                 if (comment == '') {
                                     row1.innerHTML = "❌ Bạn cần điền bình luận !"
+                                } else if (number_star == 0) {
+                                    row1.innerHTML = "❌ Bạn cần chọn đánh giá sao!"
                                 } else {
                                     $.ajax({
                                         url: "/Film/postCommnet",
                                         type: "post",
                                         data: {
                                             idFilm: idFilm,
-                                            textComment: comment
+                                            textComment: comment,
+                                            numberstar: number_star
                                         },
                                         success: function (data) {
                                             if (data.status == "ERROR") {
                                                 row1.innerHTML = data.msg
                                             } else if (data.status == "SUCCESS") {
-
+                                                number_star = 0;
                                                 var htmlData = `<div class="headings d-flex justify-content-between align-items-center mb-3">
                                                                                                                 <h5 id="numberComment"> Comments `+ data.data.length + `</h5>
 
                                                                                                             </div>`
-                                                for (var i = 0; i < data.data.length; i++) {
-                                                    var nameId = "idComment" + data.data[i].id;
-                                                    if (idUser == data.data[i].id_user) {
-                                                        htmlData += ` <div class="card p-3" id="` + data.data[i].id + `">
+                                                    for (var i = 0; i < data.data.length; i++) {
+                                                        var nameId = "idComment" + data.data[i].id;
+                                                       
+                                                        var html2 = "";
+                                                         for (var j = 0; j < data.data[i].number_start; j++)
+                                                          {
+                                                             html2 += `<i class="fa fa-star text-warning"></i>`
+                                                        }
+                                                   
+                                                        if (idUser == data.data[i].id_user) {
+                                                            htmlData += ` <div class="card p-3" id="` + data.data[i].id + `">
                                                                                                                     <div class="d-flex justify-content-between align-items-center">
                                                                                                                      <input type="hidden" value="`+ data.data[i].film_id + `" id="idFilm" />
                                                                                                                     <div class="user d-flex flex-row align-items-center"> <img src="https://i.imgur.com/hczKIze.jpg" width="30" class="user-img rounded-circle mr-2"> <span>
@@ -305,7 +417,9 @@
                                                                                                             <div class="action d-flex justify-content-between mt-2 align-items-center">
                                                                                                                 <div class="reply px-4"> <p>`+ data.data[i].rate + `</p></div>
                                                                                                                 <input type="hidden" value="`+ data.data[i].id + `" id="` + data.data[i].id + `"/>
-                                                                                                                <div class="icons align-items-center"> <i class="fa fa-star text-warning"></i> <i class="fa fa-check-circle-o check-icon"></i> </div>
+                                                                                                                <div class="icons align-items-center">
+                                                                                                                  `+html2+`
+                                                                                                                      </div>
                                                                                                             </div>
                                                                                                          <div class="action d-flex justify-content-between mt-2 align-items-center">
                                                                                                                 <div class="reply px-4"></div>
@@ -313,7 +427,7 @@
 
                                                                                                                     <input type="hidden" value="`+ data.data[i].id + `"  id="` + nameId + `" />
 
-                                                                                                                    <p onclick="deleteComment(`+ data.data[i].id + `)" value="Xóa" class="btn btn-danger" >Xóa</p>
+                                                                                                                    <p onclick="myFunction(`+ data.data[i].id + `)" value="Xóa" class="btn btn-danger" >Xóa</p>
 
 
                                                                                                             </div>
@@ -339,14 +453,27 @@
                                                 }
                                                 htmlData += `<div class="card p-3">
                                                                                                                <form class="form-inline">
+                                                                                                                  <div style="margin-bottom:15px;width:100%;display:flex;justify-content:center">
+
+
+                                                                                                                    @for (int i = 1; i <= 5; i++)
+                                                                                                                    {
+                                                                                                                        var nameI = "iclass" + i;
+
+                                                                                                                        <input type="hidden" value="@i" id="@i" />
+
+                                                                                                                        <i onclick="onChooseStar(@i)" id="@nameI" style="margin-left:5px" class="fa fa-star-o" text-warning aria-hidden="true"></i>
+                                                                                                                    }
+                                                                                                                    <input type="hidden" value="0" id="checkStar" />
+                                                                                                                </div>
                                                                                                                 <div class="row">
                                                                                                                  <div class="form-group  col-10">
                                                                                                                 <label for="inputPassword2" class="sr-only">Password</label>
-                                                                                                                <input type="text" class="form-control" name="comment" id="comment" placeholder="Password">
+                                                                                                                <input type="text" class="form-control" name="comment" id="comment" placeholder="Commnet">
                                                                                                                 <p style="color: red;margin-top: 10px" id="error"></p>
                                                                                                               </div>
                                                                                                               <div class="col-2">
-                                                                                                                <button type="button" onclick="postComment()" class="btn btn-primary mb-2">Post</button>
+                                                                                                                <button type="button" onclick="postComment()" class="btn btn-danger mb-2">Post</button>
                                                                                                               </div>
                                                                                                                 </div>
                                                                                                             </form>

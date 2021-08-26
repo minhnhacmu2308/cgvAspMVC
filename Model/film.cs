@@ -43,6 +43,8 @@ namespace Model
 
         public int id_cfilm { get; set; }
 
+        public DateTime premiere_date { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<booking> bookings { get; set; }
 

@@ -12,7 +12,7 @@ namespace DatabaseIO
         MyDB mydb = new MyDB();
         public List<schedule> getSchedule(string id)
         {
-            int filmId = Int32.Parse(id);
+                int filmId = Int32.Parse(id);
             string SQL = "Select * from schedules where film_id = '" + id + "' and YEAR(dateschedule) >= YEAR(getdate()) and MONTH(dateschedule) >= MONTH(getdate()) and DAY(dateschedule) >= DAY(getdate())";
 
            return mydb.Database.SqlQuery<schedule>(SQL).ToList();

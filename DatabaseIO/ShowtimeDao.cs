@@ -11,10 +11,10 @@ namespace DatabaseIO
     public class ShowtimeDao
     {
         MyDB mydb = new MyDB();
-        public List<showtime> getShowtime(string id)
+        public List<showtime> getShowtime(string id,int idRoom)
         {
             int scheduleId = Int32.Parse(id);
-            return mydb.showtimes.Where(s => s.schedule_id == scheduleId).ToList();
+            return mydb.showtimes.Where(s => s.schedule_id == scheduleId && s.id_room == idRoom).ToList();
         }
         public showtime getName(int id)
         {

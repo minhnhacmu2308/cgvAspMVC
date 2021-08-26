@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Configuration;
 using System.Net;
+using System.Text;
 
 namespace CGV.Controllers
 {
@@ -23,7 +24,16 @@ namespace CGV.Controllers
         }
         public ActionResult Register()
         {
-            return View();
+            var user = Session[Constants.Constants.USER_SESSION];
+            if (user != null)
+            {
+                return RedirectToAction("IndexUser", "Home");
+            }
+            else
+            {
+                return View();
+            }
+              
         }
         [HttpPost]
         public ActionResult Register(FormCollection form)
@@ -34,14 +44,26 @@ namespace CGV.Controllers
             var phonenumber = form["phonenumber"];
             var rePassword = form["rePassword"];
             var passworodMd5 = authenticationD.md5(password);
-            if(string.IsNullOrEmpty(email)|| string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(phonenumber) || string.IsNullOrEmpty(rePassword))
+            string strongPassword = authenticationD.checkPasswordStrong(password);
+            System.Text.RegularExpressions.Regex rEmail = new System.Text.RegularExpressions.Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+            if (string.IsNullOrEmpty(email)|| string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(phonenumber) || string.IsNullOrEmpty(rePassword))
             {
                 ViewBag.message = "Cần điền đầy đủ thông tin";
                 return View();
+            }else if (!rEmail.IsMatch(email))
+            {
+                ViewBag.message = "Cần nhập đúng định dạng email";
+                return View();
             }
+           
             else if(!password.Equals(rePassword))
             {
                 ViewBag.message = "Hai mật khẩu không trùng khớp ";
+                return View();
+            }
+            else if (strongPassword != "")
+            {
+                ViewBag.message = strongPassword;
                 return View();
             }
             else
@@ -84,7 +106,16 @@ namespace CGV.Controllers
         }
         public ActionResult Login()
         {
-            return View();
+            var user = Session[Constants.Constants.USER_SESSION];
+            if(user != null)
+            {
+                return RedirectToAction("IndexUser","Home");
+            }
+            else
+            {
+                return View();
+            }
+            
         }
 
         public ActionResult Verify()

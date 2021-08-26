@@ -18,7 +18,8 @@ namespace CGV.Controllers
         }
         public ActionResult Promotion()
         {
-            return View();
+            var list = postD.getListIntroduce();
+            return View(list);
         }
         public ActionResult DetailPromotion(string id)
         {

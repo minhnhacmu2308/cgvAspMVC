@@ -22,10 +22,11 @@ namespace DatabaseIO
         }
         public void comment(rating rating)
         {
-            string SQL = "INSERT INTO ratings( film_id, rate,id_user,name_user) VALUES (@filmId,@rate,@userId,@nameuser)";
+            string SQL = "INSERT INTO ratings( film_id, rate,id_user,name_user,number_start) VALUES (@filmId,@rate,@userId,@nameuser,@number)";
             mydb.Database.ExecuteSqlCommand(SQL, new SqlParameter("@filmId", rating.film_id),
                 new SqlParameter("@rate", rating.rate),
                 new SqlParameter("@userId", rating.id_user),
+                  new SqlParameter("@number", rating.number_start),
                 new SqlParameter("@nameuser", rating.name_user)
             );
         }

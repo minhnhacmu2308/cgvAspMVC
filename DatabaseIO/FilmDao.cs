@@ -26,13 +26,14 @@ namespace DatabaseIO
         }
         public void bookingTicket(booking book,string createTime)
         {
-            string SQL = "INSERT INTO booking(id_user, film_id, schedule_id, showtime_id, room_id, seat_id, amount,create_time) " +
-                "VALUES (@userId,@filmId,@scheduleId,@showtimeId,@roomId,@seatId,@amount,@createTime)";
+            string SQL = "INSERT INTO booking(id_user, film_id, schedule_id, showtime_id, room_id, seat_id, status,amount,create_time) " +
+                "VALUES (@userId,@filmId,@scheduleId,@showtimeId,@roomId,@seatId,@status,@amount,@createTime)";
             mydb.Database.ExecuteSqlCommand(SQL,new SqlParameter("@userId", book.id_user),
                 new SqlParameter("@filmId", book.film_id),
                 new SqlParameter("@scheduleId", book.schedule_id),
                 new SqlParameter("@showtimeId", book.showtime_id),
                 new SqlParameter("@roomId", book.room_id),
+                new SqlParameter("@status", book.status),
                 new SqlParameter("@seatId", book.seat_id),
                 new SqlParameter("@amount", book.amount),
                  new SqlParameter("@createTime", createTime)

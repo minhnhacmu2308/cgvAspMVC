@@ -89,8 +89,11 @@
                                     @{
                                         var idModelDes = "exampleModalDes" + item.id;
                                     }
-                                    <a href="" data-bs-toggle="modal" data-bs-target="#@idModelDes">Chi tiết</a>
+                                    <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-html="true" title="@item.description">
+                                        Tooltip with HTML
+                                    </button>
                                 </td>
+
                                 <td>
                                     @{
                                         var idModelView = "exampleModalView" + item.id;
@@ -229,13 +232,21 @@
                                 </div>
                             </div>
                             <!-- Modal Update-->
-                                            stt++;
-                                        }
+                            stt++;
+                        }
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+
+            $('[data-toggle="tooltip"]').tooltip()
+
+        });
+
+    </script>
 </main>
 <!-- Modal Add-->
 <div class="modal fade" id="exampleModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -306,4 +317,5 @@
         </div>
     </div>
 </div>
+
 <!-- Modal Add-->

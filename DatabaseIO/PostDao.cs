@@ -17,6 +17,10 @@ namespace DatabaseIO
             int promotionId = Int32.Parse(id);
             return mydb.posts.Where(p => p.id == promotionId).FirstOrDefault();
         }
+        public List<post> getListIntroduce()
+        {
+            return mydb.posts.Where(p => p.id_cpost == 2).ToList();
+        }
         public room getName(int id)
         {
             return mydb.rooms.Where(r => r.id == id).FirstOrDefault();

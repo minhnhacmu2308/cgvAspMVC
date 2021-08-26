@@ -18,6 +18,8 @@ namespace Model
 
         public int? id_user { get; set; }
 
+        public int? number_start { get; set; }
+
         public DateTime created_time { get; set; }
 
         [Required]
