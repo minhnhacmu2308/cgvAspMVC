@@ -89,5 +89,13 @@ namespace DatabaseIO
             }
             return "";
         }
+
+        public void forgotPassword(string email,string password)
+        {
+            var user = mydb.usercgvs.Where(u => u.email == email).FirstOrDefault();
+            var passwordmd5 = md5(password);
+            user.password = passwordmd5;
+            mydb.SaveChanges();
+        }
     }
 }

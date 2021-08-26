@@ -4,7 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Configuration;
 using System.Web.Mvc;
+using System.Net.Mail;
+using System.Net;
 
 namespace CGV.Controllers
 {
@@ -109,6 +112,111 @@ namespace CGV.Controllers
            
 
             return Json(js, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public ActionResult Forgot(string msg)
+        {
+            ViewBag.msg = msg;
+            return View();
+        }
+        public int GenerateRandomNo()
+        {
+            int _min = 1000;
+            int _max = 9999;
+            Random _rdm = new Random();
+            return _rdm.Next(_min, _max);
+        }
+       [HttpGet] 
+        public ActionResult GetForgot()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult PostForgot(string email)
+        {
+          
+            bool checkemail = authenticationD.checkEmail(email);
+            if (checkemail)
+            {
+                var formEmailAddress = ConfigurationManager.AppSettings["FormEmailAddress"].ToString();
+                var formEmailDisplayName = ConfigurationManager.AppSettings["FormEmailDisplayName"].ToString();
+                var formEmailPassword = ConfigurationManager.AppSettings["FormEmailPassword"].ToString();
+                var smtpHost = ConfigurationManager.AppSettings["SMTPHost"].ToString();
+                var smtpPort = ConfigurationManager.AppSettings["SMTPPost"].ToString();
+
+                bool enableSsl = bool.Parse(ConfigurationManager.AppSettings["EnabledSSL"].ToString());
+                string code = GenerateRandomNo().ToString();
+                MailMessage message = new MailMessage(new MailAddress(formEmailAddress, formEmailDisplayName), new MailAddress(email));
+                message.Subject = "Mã  quên mật khẩu";
+                message.Body = "Mã quên mật khẩu" + " " + code;
+
+                var client = new SmtpClient();
+                client.Credentials = new NetworkCredential(formEmailAddress, formEmailPassword);
+                client.Host = smtpHost;
+                client.EnableSsl = enableSsl;
+                client.Port = !string.IsNullOrEmpty(smtpPort) ? Convert.ToInt32(smtpPort) : 0;
+                client.Send(message);
+
+                Session.Add(Constants.Constants.FOR_GOT, code);
+                Session.Add(Constants.Constants.EMAIL_SESSION, email);
+                Session.Timeout = 2;
+                return RedirectToAction("GetForgot");
+            }
+            else
+            {
+                return RedirectToAction("Forgot", new { msg = "Email không tồn tại" });
+            }
+           
+        }
+        [HttpPost]
+        public JsonResult VerifyForgot(string code)
+        {
+            var codeSession = (string)Session[Constants.Constants.FOR_GOT];
+            if (!code.Equals(codeSession))
+            {
+
+                return Json(new { status = "ERROR", msg = "Mã xác thực không chính xác", JsonRequestBehavior.AllowGet });
+            }
+            else if (codeSession == null || codeSession == "")
+            {
+                return Json(new { status = "ERROR", msg = "Mã xác thực đã quá hạn vui lòng lấy lại mã", JsonRequestBehavior.AllowGet });
+            }
+            else
+            {
+              
+                return Json(new { status = "OK", msg = "Xác thực thành công !!", JsonRequestBehavior.AllowGet });
+            }
+        }
+        [HttpGet]
+        public ActionResult NewPassword()
+        {
+            var email = (string)Session[Constants.Constants.EMAIL_SESSION];
+            if(email != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Authentication");
+            }
+          
+        }
+        [HttpPost]
+        public JsonResult PostNewPassword(string password)
+        {
+            var email = (string)Session[Constants.Constants.EMAIL_SESSION];
+            if (email != null)
+            {
+                authenticationD.forgotPassword(email,password);
+                Session.Remove(Constants.Constants.EMAIL_SESSION);
+                return Json(new { status = "OK", msg = "Đổi mật khẩu thành công!!", JsonRequestBehavior.AllowGet });
+            }
+            else
+            {
+                return Json(new { status = "ERROR", msg = "Đã hết hạn", JsonRequestBehavior.AllowGet });
+            }
+         
+            
         }
     }
 }

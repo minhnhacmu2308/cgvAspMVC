@@ -412,11 +412,13 @@
     <Content Include="Views\AdminShowtime\Index.cshtml" />
     <Content Include="Views\AdminUser\Index.cshtml" />
     <Content Include="Views\Film\paymentAtCine.cshtml" />
+    <Content Include="Views\User\Forgot.cshtml" />
+    <Content Include="Views\User\GetForgot.cshtml" />
+    <Content Include="Views\User\NewPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\User\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

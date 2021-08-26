@@ -32,6 +32,7 @@ namespace CGV
             url: "authentication/getcode/{email}",
             defaults: new { controller = "Authentication", action = "getCodeAgain", email = UrlParameter.Optional }
         );
+          
             routes.MapRoute(
              name: "Search film",
              url: "film/search/{keySearch}",

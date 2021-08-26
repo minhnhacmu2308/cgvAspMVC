@@ -14,5 +14,6 @@ namespace CGV.Constants
         public static string ORDER = "ORDER";
         public static string DATE_NOW_STRING = "DATE_NOW_STRING";
         public static string LENGTH_SEAT = "LENGTH_SEAT";
+        public static string FOR_GOT = "FOR_GOT";
     }
 }
