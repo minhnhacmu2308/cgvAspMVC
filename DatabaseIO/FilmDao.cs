@@ -19,16 +19,15 @@ namespace DatabaseIO
         }
         public IEnumerable<film> searchFilm(string keySearch)
         {
-           String nameSearch = "%" + keySearch + "%";
+            String nameSearch = "%" + keySearch + "%";
             string sql = "select * from films WHERE film_name LIKE @keysearch or actor LIKE @keysearch or director LIKE @keysearch ";
-
             return mydb.Database.SqlQuery<film>(sql, new SqlParameter("@keysearch", nameSearch)).ToList();
         }
-        public void bookingTicket(booking book,string createTime)
+        public void bookingTicket(booking book, string createTime)
         {
             string SQL = "INSERT INTO booking(id_user, film_id, schedule_id, showtime_id, room_id, seat_id, status,amount,create_time) " +
                 "VALUES (@userId,@filmId,@scheduleId,@showtimeId,@roomId,@seatId,@status,@amount,@createTime)";
-            mydb.Database.ExecuteSqlCommand(SQL,new SqlParameter("@userId", book.id_user),
+            mydb.Database.ExecuteSqlCommand(SQL, new SqlParameter("@userId", book.id_user),
                 new SqlParameter("@filmId", book.film_id),
                 new SqlParameter("@scheduleId", book.schedule_id),
                 new SqlParameter("@showtimeId", book.showtime_id),
@@ -38,9 +37,9 @@ namespace DatabaseIO
                 new SqlParameter("@amount", book.amount),
                  new SqlParameter("@createTime", createTime)
                 );
-          
+
         }
-        public List<booking> getOrder(string datenow,int id)
+        public List<booking> getOrder(string datenow, int id)
         {
             return mydb.bookings.Where(b => b.create_time == datenow && b.id_user == id).ToList();
         }
@@ -56,15 +55,15 @@ namespace DatabaseIO
         {
             return mydb.films.ToList();
         }
-        public void Add(string description, string director, string actor, string duration, string film_name, string image, string trailer, string idcfilm)
+        public void Add(string description, string director, string actor, string duration, string film_name, string image, string trailer, string idcfilm, string ngaycc)
         {
-            string SQL = "INSERT INTO films(description, director, actor, duration, film_name, image, trailer, id_cfilm ) VALUES(N'" + description + "',N'" + director + "',N'" + actor + "',N'" + duration + "',N'" + film_name + "','" + image + "',N'" + trailer + "','" + idcfilm + "')";
+            string SQL = "INSERT INTO films(description, director, actor, duration, film_name, image, trailer, id_cfilm, premiere_date ) VALUES(N'" + description + "',N'" + director + "',N'" + actor + "',N'" + duration + "',N'" + film_name + "','" + image + "',N'" + trailer + "','" + idcfilm + "','" + ngaycc + "' )";
             mydb.Database.ExecuteSqlCommand(SQL);
 
         }
-        public void Update(string description, string director, string actor, string duration, string film_name, string image, string trailer, string idcfilm, string id)
+        public void Update(string description, string director, string actor, string duration, string film_name, string image, string trailer, string idcfilm, string id, string ngaycc)
         {
-            string SQL = "UPDATE films SET description = N'" + description + "',director = N'" + director + "',actor = N'" + actor + "',duration = N'" + duration + "',film_name = N'" + film_name + "',image = '" + image + "',trailer = N'" + trailer + "',id_cfilm= '" + idcfilm + "'  WHERE id = '" + id + "'";
+            string SQL = "UPDATE films SET description = N'" + description + "',director = N'" + director + "',actor = N'" + actor + "',duration = N'" + duration + "',film_name = N'" + film_name + "',image = '" + image + "',trailer = N'" + trailer + "',id_cfilm= '" + idcfilm + "', premiere_date = '" + ngaycc + "'  WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
         }
         public void Delete(string id)
@@ -74,14 +73,22 @@ namespace DatabaseIO
         }
         public bool checkName(string name)
         {
-            string namef = "%" + name + "%";
-            string sql = "SELECT * FROM films WHERE film_name LIKE @name";
-            var user = mydb.Database.SqlQuery<film>(sql, new SqlParameter("@name", namef)).FirstOrDefault();
-            if (user != null)
-            {
+
+            string sql = "SELECT * FROM films WHERE film_name = N'" + name + "'";
+            var user = mydb.Database.SqlQuery<film>(sql).FirstOrDefault();
+            if (user != null){
                 return true;
             }
-            return false; ;
+            return false;
+        }
+        public bool checkActive(int id)
+        {
+            string sql = "SELECT * FROM schedules WHERE film_id = @id";
+            List<schedule> user = mydb.Database.SqlQuery<schedule>(sql, new SqlParameter("@id", id)).ToList();
+            if (user.Count == 0){
+                return true;
+            }
+            return false;
         }
     }
 }

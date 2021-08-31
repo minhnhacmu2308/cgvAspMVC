@@ -18,6 +18,8 @@ namespace CGV.Controllers.Admin
             {
                 return RedirectToAction("Index", "AdminAuthen");
             }
+            Utils.CheckActive.checkActivePost();
+            Session["checkactivepost"] = "category_post";
             ViewBag.Msg = mess;
             List<category_post> list = db.category_post.ToList();
             return View(list);
@@ -27,16 +29,18 @@ namespace CGV.Controllers.Admin
         {
             var name = form["categorypost"];
             bool result = cpost.checkName(name);
+            if (Session["usr"] == null)
+            {
+                return RedirectToAction("Index", "AdminAuthen");
+            }
             if (result)
             {
-                var message = "Loại bài viết đã tồn tại";
-                return RedirectToAction("Index", new { mess = message });
+                return RedirectToAction("Index", new { mess = "1" });
             }
             else
             {
                 cpost.Add(name);
-                var message = "Thêm thành công";
-                return RedirectToAction("Index", new { mess = message });
+                return RedirectToAction("Index", new { mess = "2" });
             }
             
         }
@@ -44,17 +48,68 @@ namespace CGV.Controllers.Admin
         {
             var name = form["categorypost"];
             var id = form["id"];
-            cpost.Update(name, id);
-            var message = "Cập nhập thành công";
-            return RedirectToAction("Index", new { mess = message });
+            var idc = Int32.Parse(id);
+            if (Session["usr"] == null)
+            {
+                return RedirectToAction("Index", "AdminAuthen");
+            }
+            bool checku = cpost.checkUpdate(idc, name);
+            if (checku)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                var dele = db.category_post.Where(c => c.id == idc).FirstOrDefault();
+                if (dele != null)
+                {
+                    bool result = cpost.checkName(name);
+                    if (result)
+                    {
+                        return RedirectToAction("Index", new { mess = "1" });
+                    }
+                    else
+                    {
+                        cpost.Update(name, id);
+                        return RedirectToAction("Index", new { mess = "2" });
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Index", new { mess = "4" });
+                }
+            }
+           
         }
         public ActionResult Delete(FormCollection form)
         {
 
             var id = form["id"];
-            cpost.Delete(id);
-            var message = "Xóa thành công";
-            return RedirectToAction("Index", new { mess = message });
+            var idc = Int32.Parse(id);
+            if (Session["usr"] == null)
+            {
+                return RedirectToAction("Index", "AdminAuthen");
+            }
+            bool result = cpost.checkActive(idc);
+            if (result)
+            {
+                var dele = db.category_post.Where(c => c.id == idc).FirstOrDefault();
+                if (dele != null)
+                {
+                    cpost.Delete(id);
+                    return RedirectToAction("Index", new { mess = "2" });
+                }
+                else
+                {
+                    return RedirectToAction("Index", new { mess = "4" });
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", new { mess = "3" });
+            }
+           
 
         }
     }

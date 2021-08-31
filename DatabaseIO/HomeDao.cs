@@ -35,5 +35,9 @@ namespace DatabaseIO
             int result = mydb.Database.SqlQuery<int>(SQL).FirstOrDefault();
             return result;
         }
+        public List<film> getFilmNow()
+        {
+            return mydb.Database.SqlQuery<film>("SELECT DISTINCT  a.* FROM films as a,schedules as b, showtimes as c WHERE b.film_id = a.id AND c.schedule_id = b.id AND FORMAT(b.dateschedule, 'dd/MM/yyyy' ) = FORMAT(getdate(), 'dd/MM/yyyy' ) and c.start_time >= convert(varchar(32),getdate(),108)").ToList();
+        }
     }
 }

@@ -18,7 +18,6 @@ namespace DatabaseIO
         {
             string SQL = "INSERT INTO category_post(name) VALUES(N'" + name + "')";
             mydb.Database.ExecuteSqlCommand(SQL);
-
         }
         public void Update(string name, string id)
         {
@@ -32,15 +31,32 @@ namespace DatabaseIO
         }
         public bool checkName(string name)
         {
-            string namef = "%" + name + "%";
-            string sql = "SELECT * FROM category_post WHERE name LIKE @name";
-            var user = mydb.Database.SqlQuery<category_post>(sql, new SqlParameter("@name", namef)).FirstOrDefault();
-            
-            if (user != null)
-            {
+            string sql = "SELECT * FROM category_post WHERE name = N'" + name + "'";
+            var user = mydb.Database.SqlQuery<category_post>(sql).FirstOrDefault();
+            if (user != null){
                 return true;
             }
-            return false; ;
+            return false;
+        }
+        public bool checkUpdate(int id, string name)
+        {
+
+            string sql = "SELECT * FROM category_post WHERE name = N'" + name + "' and id = @id";
+            var user = mydb.Database.SqlQuery<category_post>(sql, new SqlParameter("@id", id)).FirstOrDefault();
+            if (user != null){
+                return true;
+            }
+            return false;
+        }
+        public bool checkActive(int id)
+        {
+
+            string sql = "SELECT * FROM post WHERE id_cpost = @id";
+            List<post> user = mydb.Database.SqlQuery<post>(sql, new SqlParameter("@id", id)).ToList();
+            if (user.Count == 0){
+                return true;
+            }
+            return false;
         }
     }
 }

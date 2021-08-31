@@ -7,63 +7,116 @@
 <main>
     <div class="container-fluid px-4">
         <h1 class="mt-4">Phòng chiếu</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-            <li class="breadcrumb-item active">Phòng chiếu</li>
-        </ol>
+       
 
         <div class="card mb-4">
             <div class="card-header">
                 @if (ViewBag.Msg != null)
                 {
-                    <div class="alert alert-info">
-                        <strong>@ViewBag.Msg</strong>
-                    </div>
+                    if (ViewBag.Msg == "1")
+                    {
+                        <div class="alert alert-danger">
+                            <strong>Dữ liệu đã tồn tại</strong>
+                        </div>
+                    }
+                    else if (ViewBag.Msg == "2")
+                    {
+                        <div class="alert alert-info">
+                            <strong>Thành công</strong>
+                        </div>
+                    }
+                    else if (ViewBag.Msg == "3")
+                    {
+                        <div class="alert alert-danger">
+                            <strong>Dữ liệu đang hoạt động, không thể xóa</strong>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger">
+                            <strong>Dữ liệu không tồn tại</strong>
+                        </div>
+                    }
                 }
-                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                <button style="width:100px" type="button" class="btn btn-success" data-bs-toggle="modal"
                         data-bs-target="#exampleModalAdd">
-                    Thêm mới
+                    Thêm
                 </button>
             </div>
             <div class="card-body">
                 <table id="datatablesSimple">
                     <thead>
-                        <tr>
+                        <tr style="background-color : darkgray">
                             <th>STT</th>
-                            <th>Name</th>
-                            <th>Action</th>
-
+                            <th>Tên phòng</th>
+                            <th>Số lượng</th>
+                            <th>Hoạt động</th>
                         </tr>
                     </thead>
                     <tfoot>
-                        <tr>
+                        <tr style="background-color : darkgray">
                             <th>STT</th>
-                            <th>Name</th>
-                            <th>Action</th>
+                            <th>Tên phòng</th>
+                            <th>Số lượng</th>
+                            <th>Hoạt động</th>
                         </tr>
                     </tfoot>
                     <tbody>
                         @{var stt = 1; }
                         @foreach (var item in Model)
                         {
-                            <tr>
-                                <td>@stt</td>
-                                <td>@item.room_name</td>
-                                <td>
-                                    @{
-                                        var idModel = "exampleModal" + item.id;
-                                    }
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#@idModel">
-                                        Update
-                                    </button>
-                                    <form action="/AdminRoom/Delete" class="btn btn-danger" method="post">
-                                        <input type="hidden" class="form-control" id="id" name="id" value="@item.id">
-                                        <button type="submit" style="background:none;border:none;color:white"> Delete</button>
-                                    </form>
-                                </td>
+                            var numberSeat = new DatabaseIO.RoomDao().numberSeat(item.id);
+                        <tr>
+                            <td>@stt</td>
+                            <td>@item.room_name</td>
+                            <td>@numberSeat</td>
+                            <td>
+                                @{
+                                    var idModel = "exampleModal" + item.id;
+                                }
+                                @{
+                                    var idModelDel = "exampleModalDel" + item.id;
+                                }
+                                <button style="width:100px" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#@idModel">
+                                    Sửa
+                                </button>
+                               
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#@idModelDel" style="width:100px" class="btn btn-danger"> Xóa</button>
+                               
+                                <div class="modal fade" id="@idModelDel" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Bạn chắc chắn muốn xóa ?</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                           
+                                            <div class="modal-body">
+                                                Phòng : @item.room_name
+                                                <form action="/AdminRoom/Delete"  method="post">
+                                                    <input type="hidden" class="form-control" id="id" name="id" value="@item.id">
+                                                    <div class="modal-footer" style="margin-top: 20px">
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">
+                                                            Close
+                                                        </button>
+                                                        <button type="submit" class="btn btn-danger"> Xóa</button>
 
-                            </tr>
+                                                    </div>
+
+                                                </form>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                        </tr>
 
                             <!-- Modal Update-->
                             <div class="modal fade" id="@idModel" tabindex="-1"
@@ -83,6 +136,22 @@
                                                            class="col-form-label">Name:</label>
                                                     <input type="text" class="form-control" id="category-film" name="roomname" value="@item.room_name" required>
                                                 </div>
+                                                <div class="mb-3">
+                                                    @{ 
+                                                        var numberSeat1 = new DatabaseIO.RoomDao().numberSeat(item.id);
+                                                    }
+                                                    <label for="category-film"
+                                                           class="col-form-label">Số lượng ghế:</label>
+                                                    <select required class="form-select" id="number_seat1" name="number_seat1" aria-label="Default select example">
+                                                        <option selected value="@numberSeat1">@numberSeat</option>
+                                                        <option value="10">10</option>
+                                                        <option value="15">15</option>
+                                                        <option value="20">20</option>
+                                                        <option value="25">25</option>
+                                                        <option value="30">30</option>
+                                                    </select>
+
+                                                </div>
                                                 <button type="button" class="btn btn-secondary"
                                                         data-bs-dismiss="modal">
                                                     Close
@@ -97,8 +166,8 @@
                                 </div>
                             </div>
                             <!-- Modal Update-->
-                                            stt++;
-                                        }
+                                                            stt++;
+                                                        }
                     </tbody>
                 </table>
             </div>
@@ -120,6 +189,19 @@
                         <label for="category-film"
                                class="col-form-label">Name:</label>
                         <input type="text" class="form-control" id="category-film" name="roomname" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="category-film"
+                               class="col-form-label">Số lượng ghế:</label>
+                        <select required class="form-select" id="number_seat" name="number_seat" aria-label="Default select example">
+                          
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="25">25</option>
+                            <option value="30">30</option>
+                        </select>
+                       
                     </div>
                     <button type="button" class="btn btn-secondary"
                             data-bs-dismiss="modal">

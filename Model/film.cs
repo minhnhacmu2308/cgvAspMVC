@@ -29,8 +29,8 @@ namespace Model
         [Required]
         public string actor { get; set; }
 
-        [StringLength(255)]
-        public string duration { get; set; }
+      
+        public int duration { get; set; }
 
         [StringLength(255)]
         public string film_name { get; set; }

@@ -23,16 +23,20 @@ namespace CGV.Controllers.Admin
                 return RedirectToAction("Index", "AdminAuthen");
             }
             ViewBag.Msg = mess;
+            Utils.CheckActive.checkActive();
+            Session["checkactive"] = "film";
             List<film> list = db.films.OrderByDescending(f => f.id).ToList();
             return View(list);
         }
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult Add(FormCollection form)
         {
             var tenphim = form["tenphim"];
             var dienvien = form["dienvien"];
             var daodien = form["daodien"];
             var thoiluong = form["thoiluong"];
+            var ngaycc = form["ngaycc"];
             var theloai = form["theloai"];
             var trailer = form["trailer"];
             var file = Request.Files["file"];
@@ -40,17 +44,21 @@ namespace CGV.Controllers.Admin
             Random random = new Random();
             int num = random.Next();
             bool result = post.checkName(tenphim);
+            if (Session["usr"] == null)
+            {
+                return RedirectToAction("Index", "AdminAuthen");
+            }
             if (result)
             {
-                var message = "Phim đã tồn tại";
-                return RedirectToAction("Index", new { mess = message });
+
+                return RedirectToAction("Index", new { mess = "1" });
             }
             else
             {
                 String filename = "film" + num + file.FileName.Substring(file.FileName.LastIndexOf("."));
                 String Strpath = Path.Combine(Server.MapPath("~/Content/Assets/images/"), filename);
                 file.SaveAs(Strpath);
-                post.Add(noidung, daodien, dienvien, thoiluong, tenphim, filename, trailer, theloai);
+                post.Add(noidung, daodien, dienvien, thoiluong, tenphim, filename, trailer, theloai,ngaycc);
                 string content = System.IO.File.ReadAllText(Server.MapPath("~/Content/Admin/mail/mailbody.html"));
                 content = content.Replace("{{title}}", tenphim);
                 content = content.Replace("{{noidung}}", noidung);
@@ -77,17 +85,19 @@ namespace CGV.Controllers.Admin
                     client.Port = !string.IsNullOrEmpty(smtpPort) ? Convert.ToInt32(smtpPort) : 0;
                     client.Send(message);
                 }
-                var messag = "Thêm thành công";
-                return RedirectToAction("Index", new { mess = messag });
+                return RedirectToAction("Index", new { mess = "2" });
             }
         }
+        [ValidateInput(false)]
         public ActionResult Update(FormCollection form)
         {
             var id = form["id"];
+            var idu = Int32.Parse(id);
             var tenphim = form["tenphim"];
             var dienvien = form["dienvien"];
             var daodien = form["daodien"];
             var thoiluong = form["thoiluong"];
+            var ngaycc = form["ngaycc"];
             var theloai = form["theloai"];
             var trailer = form["trailer"];
             var file = Request.Files["file"];
@@ -95,26 +105,97 @@ namespace CGV.Controllers.Admin
             var img = form["anh"];
             Random random = new Random();
             int num = random.Next();
-            if (file != null && file.ContentLength > 0)
+            bool result = post.checkName(tenphim);
+            if (Session["usr"] == null)
             {
-                String filename = "film" + num + file.FileName.Substring(file.FileName.LastIndexOf("."));
-                String Strpath = Path.Combine(Server.MapPath("~/Content/Assets/images/"), filename);
-                file.SaveAs(Strpath);
-                post.Update(noidung, daodien, dienvien, thoiluong, tenphim, filename, trailer, theloai,id);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "AdminAuthen");
             }
+            film u = db.films.Where(p => p.id == idu).FirstOrDefault();
+            if (tenphim != u.film_name)
+            {
+                var dele = db.films.Where(c => c.id == idu).FirstOrDefault();
+                if (dele != null)
+                {
+                    if (result)
+                    {
 
-            post.Update(noidung, daodien, dienvien, thoiluong, tenphim, img, trailer, theloai, id);
-            var messag = "Cập nhập thành công";
-            return RedirectToAction("Index", new { mess = messag });
+                        return RedirectToAction("Index", new { mess = "1" });
+                    }
+                    else
+                    {
+                        if (file != null && file.ContentLength > 0)
+                        {
+                            String filename = "film" + num + file.FileName.Substring(file.FileName.LastIndexOf("."));
+                            String Strpath = Path.Combine(Server.MapPath("~/Content/Assets/images/"), filename);
+                            file.SaveAs(Strpath);
+                            post.Update(noidung, daodien, dienvien, thoiluong, tenphim, filename, trailer, theloai, id, ngaycc);
+                            return RedirectToAction("Index", new { mess = "2" });
+                        }
+
+                        post.Update(noidung, daodien, dienvien, thoiluong, tenphim, img, trailer, theloai, id, ngaycc);
+                        return RedirectToAction("Index", new { mess = "2" });
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Index", new { mess = "4" });
+                }
+            }
+            else
+            {
+                var dele = db.films.Where(c => c.id == idu).FirstOrDefault();
+                if (dele != null)
+                {
+                    
+                        if (file != null && file.ContentLength > 0)
+                        {
+                            String filename = "film" + num + file.FileName.Substring(file.FileName.LastIndexOf("."));
+                            String Strpath = Path.Combine(Server.MapPath("~/Content/Assets/images/"), filename);
+                            file.SaveAs(Strpath);
+                            post.Update(noidung, daodien, dienvien, thoiluong, tenphim, filename, trailer, theloai, id, ngaycc);
+                        return RedirectToAction("Index", new { mess = "2" });
+                         }
+
+                        post.Update(noidung, daodien, dienvien, thoiluong, tenphim, img, trailer, theloai, id, ngaycc);
+                        return RedirectToAction("Index", new { mess = "2" });
+
+                }
+                else
+                {
+                    return RedirectToAction("Index", new { mess = "4" });
+                }
+            }
+                
         }
         public ActionResult Delete(FormCollection form)
         {
 
             var id = form["id"];
-            post.Delete(id);
-            var message = "Xóa thành công";
-            return RedirectToAction("Index", new { mess = message });
+            var idc = Int32.Parse(id);
+            if (Session["usr"] == null)
+            {
+                return RedirectToAction("Index", "AdminAuthen");
+            }
+            bool result = post.checkActive(idc);
+            if (result)
+            {
+                var dele = db.films.Where(c => c.id == idc).FirstOrDefault();
+                if (dele != null)
+                {
+                    post.Delete(id);
+                    return RedirectToAction("Index", new { mess = "2" });
+                }
+                else
+                {
+                    return RedirectToAction("Index", new { mess = "4" });
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", new { mess = "3" });
+            }
+            
 
         }
     }

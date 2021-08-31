@@ -60,8 +60,8 @@ namespace Model
                 .IsUnicode(false);
 
             modelBuilder.Entity<film>()
-                .Property(e => e.duration)
-                .IsUnicode(false);
+                .Property(e => e.duration);
+             
 
             modelBuilder.Entity<film>()
                 .Property(e => e.film_name)

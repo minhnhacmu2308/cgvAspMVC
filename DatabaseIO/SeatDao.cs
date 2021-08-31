@@ -11,8 +11,7 @@ namespace DatabaseIO
     public class SeatDao
     {
         MyDB mydb = new MyDB();
-
-        
+       
         public List<seat> getSeat(int roomId, int showtimeId, int filmId, int scheduleId)
         {
             return mydb.Database.SqlQuery<seat>("SELECT * from seats WHERE id NOT IN (SELECT seat_id FROM booking WHERE room_id = @rId " +
@@ -52,6 +51,7 @@ namespace DatabaseIO
             mydb.Database.ExecuteSqlCommand(SQL);
 
         }
+      
         public void Update(string name, string id)
         {
             string SQL = "UPDATE seats SET seat_name = N'" + name + "' WHERE id = '" + id + "'";
@@ -65,11 +65,20 @@ namespace DatabaseIO
         public bool checkName(string name)
         {
             var user = mydb.seats.Where(u => u.seat_name == name).FirstOrDefault();
-            if (user != null)
-            {
+            if (user != null){
                 return true;
             }
             return false; ;
+        }
+        public bool checkActive(int id)
+        {
+            string sql = "select * from roomseat where id_seat = '" + id + "'";
+            var roomseat = mydb.Database.SqlQuery<roomseat>(sql).FirstOrDefault();
+            if(roomseat != null){
+                return true;
+            }else{
+                return false;
+            }
         }
     }
 }

@@ -24,10 +24,13 @@ namespace CGV.Controllers.Admin
                 return RedirectToAction("Index", "AdminAuthen");
             }
             ViewBag.Msg = mess;
+            Session["checkactivepost"] = "post";
+            Utils.CheckActive.checkActivePost();
             List<post> list = db.posts.OrderByDescending(p => p.created_at).ToList();
             return View(list);
         }
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult Add(FormCollection form)
         {
             var title = form["title"];
@@ -36,6 +39,10 @@ namespace CGV.Controllers.Admin
             var noidung = form["noidung"];
             Random random = new Random();
             int num = random.Next();
+            if (Session["usr"] == null)
+            {
+                return RedirectToAction("Index", "AdminAuthen");
+            }
             String filename = "post" + num + file.FileName.Substring(file.FileName.LastIndexOf("."));
             String Strpath = Path.Combine(Server.MapPath("~/Content/Assets/images/"), filename);
             file.SaveAs(Strpath);
@@ -69,14 +76,15 @@ namespace CGV.Controllers.Admin
             var messag = "Thêm thành công";
             return RedirectToAction("Index", new { mess = messag });
         }
-        
-            
 
-          
-        
+
+
+
+        [ValidateInput(false)]
         public ActionResult Update(FormCollection form)
         {
             var id = form["id"];
+            var idu = Int32.Parse(id);
             var title = form["title"];
             var theloai = form["theloai"];
             var file = Request.Files["file"];
@@ -84,26 +92,50 @@ namespace CGV.Controllers.Admin
             var noidung = form["noidung"];
             Random random = new Random();
             int num = random.Next();
-            if (file != null && file.ContentLength > 0)
+            if (Session["usr"] == null)
             {
-                String filename = "post" + num + file.FileName.Substring(file.FileName.LastIndexOf("."));
-                String Strpath = Path.Combine(Server.MapPath("~/Content/Assets/images/"), filename);
-                file.SaveAs(Strpath);
-                post.Update(title, theloai, filename, noidung, id);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "AdminAuthen");
             }
+            var dele = db.posts.Where(c => c.id == idu).FirstOrDefault();
+            if (dele != null)
+            {
+                if (file != null && file.ContentLength > 0)
+                {
+                    String filename = "post" + num + file.FileName.Substring(file.FileName.LastIndexOf("."));
+                    String Strpath = Path.Combine(Server.MapPath("~/Content/Assets/images/"), filename);
+                    file.SaveAs(Strpath);
+                    post.Update(title, theloai, filename, noidung, id);
+                    return RedirectToAction("Index");
+                }
 
-            post.Update(title, theloai, img, noidung, id);
-            var messag = "Cập nhập thành công";
-            return RedirectToAction("Index", new { mess = messag });
+                post.Update(title, theloai, img, noidung, id);
+                return RedirectToAction("Index", new { mess = "2" });
+            }
+            else
+            {
+                return RedirectToAction("Index", new { mess = "4" });
+            }
         }
         public ActionResult Delete(FormCollection form)
         {
 
             var id = form["id"];
-            post.Delete(id);
-            var message = "Xóa thành công";
-            return RedirectToAction("Index", new { mess = message });
+            var idc = Int32.Parse(id);
+            if (Session["usr"] == null)
+            {
+                return RedirectToAction("Index", "AdminAuthen");
+            }
+            var dele = db.posts.Where(c => c.id == idc).FirstOrDefault();
+            if (dele != null)
+            {
+                post.Delete(id);
+                return RedirectToAction("Index", new { mess = "2" });
+            }
+            else
+            {
+                return RedirectToAction("Index", new { mess = "4" });
+            }
+            
 
         }
     }

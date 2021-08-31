@@ -14,7 +14,7 @@ namespace DatabaseIO
         public List<showtime> getShowtime(string id,int idRoom)
         {
             int scheduleId = Int32.Parse(id);
-            return mydb.showtimes.Where(s => s.schedule_id == scheduleId && s.id_room == idRoom).ToList();
+            return mydb.Database.SqlQuery<showtime>("SELECT * FROM showtimes WHERE schedule_id = '" + scheduleId + "' and id_room = '" + idRoom + "' and start_time >= convert(varchar(32),getdate(),108)").ToList();
         }
         public showtime getName(int id)
         {
@@ -24,9 +24,9 @@ namespace DatabaseIO
         {
             return mydb.showtimes.ToList();
         }
-        public void Add(string scheid, string start, string end)
+        public void Add(string scheid, string start, string end, int idRoom)
         {
-            string SQL = "INSERT INTO showtimes(schedule_id,start_time,end_time) VALUES('" + scheid + "','" + start + "','" + end + "')";
+            string SQL = "INSERT INTO showtimes(schedule_id,start_time,end_time,id_room) VALUES('" + scheid + "','" + start + "','" + end + "','"+idRoom+"')";
             mydb.Database.ExecuteSqlCommand(SQL);
 
         }
@@ -40,13 +40,24 @@ namespace DatabaseIO
             string SQL = "DELETE FROM showtimes WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
         }
-        public showtime checkShow(string start,string end,string id)
+        public List<showtime> checkShow(string start,string id,string idRoom)
+        {          
+            string sql = "Select * From showtimes where schedule_id = @idsche  AND id_room = @idroom  AND (@start BETWEEN start_time AND end_time OR (DATEDIFF(minute, @start, start_time) <= 120 AND DATEDIFF(minute, @start, start_time) >= 0 ))";
+            return mydb.Database.SqlQuery<showtime>(sql, new SqlParameter("@start", start),new SqlParameter("@idsche", id),new SqlParameter("@idroom", idRoom)).ToList();          
+        }
+        public List<room> getNameRoom(int idSchedule)
         {
-            
-            string sql = "Select  * From showtimes where schedule_id = @id AND start_time BETWEEN @start AND @end  OR start_time = @end OR end_time = @start AND end_time BETWEEN @start AND @end";
-            return mydb.Database.SqlQuery<showtime>(sql, new SqlParameter("@start", start),new SqlParameter("@end", end),new SqlParameter("@id",id)).FirstOrDefault();
-            
-            
+            string sql = "select r.* from scheduleroom s, room r where  s.id_schedule = '" + idSchedule + "' and r.id = s.id_room";
+            return mydb.Database.SqlQuery<room>(sql).ToList();
+        }
+        public bool checkActive(int idShowtime)
+        {
+            string sql = "select * from booking where showtime_id = '" + idShowtime + "'";
+            var showtimeOBj = mydb.Database.SqlQuery<booking>(sql).FirstOrDefault();
+            if(showtimeOBj != null){
+                return true;
+            }
+            return false;
         }
     }
 }

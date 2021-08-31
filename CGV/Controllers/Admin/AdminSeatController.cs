@@ -19,6 +19,8 @@ namespace CGV.Controllers.Admin
                 return RedirectToAction("Index", "AdminAuthen");
             }
             ViewBag.Msg = mess;
+            Session["checkactive"] = "seat";
+            Utils.CheckActive.checkActive();
             List<seat> list = db.seats.ToList();
             return View(list);
         }
@@ -29,13 +31,14 @@ namespace CGV.Controllers.Admin
             bool result = seat.checkName(name);
             if (result)
             {
-                var message = "Ghế đã tồn tại";
+                var message = "1";
                 return RedirectToAction("Index", new { mess = message });
             }
             else
             {
                 seat.Add(name);
-                var message = "Thêm thành công";
+
+                var message = "2";
                 return RedirectToAction("Index", new { mess = message });
             }
         }
@@ -43,17 +46,48 @@ namespace CGV.Controllers.Admin
         {
             var name = form["seatname"];
             var id = form["id"];
-            seat.Update(name, id);
-            var message = "Cập nhập thành công";
-            return RedirectToAction("Index", new { mess = message });
+            var seatObj = seat.getName(Int32.Parse(id));
+            if (seatObj.seat_name == name)
+            {
+                seat.Update(name, id);
+                var message = "2";
+                return RedirectToAction("Index", new { mess = message });
+            }
+            else
+            {
+                bool result = seat.checkName(name);
+                if (result)
+                {
+                    var message = "1";
+                    return RedirectToAction("Index", new { mess = message });
+                }
+                else
+                {
+                    seat.Update(name, id);
+                    var message = "2";
+                    return RedirectToAction("Index", new { mess = message });
+                }
+               
+            }
+           
         }
         public ActionResult Delete(FormCollection form)
         {
 
             var id = form["id"];
-            seat.Delete(id);
-            var message = "Xóa thành công";
-            return RedirectToAction("Index", new { mess = message });
+            bool checkActive = seat.checkActive(Int32.Parse(id));
+            if (checkActive)
+            {
+                var message = "3";
+                return RedirectToAction("Index", new { mess = message });
+            }
+            else
+            {
+                seat.Delete(id);
+                var message = "2";
+                return RedirectToAction("Index", new { mess = message });
+            }
+            
 
         }
     }

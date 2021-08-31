@@ -10,9 +10,8 @@ namespace DatabaseIO
     {
         MyDB db = new MyDB();
         public List<role> getAll()
-        {
-            
-            return db.roles.ToList(); ;
+        {           
+            return db.roles.ToList();
         }
     }
 }

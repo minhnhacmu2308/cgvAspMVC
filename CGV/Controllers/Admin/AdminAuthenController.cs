@@ -33,6 +33,8 @@ namespace CGV.Controllers.Admin
             usercgv cs = mydb.usercgvs.SingleOrDefault(u => u.email == email && u.password == passworodMd5 && u.role_id != 3);
             if (cs != null)
             {
+                Session["usr"] = cs;
+                return RedirectToAction("Index", "AdminHome");
                 var response = Request["g-recaptcha-response"];
                 var secretKey = "6Lf2AO0bAAAAABTjXd7b2X4AqZYCVUtLK-12PvTO";//Mã bí mật
                 string remoteIp = Request.ServerVariables["REMOTE_ADDR"];

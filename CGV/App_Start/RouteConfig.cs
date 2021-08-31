@@ -118,12 +118,17 @@ namespace CGV
             url: "admin/login",
             defaults: new { controller = "AdminAuthen", action = "Index", id = UrlParameter.Optional }
         );
-
+            routes.MapRoute(
+         name: "Admin Book Ticket",
+         url: "admin/bookticket",
+         defaults: new { controller = "AdminBookTicket", action = "Index", id = UrlParameter.Optional }
+     );
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "IndexUser", id = UrlParameter.Optional }
             );
+          
         }
     }
 }

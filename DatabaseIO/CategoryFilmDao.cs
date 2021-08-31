@@ -20,7 +20,6 @@ namespace DatabaseIO
         {
             string SQL = "INSERT INTO category_film(name) VALUES(N'" + name + "')";
             mydb.Database.ExecuteSqlCommand(SQL);
-
         }
         public void Update(string name, string id)
         {
@@ -37,11 +36,30 @@ namespace DatabaseIO
             string namef = "%" + name + "%";
             string sql = "SELECT * FROM category_film WHERE name LIKE @name";
             var user = mydb.Database.SqlQuery<category_film>(sql,new SqlParameter("@name",namef)).FirstOrDefault();
-            if (user != null)
-            {
+            if (user != null){
                 return true;
             }
-            return false; ;
+            return false;
+        }
+        public bool checkUpdate(int id, string name)
+        {
+
+            string sql = "SELECT * FROM category_film WHERE name = N'" + name + "' and id = @id";
+            var user = mydb.Database.SqlQuery<category_film>(sql, new SqlParameter("@id", id)).FirstOrDefault();
+            if (user != null){
+                return true;
+            }
+            return false;
+        }
+        public bool checkActive(int id)
+        {
+
+            string sql = "SELECT * FROM films WHERE id_cfilm = @id";
+            List<film> user = mydb.Database.SqlQuery<film>(sql, new SqlParameter("@id", id)).ToList();
+            if (user.Count == 0){
+                return true;
+            }
+            return false;
         }
     }
 }

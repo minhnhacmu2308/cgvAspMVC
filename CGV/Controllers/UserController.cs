@@ -1,13 +1,8 @@
 ﻿using DatabaseIO;
 using Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Configuration;
 using System.Web.Mvc;
-using System.Net.Mail;
-using System.Net;
+using CGV.Utils;
 
 namespace CGV.Controllers
 {
@@ -18,58 +13,46 @@ namespace CGV.Controllers
         UserDao userD = new UserDao();
         GenericDao genericD = new GenericDao();
         AuthenticationDao authenticationD = new AuthenticationDao();
+        MailUtils mailUtil = new MailUtils();     
+        
         public ActionResult Index()
         {
             return View();
         }
-
         [HttpPost]
         public JsonResult EditPassword(string passwordOld, string passwordNew, string rePasswordNew,string email)
         {
             JsonResult js = new JsonResult();
             Console.WriteLine(passwordOld);
             var userSession = Session[Constants.Constants.USER_SESSION];
-            if (userSession != null)
-            {
-                if (String.IsNullOrEmpty(passwordOld) || String.IsNullOrEmpty(passwordNew) || String.IsNullOrEmpty(rePasswordNew))
-            {
-                js.Data = new
-                {
-                    status = "Error",
-                    message = "Cần điền đầy đủ thông tin "
-                };
-            }else if (passwordNew!= rePasswordNew)
-            {
-                js.Data = new
-                {
-                    status = "Error",
-                    message = "Hai mật khẩu không trùng khớp"
-                };
-            }
-            else
-            {
-                string passwordMd5 = authenticationD.md5(passwordOld);
-                string passwordMd5New = authenticationD.md5(passwordNew);
-                var user = userD.getUpdateProfile(email, passwordMd5);
-                if(user != null)
-                {
-                    userD.updatePassword(email, passwordMd5, passwordMd5New);
-                    js.Data = new
-                    {
-                        status = "OK",
-                        message = "Cập nhật mật khẩu thành công",
-                        
+            if (userSession != null){
+                if (String.IsNullOrEmpty(passwordOld) || String.IsNullOrEmpty(passwordNew) || String.IsNullOrEmpty(rePasswordNew)){
+                    js.Data = new{
+                        status = Constants.Constants.STATUS_ERROR,
+                        message = Constants.Constants.FILL_OUT_ERROR
                     };
+                }else if (passwordNew!= rePasswordNew){
+                    js.Data = new{
+                        status = Constants.Constants.STATUS_ERROR,
+                        message = Constants.Constants.PASSWORD_ERROR
+                    };
+                }else{
+                    string passwordMd5 = authenticationD.md5(passwordOld);
+                    string passwordMd5New = authenticationD.md5(passwordNew);
+                    var user = userD.getUpdateProfile(email, passwordMd5);
+                    if(user != null){
+                        userD.updatePassword(email, passwordMd5, passwordMd5New);
+                        js.Data = new{
+                            status = Constants.Constants.STATUS_SUCCESS,
+                            message = Constants.Constants.UPDATE_PASSWORD_SUCCESS,                     
+                        };
+                    }
                 }
-            }
-            }
-            else
-            {
-                js.Data = new
-                {
-                    status = "Error",
-                    message = "Bạn đã bị đăng xuất ở nơi khác vui lòng reload lại trang"
-                };
+            }else{
+                  js.Data = new{
+                     status = Constants.Constants.STATUS_ERROR,
+                      message = Constants.Constants.YOU_LOGGED_OUT_SOMEWHERE_ELES
+                  };
             }
             return Json(js,JsonRequestBehavior.AllowGet);
         }
@@ -81,36 +64,25 @@ namespace CGV.Controllers
             user.phonenumber = phonenumber;
             user.username = username;
             var userSession = Session[Constants.Constants.USER_SESSION];
-            if(userSession != null)
-            {
-                if (String.IsNullOrEmpty(email) || String.IsNullOrEmpty(username) || String.IsNullOrEmpty(phonenumber))
-                {
-                    js.Data = new
-                    {
-                        status = "Error",
-                        message = "Cần điền đầy đủ thông tin"
+            if(userSession != null){
+                if (String.IsNullOrEmpty(email) || String.IsNullOrEmpty(username) || String.IsNullOrEmpty(phonenumber)){
+                    js.Data = new{
+                        status = Constants.Constants.STATUS_ERROR,
+                        message = Constants.Constants.FILL_OUT_ERROR
                     };
-                }
-                else
-                {
+                }else{
                     userD.updateProfile(email, user);
-                    js.Data = new
-                    {
-                        status = "OK",
-                        message = "Cập nhật thông tin thành công",
+                    js.Data = new{
+                        status = Constants.Constants.STATUS_OK,
+                        message = Constants.Constants.UPDATE_INFORMATION_SUCCESS,
                     };
                 }
-            }
-            else
-            {
-                js.Data = new
-                {
-                    status = "Error",
-                    message = "Bạn đã bị đăng xuất ở nơi khác vui lòng reload lại trang"
+            }else{
+                js.Data = new{
+                    status = Constants.Constants.STATUS_ERROR,
+                    message = Constants.Constants.YOU_LOGGED_OUT_SOMEWHERE_ELES
                 };
-            }
-           
-
+            }      
             return Json(js, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
@@ -119,13 +91,6 @@ namespace CGV.Controllers
             ViewBag.msg = msg;
             return View();
         }
-        public int GenerateRandomNo()
-        {
-            int _min = 1000;
-            int _max = 9999;
-            Random _rdm = new Random();
-            return _rdm.Next(_min, _max);
-        }
        [HttpGet] 
         public ActionResult GetForgot()
         {
@@ -133,90 +98,55 @@ namespace CGV.Controllers
         }
         [HttpPost]
         public ActionResult PostForgot(string email)
-        {
-          
+        {    
             bool checkemail = authenticationD.checkEmail(email);
-            if (checkemail)
-            {
-                var formEmailAddress = ConfigurationManager.AppSettings["FormEmailAddress"].ToString();
-                var formEmailDisplayName = ConfigurationManager.AppSettings["FormEmailDisplayName"].ToString();
-                var formEmailPassword = ConfigurationManager.AppSettings["FormEmailPassword"].ToString();
-                var smtpHost = ConfigurationManager.AppSettings["SMTPHost"].ToString();
-                var smtpPort = ConfigurationManager.AppSettings["SMTPPost"].ToString();
-
-                bool enableSsl = bool.Parse(ConfigurationManager.AppSettings["EnabledSSL"].ToString());
-                string code = GenerateRandomNo().ToString();
-                MailMessage message = new MailMessage(new MailAddress(formEmailAddress, formEmailDisplayName), new MailAddress(email));
-                message.Subject = "Mã  quên mật khẩu";
-                message.Body = "Mã quên mật khẩu" + " " + code;
-
-                var client = new SmtpClient();
-                client.Credentials = new NetworkCredential(formEmailAddress, formEmailPassword);
-                client.Host = smtpHost;
-                client.EnableSsl = enableSsl;
-                client.Port = !string.IsNullOrEmpty(smtpPort) ? Convert.ToInt32(smtpPort) : 0;
-                client.Send(message);
-
+            if (checkemail){
+                string subjectEmail = Constants.Constants.SUBJECT_EMAIL_FORGOT;
+                string code = Utils.RandomCode.GenerateRandomNo().ToString();
+                string bodyEmail = Constants.Constants.BODY_EMAIL_FORGOT + " " + code;
+                mailUtil.sendMail(email,subjectEmail, bodyEmail);
                 Session.Add(Constants.Constants.FOR_GOT, code);
                 Session.Add(Constants.Constants.EMAIL_SESSION, email);
                 Session.Timeout = 2;
                 return RedirectToAction("GetForgot");
-            }
-            else
-            {
-                return RedirectToAction("Forgot", new { msg = "Email không tồn tại" });
-            }
-           
+            }else{
+                return RedirectToAction("Forgot", new { msg = Constants.Constants.EMAIL_NOT_EXIST });
+            }      
         }
         [HttpPost]
         public JsonResult VerifyForgot(string code)
         {
             var codeSession = (string)Session[Constants.Constants.FOR_GOT];
-            if (!code.Equals(codeSession))
-            {
-
-                return Json(new { status = "ERROR", msg = "Mã xác thực không chính xác", JsonRequestBehavior.AllowGet });
-            }
-            else if (codeSession == null || codeSession == "")
-            {
-                return Json(new { status = "ERROR", msg = "Mã xác thực đã quá hạn vui lòng lấy lại mã", JsonRequestBehavior.AllowGet });
-            }
-            else
-            {
-              
-                return Json(new { status = "OK", msg = "Xác thực thành công !!", JsonRequestBehavior.AllowGet });
+            if(!code.Equals(codeSession)){
+                return Json(new { status = Constants.Constants.STATUS_ERROR, msg = Constants.Constants.VERIFY_INCORRECT, JsonRequestBehavior.AllowGet });
+            }else if(string.IsNullOrEmpty(codeSession)|| string.IsNullOrEmpty(codeSession)){
+                return Json(new { status = Constants.Constants.STATUS_ERROR, msg = Constants.Constants.VERIFY_INCORRECT, JsonRequestBehavior.AllowGet });
+            }else{             
+                return Json(new { status = Constants.Constants.STATUS_OK, msg = Constants.Constants.VERIFY_SUCCESS, JsonRequestBehavior.AllowGet });
             }
         }
         [HttpGet]
         public ActionResult NewPassword()
         {
             var email = (string)Session[Constants.Constants.EMAIL_SESSION];
-            if(email != null)
-            {
+            if(email != null){
                 return View();
-            }
-            else
-            {
+            }else{
                 return RedirectToAction("Login", "Authentication");
-            }
-          
+            }        
         }
         [HttpPost]
         public JsonResult PostNewPassword(string password)
         {
             var email = (string)Session[Constants.Constants.EMAIL_SESSION];
-            if (email != null)
-            {
+            if (email != null){
                 authenticationD.forgotPassword(email,password);
                 Session.Remove(Constants.Constants.EMAIL_SESSION);
-                return Json(new { status = "OK", msg = "Đổi mật khẩu thành công!!", JsonRequestBehavior.AllowGet });
-            }
-            else
-            {
-                return Json(new { status = "ERROR", msg = "Đã hết hạn", JsonRequestBehavior.AllowGet });
-            }
-         
-            
+                return Json(new { status = Constants.Constants.STATUS_OK, msg = Constants.Constants.UPDATE_PASSWORD_SUCCESS, JsonRequestBehavior.AllowGet });
+            }else{
+                return Json(new { status = Constants.Constants.STATUS_ERROR, msg = Constants.Constants.UPDATE_PASSWORD_ERROR, JsonRequestBehavior.AllowGet });
+            }       
         }
+       
     }
 }

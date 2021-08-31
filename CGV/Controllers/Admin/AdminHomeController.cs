@@ -20,6 +20,8 @@ namespace CGV.Controllers.Admin
             {
                 return RedirectToAction("Index", "AdminAuthen");
             }
+            Session["activeParent"] = "home";
+            Utils.CheckActive.checkActiveParent();
             ViewBag.Month1 = home.Statictis(1);
             ViewBag.Month2 = home.Statictis(2);
             ViewBag.Month3 = home.Statictis(3);

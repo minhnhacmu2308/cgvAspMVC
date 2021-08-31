@@ -26,7 +26,7 @@ namespace DatabaseIO
             mydb.Database.ExecuteSqlCommand(SQL, new SqlParameter("@filmId", rating.film_id),
                 new SqlParameter("@rate", rating.rate),
                 new SqlParameter("@userId", rating.id_user),
-                  new SqlParameter("@number", rating.number_start),
+                new SqlParameter("@number", rating.number_start),
                 new SqlParameter("@nameuser", rating.name_user)
             );
         }

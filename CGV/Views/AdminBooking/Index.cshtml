@@ -7,27 +7,28 @@
 <main>
     <div class="container-fluid px-4">
         <h1 class="mt-4">Booking</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-            <li class="breadcrumb-item active">Booking</li>
-        </ol>
+
 
         <div class="card mb-4">
+            <div class="card-header">
 
+
+            </div>
             <div class="card-body">
                 <table id="datatablesSimple">
                     <thead>
-                        <tr>
+                        <tr style="background-color : darkgray">
                             <th>STT</th>
-                            <th>Username</th>
-                            <th>Film's Name</th>
-                            <th>Schedule</th>
-                            <th>Showtime</th>
-                            <th>Room</th>
-                            <th>Seat</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                            
+                            <th>Khách hàng</th>
+                            <th>Phim</th>
+                            <th>Lịch chiếu</th>
+                            <th>Suất chiếu</th>
+                            <th>Phòng</th>
+                            <th>Ghế</th>
+                            <th>Tiền vé</th>
+                            <th>Trạng thái</th>
+
+
 
                         </tr>
                     </thead>
@@ -42,7 +43,8 @@
                             <th>Seat</th>
                             <th>Amount</th>
                             <th>Status</th>
-                            
+                            <th>Hành động</th>
+
                         </tr>
                     </tfoot>
                     <tbody>
@@ -58,7 +60,15 @@
                                     {
                                         if (item1.id == item.id_user)
                                         {
-                                            @item1.username;
+                                            if (item1.role_id == 3)
+                                            {
+                                                @item1.username;
+                                            }
+                                            else
+                                            {
+                                                <span>Khách vãng lai</span>
+                                            }
+
                                         }
                                     }
                                 </td>
@@ -118,26 +128,132 @@
                                         }
                                     }
                                 </td>
-                                <td>@item.amount</td>
+                                <td>@item.amount $</td>
 
                                 <td>
-                                    <!-- @if (item.status == 0)
-                 {
-                 <form action="/AdminBooking/Accept" class="btn btn-danger" method="post">
-                     <input type="hidden" class="form-control" id="id" name="id" value="@item.id">
-                     <button type="submit" style="background:none;border:none;color:white"> Accept</button>
-                 </form>
-                 }
-                 else
-                 {
-                     <span>Đã xác nhận</span>
-                 }-->
-                                    Đã thanh toán
+                                    @if (item.status == 0)
+                                    {
+                                        var idModelDel = "exampleModalDel" + item.id;
+
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                                data-bs-target="#@idModelDel" style="width: 120px !important">
+                                            Thanh toán
+                                        </button>
+                                        <div class="modal fade" id="@idModelDel" tabindex="-1"
+                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Xác nhận thanh toán ?</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <div class="">
+                                                                    <label for="category-film" class="col-form-label" style="font-weight:bold;width : 90px">Khách hàng:</label>
+                                                                    @foreach (var item1 in user)
+                                                                    {
+                                                                        if (item1.id == item.id_user)
+                                                                        {
+                                                                            if (item1.role_id == 3)
+                                                                            {
+                                                                                @item1.username;
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>Khách vãng lai</span>
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                                <div class="">
+                                                                    <label for="category-film" class="col-form-label" style="font-weight:bold;width : 90px">Phim:</label>
+                                                                    @foreach (var item2 in film)
+                                                                    {
+                                                                        if (item2.id == item.film_id)
+                                                                        {
+                                                                            @item2.film_name;
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                                <div class="">
+                                                                    <label for="category-film" class="col-form-label" style="font-weight:bold;width : 90px">Lịch chiếu:</label>
+                                                                    @foreach (var item3 in sche)
+                                                                    {
+                                                                        if (item3.id == item.schedule_id)
+                                                                        {
+                                                                            string dateschedule = String.Format("{0:yyyy-MM-dd}", item3.dateschedule);
+                                                                            @dateschedule
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                                <div class="">
+                                                                    <label for="category-film" class="col-form-label" style="font-weight:bold;width : 90px">Suất chiếu:</label>
+                                                                    @foreach (var item4 in sh)
+                                                                    {
+                                                                        if (item4.id == item.showtime_id)
+                                                                        {
+                                                                            @item4.start_time <span>-</span> @item4.end_time;
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6 ">
+                                                                <div class="">
+                                                                    <label for="category-film" class="col-form-label" style="font-weight:bold;width : 90px">Phòng:</label>
+                                                                    @foreach (var item5 in room)
+                                                                    {
+                                                                        if (item5.id == item.room_id)
+                                                                        {
+                                                                            @item5.room_name;
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                                <div class="">
+                                                                    <label for="category-film" class="col-form-label" style="font-weight:bold;width : 90px">Ghế:</label>
+                                                                    @foreach (var item6 in seat)
+                                                                    {
+                                                                        if (item6.id == item.seat_id)
+                                                                        {
+                                                                            @item6.seat_name;
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                                <div class="">
+                                                                    <label for="category-film" class="col-form-label" style="font-weight:bold;width : 90px">Tiền vé:</label>
+                                                                    @item.amount $
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <form action="/AdminBooking/Accept" method="post">
+                                                            <input type="hidden" class="form-control" id="id" name="id" value="@item.id">
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">
+                                                                    Close
+                                                                </button>
+                                                                <button type="submit" class="btn btn-danger">Thanh toán</button>
+
+                                                            </div>
+                                                        </form>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span>Đã thanh toán</span>
+                                    }
+
                                 </td>
 
                             </tr>
-                                            stt++;
-                                        }
+                            stt++;
+                        }
 
                     </tbody>
                 </table>

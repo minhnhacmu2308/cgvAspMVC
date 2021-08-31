@@ -7,76 +7,91 @@
 <main>
     <div class="container-fluid px-4">
         <h1 class="mt-4">Danh sách bài viết</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-            <li class="breadcrumb-item active">Bài viết</li>
-        </ol>
-
         <div class="card mb-4">
-            <div class="card-header">
-                @if (ViewBag.Msg != null)
+            @if (ViewBag.Msg != null)
+            {
+                if (ViewBag.Msg == "1")
                 {
-                    <div class="alert alert-info">
-                        <strong>@ViewBag.Msg</strong>
+                    <div class="alert alert-danger">
+                        <strong>Dữ liệu đã tồn tại</strong>
                     </div>
                 }
-                <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                        data-bs-target="#exampleModalAdd">
-                    Thêm mới
+                else if (ViewBag.Msg == "2")
+                {
+                    <div class="alert alert-info">
+                        <strong>Thành công</strong>
+                    </div>
+                }
+                else if (ViewBag.Msg == "3")
+                {
+                    <div class="alert alert-danger">
+                        <strong>Dữ liệu đang hoạt động, không thể xóa</strong>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-danger">
+                        <strong>Dữ liệu không tồn tại</strong>
+                    </div>
+                }
+            }
+            <div class="card-header">
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModalAdd" style="width: 100px !important">
+                    Thêm
                 </button>
             </div>
             <div class="card-body">
                 <table id="datatablesSimple">
                     <thead>
-                        <tr>
+                        <tr style="background-color : darkgray">
                             <th>STT</th>
-                            <th>Image</th>
-                            <th>Title</th>
-                            <th>Category</th>
-                            <th>Description</th>
-                            <th>Created at</th>
-                            <th>Action</th>
+                            <th>Ảnh</th>
+                            <th>Tiêu đề</th>
+                            <th>Thể loại</th>
+                            <th>Mô tả</th>
+                            <th>Ngày đăng</th>
+                            <th>Hành động</th>
 
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
                             <th>STT</th>
-                            <th>Image</th>
-                            <th>Title</th>
-                            <th>Category</th>
-                            <th>Description</th>
-                            <th>Created at</th>
-                            <th>Action</th>
+                            <th>Ảnh</th>
+                            <th>Tiêu đề</th>
+                            <th>Thể loại</th>
+                            <th>Mô tả</th>
+                            <th>Ngày đăng</th>
+                            <th>Hành động</th>
                         </tr>
                     </tfoot>
                     <tbody>
-                       
-                        <input type="hidden" value="@Model.Count()" id="dodai">
+
+                        <input type="hidden" value="@Model.Count()" id="dodai" />
 
                         @{ var stt = 1;}
                         @foreach (var item in Model)
                         {
                             <tr>
 
-                                <td>@stt</td>
+                                <td style="width: 40px !important">@stt</td>
                                 <td>
                                     @{
                                         var idModel = "exampleModalImg" + item.id;
                                     }
                                     @if (item.image == "")
                                     {
-                                       
-                                            <img style="width: 120px !important;height: 150px !important;" src="https://i.pinimg.com/originals/fb/45/ba/fb45baac1eed3c1b19d4aad23b054fa8.jpg" class="img-fluid">
-                                        
+
+                                        <img style="width: 120px !important;height: 150px !important;" src="https://i.pinimg.com/originals/fb/45/ba/fb45baac1eed3c1b19d4aad23b054fa8.jpg" class="img-fluid">
+
                                     }
                                     else
                                     {
-                                        
-                                            <a href="" data-bs-toggle="modal" data-bs-target="#@idModel">
+
+                                        <a href="" data-bs-toggle="modal" data-bs-target="#@idModel">
                                             <img style="width: 120px !important;height: 150px !important;" src="/Content/Assets/images/@item.image" class="img-fluid">
-                                             </a>
-                                        
+                                        </a>
+
                                     }
                                 </td>
                                 <td>@item.title</td>
@@ -103,14 +118,46 @@
                                     @{
                                         var idModelUp = "exampleModal" + item.id;
                                     }
+                                    
+                                    
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#@idModelUp">
-                                        Update
+                                            data-bs-target="#@idModelUp" style="width: 100px !important">
+                                        Sửa
                                     </button>
-                                    <form action="/AdminPost/Delete" class="btn btn-danger" method="post">
-                                        <input type="hidden" class="form-control" id="id" name="id" value="@item.id">
-                                        <button type="submit" style="background:none;border:none;color:white"> Delete</button>
-                                    </form>
+                                    @{
+                                        var idModelDel = "exampleModalDel" + item.id;
+                                    }
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#@idModelDel" style="width: 100px !important">
+                                        Xóa
+                                    </button>
+                                    <div class="modal fade" id="@idModelDel" tabindex="-1"
+                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Bạn chắc chắn muốn xóa ?</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Bài viết:  @item.title
+                                                    <form action="/AdminPost/Delete" method="post">
+                                                        <input type="hidden" class="form-control" id="id" name="id" value="@item.id">
+                                                        <div class="modal-footer" style="margin-top: 20px">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">
+                                                                Close
+                                                            </button>
+                                                            <button type="submit" class="btn btn-danger">Xóa</button>
+
+                                                        </div>
+                                                    </form>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
 
                             </tr>
@@ -199,7 +246,7 @@
                                                         Thumbnail
                                                     </label><br>
                                                     <input type="file" class="form-control-file"
-                                                           name="file" id="exampleFormControlFile1" >
+                                                           name="file" id="exampleFormControlFile1">
                                                     <p>@item.image</p>
                                                     <input type="hidden" value="@item.image" name="anh">
                                                 </div>
@@ -208,7 +255,7 @@
                                                 }
                                                 <div class="">
                                                     <label for="category-film" class="col-form-label">Nội dung:</label>
-                                                    <textarea name="noidung" cols="105" rows="5">@item.description</textarea>
+                                                    <textarea name="noidung" id="@edit" cols="30" rows="30">@Html.Raw(item.description)</textarea>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
@@ -286,17 +333,18 @@
                                 Nội
                                 dung:
                             </label><br />
-                            <textarea name="noidung" cols="105" rows="5"></textarea>
+                                    <textarea name="noidung" id="editor" cols="30" rows="30"></textarea>
                         </div>
-                        <button type="button" class="btn btn-secondary"
-                                data-bs-dismiss="modal">
-                            Close
-                        </button>
-                        <button type="submit" class="btn btn-primary">Save </button>
-                    </form>
                         <div class="modal-footer">
-                           
+                            <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="submit" class="btn btn-primary">Save </button>
                         </div>
+                    </form>
+                        
+                       
 
 </div>
 

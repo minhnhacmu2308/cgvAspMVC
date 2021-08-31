@@ -21,97 +21,178 @@
 <main>
     <div class="container-fluid px-4">
         <h1 class="mt-4">Suất chiếu</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-            <li class="breadcrumb-item active">Suất chiếu</li>
-        </ol>
+
 
         <div class="card mb-4">
             <div class="card-header">
                 @if (ViewBag.Msg != null)
                 {
-                    <div class="alert alert-info">
-                        <strong>@ViewBag.Msg</strong>
-                    </div>
+                    if (ViewBag.Msg == "1")
+                    {
+                        <div class="alert alert-danger">
+                            <strong>Dữ liệu đã tồn tại</strong>
+                        </div>
+                    }
+                    else if (ViewBag.Msg == "2")
+                    {
+                        <div class="alert alert-info">
+                            <strong>Thành công</strong>
+                        </div>
+                    }
+                    else if (ViewBag.Msg == "3")
+                    {
+                        <div class="alert alert-danger">
+                            <strong>Dữ liệu đang hoạt động, không thể xóa</strong>
+                        </div>
+                    }
+                    else if (ViewBag.Msg == "4")
+                    {
+                        <div class="alert alert-danger">
+                            <strong>Phòng này đã có dữ liệu trong suất chiếu , không được sửa</strong>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger">
+                            <strong>Dữ liệu không tồn tại</strong>
+                        </div>
+                    }
                 }
-                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                <button onclick="removeData()" style="width:100px" type="button" class="btn btn-success" data-bs-toggle="modal"
                         data-bs-target="#modalAdd">
-                    Thêm mới
+                    Thêm
                 </button>
             </div>
             <div class="card-body">
                 <table id="datatablesSimple">
                     <thead>
-                        <tr>
+                        <tr style="background-color : darkgray">
                             <th>STT</th>
-                            <th>Date</th>
-                            <th>Showtime</th>
-                            <th>Film</th>
-                            <th>Action</th>
+                            <th>Ngày </th>
+                            <th>Thời gian</th>
+                            <th>Phim</th>
+                            <th>Phòng</th>
+                            <th>Hoạt động</th>
 
                         </tr>
                     </thead>
                     <tfoot>
-                        <tr>
+                        <tr style="background-color : darkgray">
                             <th>STT</th>
-                            <th>Date</th>
-                            <th>Showtime</th>
-                            <th>Name</th>
-                            <th>Action</th>
+                            <th>Ngày </th>
+                            <th>Thời gian</th>
+                            <th>Phim</th>
+                            <th>Phòng</th>
+                            <th>Hoạt động</th>
                         </tr>
                     </tfoot>
                     <tbody>
                         @{var stt = 1; }
                         @foreach (var item in Model)
                         {
-                            <tr>
+                        <tr>
 
-                                <td>@stt</td>
-                                <td>
-                                    @{var schedule = new DatabaseIO.ScheduleDao().getAll();
-                                    }
-                                    @foreach (var item1 in schedule)
+                            <td>@stt</td>
+                            <td>
+                                @{var schedule = new DatabaseIO.ScheduleDao().getAll(); var listRoom1 = new DatabaseIO.RoomDao().getAll();
+                                }
+                                @foreach (var item1 in schedule)
+                                {
+                                    if (item1.id == item.schedule_id)
                                     {
-                                        if (item1.id == item.schedule_id)
-                                        {
-                                            string dateschedule = String.Format("{0:yyyy-MM-dd}", item1.dateschedule);
-                                            @dateschedule;
-                                        }
+                                        string dateschedule = String.Format("{0:yyyy-MM-dd}", item1.dateschedule);
+                                        @dateschedule;
                                     }
+                                }
 
-                                </td>
-                                <td>@item.start_time - @item.end_time</td>
-                                <td>
-                                    @{var film = new DatabaseIO.FilmDao().getAll();
-                                    }
-                                    @foreach (var item2 in schedule)
+                            </td>
+                            <td>@item.start_time - @item.end_time</td>
+                            <td>
+                                @{var film = new DatabaseIO.FilmDao().getAll();
+                                }
+                                @foreach (var item2 in schedule)
+                                {
+                                    if (item2.id == item.schedule_id)
                                     {
-                                        if (item2.id == item.schedule_id)
+                                        foreach (var item3 in film)
                                         {
-                                            foreach (var item3 in film)
+                                            if (item3.id == item2.film_id)
                                             {
-                                                if (item3.id == item2.film_id)
-                                                {
-                                                    @item3.film_name;
-                                                }
+                                                @item3.film_name;
                                             }
                                         }
                                     }
-                                </td>
-                                <td>
+                                }
+                            </td>
+                            @{ var nameR = new DatabaseIO.RoomDao().getName(item.id_room);}
+                            @if (nameR != null)
+                            {
+                                <td>@nameR.room_name</td>
+                            }
 
-                                    @{
-                                        var idModel = "exampleModal" + item.id;
-                                    }
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#@idModel">
-                                        Update
-                                    </button>
-                                    <form action="/AdminShowtime/Delete" class="btn btn-danger" method="post">
-                                        <input type="hidden" class="form-control" id="id" name="id" value="@item.id">
-                                        <button type="submit" style="background:none;border:none;color:white"> Delete</button>
-                                    </form>
-                                </td>
+                            <td>
+
+                                @{
+                                    var idModel = "exampleModal" + item.id;
+                                }
+                                @{
+                                    var idModelDel = "exampleModalDel" + item.id;
+                                }
+                                <button type="button" style="width:100px" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#@idModel">
+                                    Sửa
+                                </button>
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#@idModelDel" style="width:100px" class="btn btn-danger"> Xóa</button>
+                                <div class="modal fade" id="@idModelDel" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Bạn chắc chắn muốn xóa ?</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                Phim :  @foreach (var item2 in schedule)
+                                                {
+                                                    if (item2.id == item.schedule_id)
+                                                    {
+                                                        foreach (var item3 in film)
+                                                        {
+                                                            if (item3.id == item2.film_id)
+                                                            {
+                                                                @item3.film_name;
+                                                            }
+                                                        }
+                                                    }
+                                                }<br />
+                                                Phòng :  @if (nameR != null)
+                                                                    {
+                                                    @nameR.room_name<br />
+                                                }
+                                                Suất : @item.start_time - @item.end_time
+                                                <form action="/AdminShowtime/Delete" method="post">
+                                                    <input type="hidden" class="form-control" id="id" name="id" value="@item.id">
+
+                                                    <div class="modal-footer" style="margin-top: 20px">
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">
+                                                            Close
+                                                        </button>
+                                                        <button type="submit" class="btn btn-danger"> Xóa</button>
+
+                                                    </div>
+
+                                                </form>
+
+</div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                            </td>
                             </tr>
 
                             <!-- Modal Update-->
@@ -133,36 +214,75 @@
                                                             Ngày
                                                             chiếu:
                                                         </label>
+                                                        @{ 
+                                                            String a = "";
+                                                        }
                                                         <input type="text" class="form-control"
                                                                id="category-film" value="@foreach (var item1 in schedule)
                                     {
-                                                                   string dateschedule = String.Format("{0:yyyy-MM-dd}", item1.dateschedule);
+                                                                   var dateschedule = String.Format("{0:yyyy-MM-dd}", item1.dateschedule);
+                                                                 
                                         if (item1.id == item.schedule_id)
                                         {
                                             @dateschedule;
-                                        }
-                                    }" disabled>
+                                                                       a = dateschedule;
+                                                                   }
+                                                               }" disabled>
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label for="category-film" class="col-form-label">
-                                                            Bắt
-                                                            đầu:
-                                                        </label>
-                                                        <input type="time" class="form-control"
-                                                               id="category-film" name="start" value="@item.start_time">
+                                                        <label for="category-film"
+                                                               class="col-form-label">Phòng</label>
+                                                        @foreach (var r in listRoom1)
+                                                        {
+                                                            if (r.id == item.id_room)
+                                                            {
+                                                                @r.room_name
+                                                                <input type="hidden" value="@r.id" name="idroom1" />
+
+                                                            }
+
+
+                                                        }
+                                                        <input type="hidden" value="@item.schedule_id" name="idschedule" />
+
                                                     </div>
-                                                    <div class="mb-3">
-                                                        <label for="category-film" class="col-form-label">
-                                                            Kết
-                                                            thúc:
-                                                        </label>
-                                                        <input type="time" class="form-control"
-                                                               id="category-film" name="end" value="@item.end_time">
-                                                    </div>
+                                                    @{ DateTime now1 = DateTime.Now; var s1 = now1.AddHours(3).ToString("HH"); int minTime1 = Int32.Parse(s1); string minString1 = minTime1 + ":00";
+                                                       
+                                                      
+                                                        }
+                                                   
+                                                    @if (minTime1 < 23)
+                                                    {
+                                                        <div class="mb-3">
+                                                            <label for="category-film" class="col-form-label">
+                                                               
+                                                            </label>
+                                                            <label for="appt-time1">Chọn thời gian từ @minString1  đến 23:00: </label>
+                                                            <input id="appt-time1" class="form-control" type="time" name="start"
+                                                                   min="@minString1" max="23:00" value="@item.start_time" required>
+                                                            <span class="validity"></span>
+                                                            <p style="color:red" id="error"></p>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="mb-3">
+                                                            <label for="category-film" class="col-form-label">
+                                                                Bắt đầu:
+                                                            </label>
+                                                            <label for="appt-time1">Hết hạn đăng suất chiếu</label>
+                                                            <input id="appt-time1" class="form-control" type="time" name="start"
+                                                                   min="@minString1" max="23:00" readonly required>
+                                                            <span class="validity"></span>
+                                                        </div>
+                                                    }
+
+
+
                                                 </div>
                                                 <button type="button" class="btn btn-secondary"
                                                         data-bs-dismiss="modal">
-                                                    Close
+                                                    Đóng
                                                 </button>
                                                 <button type="submit" class="btn btn-primary">Save changes</button>
                                             </form>
@@ -184,12 +304,15 @@
 </main>
 @{var films = new DatabaseIO.FilmDao().getAll();
 }
+@{ DateTime now = DateTime.Now; var s = now.AddHours(3).ToString("HH"); int minTime = Int32.Parse(s); string minString = minTime + ":00"; }
+<input type="hidden" id="idMintime" value="@minTime" />
+<input type="hidden" id="idMinString" value="@minString" />
 <div class="modal fade" id="modalAdd" tabindex="-1"
      aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Thêm mới</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Thêm</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close"></button>
             </div>
@@ -214,30 +337,104 @@
                             <label for="category-film"
                                    class="col-form-label">Lịch chiếu:</label>
                             <select class="form-select"
-                                    aria-label="Default select example" name="id" id="nameschedule" required>
-                                
+                                    aria-label="Default select example" name="id" id="nameschedule" onchange="scheduleChanged(this)" required>
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="category-film" class="col-form-label">
-                                Bắt
-                                đầu:
-                            </label>
-                            <input type="time" class="form-control"
-                                   id="category-film" name="start" required>
+                            <label for="category-film"
+                                   class="col-form-label">Phòng</label>
+                            <select class="form-select"
+                                    aria-label="Default select example" name="idroom" id="nameroom" required>
+                            </select>
                         </div>
-                        <div class="mb-3">
-                            <label for="category-film" class="col-form-label">
-                                Kết
-                                thúc:
-                            </label>
-                            <input type="time" class="form-control"
-                                   id="category-film" name="end" required>
+
+                        <div id="checkDay">
+                            @*
+                                @if (minTime < 23)
+                                {
+                                    <div class="mb-3">
+                                        <label for="category-film" class="col-form-label">
+
+                                        </label>
+                                        <label for="appt-time1">Chọn thời gian từ @minString  đến 23:00: </label>
+                                        <input id="appt-time1" class="form-control" type="time" name="start"
+                                               min="@minString" max="23:00" required>
+                                        <span class="validity"></span>
+                                        <p style="color:red" id="error"></p>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="mb-3">
+                                        <label for="category-film" class="col-form-label">
+                                            Bắt đầu:
+                                        </label>
+                                        <label for="appt-time1">Hết hạn đăng suất chiếu</label>
+                                        <input id="appt-time1" class="form-control" type="time" name="start"
+                                               min="@minString" max="23:00" readonly required>
+                                        <span class="validity"></span>
+                                    </div>
+                                }*@
                         </div>
+
+
+
                     </div>
+                    <script>
+                        function removeData() {
+                            $('#appt-time1').val("");
+                        }
+                        function checkday() {
+                            var html = ``;
+                            let e = document.getElementById('nameschedule');
+                            let giaTri = e.options[e.selectedIndex].text;
+                            var d = new Date()
+                            var c = new Date(giaTri)
+                            var f = new Date(d)
+                            if (c.getDate() == f.getDate() && c.getMonth() == f.getMonth() && c.getFullYear() == f.getFullYear()) {
+                                var minTime = $('#idMintime').val();
+                                var minString = $('#idMinString').val();
+                                if (parseInt(minTime) < 23) {
+                                    html += `<div class="mb-3">
+                                                        <label for="category-film" class="col-form-label">
+
+                                                        </label>
+                                                        <label for="appt-time1">Chọn thời gian từ `+ minString + ` đến 23:00: </label>
+                                                        <input id="appt-time1" class="form-control" type="time" name="start"
+                                                               min="`+ minString + `" max="23:00" required>
+                                                        <span class="validity"></span>
+                                                        <p style="color:red" id="error"></p>
+                                                    </div>`
+                                } else {
+                                    html += `<div class="mb-3">
+                                                            <label for="category-film" class="col-form-label">
+                                                                Bắt đầu:
+                                                            </label>
+                                                            <label for="appt-time1">Hết hạn đăng suất chiếu</label>
+                                                            <input id="appt-time1" class="form-control" type="time" name="start"
+                                                                   readonly required>
+                                                            <span class="validity"></span>
+                                                        </div>`
+                                }
+                            } else {
+                                html += `<div class="mb-3">
+                                                        <label for="category-film" class="col-form-label">
+                                                            Bắt đầu:
+                                                        </label>
+
+                                                        <input id="appt-time1" class="form-control" type="time" name="start"
+                                                               max="23:00" required>
+                                                        <span class="validity"></span>
+                                                    </div>`;
+
+
+                            }
+                            $('#checkDay').html(html);
+                        }
+                    </script>
                     <button type="button" class="btn btn-secondary"
                             data-bs-dismiss="modal">
-                        Close
+                        Đóng
                     </button>
                     <button type="submit" class="btn btn-primary">Save </button>
                 </form>
@@ -262,6 +459,31 @@
             success: function (data) {
                 if (data.status == "OK") {
                     $('#nameschedule').html(data.data);
+
+                } else if (data.status == "ERROR") {
+
+                }
+
+                console.log(data);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        })
+    }
+    function scheduleChanged(obj) {
+        var id = obj.value;
+        $.ajax({
+            url: '/AdminShowtime/getRoom',
+            type: "post",
+            data: {
+                id: id
+            },
+            success: function (data) {
+                if (data.status == "OK") {
+                    $('#nameroom').html(data.data);
+
+                    checkday();
                 } else if (data.status == "ERROR") {
 
                 }

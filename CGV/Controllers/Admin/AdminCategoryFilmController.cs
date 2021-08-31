@@ -10,7 +10,7 @@ namespace CGV.Controllers.Admin
     public class AdminCategoryFilmController : Controller
     {
         CategoryFilmDao cfilm = new CategoryFilmDao();
-        
+
         private MyDB db = new MyDB();
         // GET: AdminCategoryFilm
         public ActionResult Index(string mess)
@@ -20,6 +20,8 @@ namespace CGV.Controllers.Admin
                 return RedirectToAction("Index", "AdminAuthen");
             }
             ViewBag.Msg = mess;
+            Session["checkactive"] = "category_film";
+            Utils.CheckActive.checkActive();
             List<category_film> list = db.category_film.ToList();
             return View(list);
         }
@@ -28,33 +30,88 @@ namespace CGV.Controllers.Admin
         {
             var name = form["categoryfilm"];
             bool result = cfilm.checkName(name);
+            if (Session["usr"] == null)
+            {
+                return RedirectToAction("Index", "AdminAuthen");
+            }
             if (result)
             {
-                var message = "Loại phim đã tồn tại";
-                return RedirectToAction("Index", new { mess = message });
+
+                return RedirectToAction("Index", new { mess = "1" });
             }
             else
             {
                 cfilm.Add(name);
-                var message = "Thêm thành công";
-                return RedirectToAction("Index", new { mess = message });
+
+                return RedirectToAction("Index", new { mess = "2" });
             }
         }
         public ActionResult Update(FormCollection form)
         {
             var name = form["categoryfilm"];
             var id = form["id"];
-            cfilm.Update(name, id);
-            var message = "Cập nhập thành công";
-            return RedirectToAction("Index", new { mess = message });
+            var idc = Int32.Parse(id);
+            if (Session["usr"] == null)
+            {
+                return RedirectToAction("Index", "AdminAuthen");
+            }
+            bool checku = cfilm.checkUpdate(idc, name);
+            if (checku)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                var dele = db.category_film.Where(c => c.id == idc).FirstOrDefault();
+                if (dele != null)
+                {
+                    bool result = cfilm.checkName(name);
+                    if (result)
+                    {
+
+                        return RedirectToAction("Index", new { mess = "1" });
+                    }
+                    else
+                    {
+                        cfilm.Update(name, id);
+                        return RedirectToAction("Index", new { mess = "2" });
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Index", new { mess = "4" });
+                }
+            }
         }
         public ActionResult Delete(FormCollection form)
         {
-           
+
             var id = form["id"];
-            cfilm.Delete(id);
-            var message = "Xóa thành công";
-            return RedirectToAction("Index", new { mess = message });
+            var idc = Int32.Parse(id);
+            if (Session["usr"] == null)
+            {
+                return RedirectToAction("Index", "AdminAuthen");
+            }
+            bool result = cfilm.checkActive(idc);
+            if (result)
+            {
+                var dele = db.category_film.Where(c => c.id == idc).FirstOrDefault();
+                if (dele != null)
+                {
+                    cfilm.Delete(id);
+                    return RedirectToAction("Index", new { mess = "2" });
+                }
+                else
+                {
+                    return RedirectToAction("Index", new { mess = "4" });
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Index", new { mess = "3" });
+            }
+
 
         }
     }

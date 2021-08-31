@@ -21,6 +21,8 @@ namespace CGV.Controllers.Admin
             {
                 return RedirectToAction("Index", "AdminAuthen");
             }
+            Utils.CheckActive.checkActiveParent();
+            Session["activeParent"] = "booking";
             List<booking> list = db.bookings.OrderByDescending(b => b.id).ToList();
             return View(list);
         }
