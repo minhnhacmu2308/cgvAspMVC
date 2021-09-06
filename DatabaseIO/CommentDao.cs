@@ -1,10 +1,8 @@
 ﻿using Model;
-using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace DatabaseIO
 {
@@ -12,16 +10,27 @@ namespace DatabaseIO
     {
         MyDB mydb = new MyDB();
 
+
+        /**
+         * get list comment by id from database 
+         * @return
+         */
         public List<rating> getCommentById(int id)
         {
             return mydb.ratings.Where(r => r.film_id == id).ToList();
         }
+
+        /**
+         * get object comment by id from database 
+         * @return
+         */
         public rating getObjectCommentById(int id)
         {
             return mydb.ratings.Where(r => r.id == id).FirstOrDefault();
         }
         public void comment(rating rating)
         {
+            // insert comment into table rattings for user
             string SQL = "INSERT INTO ratings( film_id, rate,id_user,name_user,number_start) VALUES (@filmId,@rate,@userId,@nameuser,@number)";
             mydb.Database.ExecuteSqlCommand(SQL, new SqlParameter("@filmId", rating.film_id),
                 new SqlParameter("@rate", rating.rate),
@@ -30,27 +39,38 @@ namespace DatabaseIO
                 new SqlParameter("@nameuser", rating.name_user)
             );
         }
+
+        /**
+         * delete comment by id from database 
+         */
         public void deleteComment(int id)
         {
+            //get object comment by id from database
             var ObjectM = getObjectCommentById(id);
             mydb.ratings.Remove(ObjectM);
             mydb.SaveChanges();
         }
-        public List<CommentAjax> addCommentAjax(List<rating> listcomment)
+
+        /**
+         * add list object CommentAjax
+         * @param listcomment
+         * @return
+         */
+        public List<CommentAjax> addCommentAjax(List<rating> listComment)
         {
             var listAjax = new List<CommentAjax>();
             CommentAjax commentA = null;
-            int lengthComment = listcomment.Count;
+            int lengthComment = listComment.Count;
             for (int i = 0; i <lengthComment; ++i)
             {
                 commentA = new CommentAjax();
-                commentA.id = listcomment[i].id;
-                commentA.film_id = listcomment[i].film_id;
-                commentA.id_user = listcomment[i].id_user;
-                commentA.number_start = listcomment[i].number_start;
-                commentA.rate = listcomment[i].rate;
-                commentA.name_user = listcomment[i].name_user;
-                commentA.created_time = listcomment[i].created_time.ToString();
+                commentA.id = listComment[i].id;
+                commentA.film_id = listComment[i].film_id;
+                commentA.id_user = listComment[i].id_user;
+                commentA.number_start = listComment[i].number_start;
+                commentA.rate = listComment[i].rate;
+                commentA.name_user = listComment[i].name_user;
+                commentA.created_time = listComment[i].created_time.ToString();
                 listAjax.Add(commentA);
             }
             return listAjax;

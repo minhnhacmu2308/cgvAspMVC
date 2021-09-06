@@ -3,15 +3,21 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DatabaseIO
 {
     public class SeatDao
     {
         MyDB mydb = new MyDB();
-       
+
+        /**
+         * get list seat not active from database 
+         * @param roomId
+         * @param showtimeId
+         * @param filmId
+         * @param scheduleId
+         * @return
+         */
         public List<seat> getSeat(int roomId, int showtimeId, int filmId, int scheduleId)
         {
             return mydb.Database.SqlQuery<seat>("SELECT * from seats WHERE id NOT IN (SELECT seat_id FROM booking WHERE room_id = @rId " +
@@ -22,6 +28,15 @@ namespace DatabaseIO
                 new SqlParameter("@scheId", scheduleId)
                 ).ToList();
         }
+
+        /**
+         * get list seat done from database 
+         * @param roomId
+         * @param showtimeId
+         * @param filmId
+         * @param scheduleId
+         * @return
+         */
         public List<seat> getSeatDone(int roomId, int showtimeId, int filmId, int scheduleId)
         {
             return mydb.Database.SqlQuery<seat>("SELECT * from seats WHERE id IN (SELECT rs.id_seat FROM roomseat rs WHERE rs.id_room = @idRoom )" +
@@ -36,10 +51,21 @@ namespace DatabaseIO
         {
             return mydb.seats.Where(s => s.id == id).FirstOrDefault();
         }
+
+        /**
+         * get list seat from database       
+         * @return
+         */
         public List<seat> getAll()
         {
             return mydb.seats.ToList();
         }
+
+        /**
+         * get list seatRoom from database  
+         * @param id
+         * @return
+         */
         public List<seat> getSeatRoom(int id)
         {
             String sql = "select * from seats s, roomseat rs where s.id = rs.id_seat and id_room = @idRoom  ";
@@ -47,6 +73,7 @@ namespace DatabaseIO
         }
         public void add(string name)
         {
+            //insert data into table seats 
             string SQL = "INSERT INTO seats(seat_name) VALUES(N'" + name + "')";
             mydb.Database.ExecuteSqlCommand(SQL);
 
@@ -54,14 +81,22 @@ namespace DatabaseIO
       
         public void update(string name, string id)
         {
+            //update seat_name by id
             string SQL = "UPDATE seats SET seat_name = N'" + name + "' WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
         }
         public void delete(string id)
         {
+            //delete data from seats
             string SQL = "DELETE FROM seats WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
         }
+
+        /**
+         * check name seat exists in database 
+         * @param name
+         * @return
+         */
         public bool checkName(string name)
         {
             var user = mydb.seats.Where(u => u.seat_name == name).FirstOrDefault();
@@ -70,6 +105,12 @@ namespace DatabaseIO
             }
             return false; ;
         }
+
+        /**
+         * Check seat is working in database
+         * @param id
+         * @return
+         */
         public bool checkActive(int id)
         {
             string sql = "select * from roomseat where id_seat = '" + id + "'";

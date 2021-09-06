@@ -10,6 +10,12 @@ namespace DatabaseIO
     public class AuthenticationDao
     {
         MyDB mydb = new MyDB();
+
+        /**
+         * md5 standard password encryption
+         * @param password
+         * @return
+         */
         public string md5(string password)
         {
                 MD5 md = MD5.Create();
@@ -21,6 +27,12 @@ namespace DatabaseIO
                 }
                 return sb.ToString();
          }
+
+        /**
+         * Check email in database
+         * @param email
+         * @return
+         */
         public bool checkEmail(string email)
         {
             var user = mydb.usercgvs.Where(u => u.email == email).FirstOrDefault();
@@ -29,6 +41,13 @@ namespace DatabaseIO
             }
             return false;
         }
+
+       /**
+        * Check email and password in database
+        * @param email
+        * @param password
+        * @return
+        */
         public bool checklogin(string email,string password)
         {
             var result = mydb.usercgvs.Where(u => u.email == email && u.password == password && u.role_id ==3).FirstOrDefault();
@@ -38,6 +57,11 @@ namespace DatabaseIO
                 return false;
             }
         }
+        /**
+         * Check account user is working
+         * @param email
+         * @return
+         */
         public bool checkActive(string email)
         {
             var result = mydb.usercgvs.Where(u => u.email == email).FirstOrDefault();
@@ -47,12 +71,23 @@ namespace DatabaseIO
                 return true;
             }
         }
+
+        /**
+         * User account registration
+         * @param user
+         */
         public void register(usercgv user)
         {
             string SQL = "INSERT INTO usercgv(email,is_active,password,phonenumber,role_id,username) VALUES('" + user.email + "',0,'" + user.password + "','" + user.phonenumber + "','" + user.role_id + "','" + user.username + "')";
             mydb.Database.ExecuteSqlCommand(SQL);
             mydb.SaveChanges();
         }
+
+        /**
+         * Check is it a number
+         * @param value
+         * @return
+         */
         static bool IsNumeric(string value)
         {
             try{
@@ -67,6 +102,12 @@ namespace DatabaseIO
                 return false;
             }
         }
+
+        /**
+         * check password strong
+         * @param password
+         * @return
+         */
         public string checkPasswordStrong(string password)
         {
             string temp = "";
@@ -77,6 +118,10 @@ namespace DatabaseIO
             return temp;
         }
 
+        /**
+         * forgot password for user
+         * @param password
+         */
         public void forgotPassword(string email,string password)
         {
             var user = mydb.usercgvs.Where(u => u.email == email).FirstOrDefault();

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Model;
 namespace DatabaseIO
 {
@@ -11,15 +7,29 @@ namespace DatabaseIO
     {
         MyDB mydb = new MyDB();
         FilmDao filmD = new FilmDao();
-        ScheduleDao scheduleD = new ScheduleDao();
         RoomDao roomD = new RoomDao();
         SeatDao seatD = new SeatDao();
 
+        /**
+         * confirm booking ticker for user
+         * @param id
+         */
         public void accpect(string id)
         {
             string SQL = "UPDATE booking SET status = 1 WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
         }
+
+        /**
+         * create new a object booking
+         * @param schedule_id
+         * @param film_id
+         * @param room_id
+         * @param showtime_id
+         * @param id_user
+         * @param create_time
+         * @return
+         */
         public booking newObjectBooking(int schedule_id,int film_id,int room_id,int showtime_id, int id_user, string create_time)
         {
           
@@ -34,6 +44,15 @@ namespace DatabaseIO
             book.amount = 3;
             return book;
         }
+
+        /**
+         * add more ticket bookings into database
+         * @param arrSeat
+         * @param order
+         * @param create_time
+         * @param id_user
+         * @param status
+         */
         public void addBookingTicket(int[] arrSeat,booking order, string create_time,int id_user,int status)
         {
             booking book = new booking();
@@ -49,9 +68,23 @@ namespace DatabaseIO
                 book.status = status;
                 book.create_time = order.create_time;
                 book.amount = 3;
+                // add a booking ticket into database
                 filmD.bookingTicket(book, create_time);
             }
         }
+
+        /**
+         * create new a object historybooking
+         * @param film_id
+         * @param id
+         * @param room_id
+         * @param seat_id
+         * @param dateschedule
+         * @param amount
+         * @param ngay
+         * @param status
+         * @return
+         */
         public HistoryBooking addHistoryBooking(int film_id,int id, int room_id, int seat_id, string dateschedule, int amount,string ngay,int status)
         {
 
@@ -66,6 +99,16 @@ namespace DatabaseIO
             his.showtimeName = ngay;
             return his;
         }
+
+        /**
+         * check data change when booking ticket
+         * @param film_id
+         * @param schedule_id
+         * @param showtime_id
+         * @param room_id
+         * @param seat_id
+         * @return
+         */
         public bool checkBooking(int film_id, int schedule_id, int showtime_id, int room_id, int[] seat_id)
         {
             int lengthArrSeatId = seat_id.Length;

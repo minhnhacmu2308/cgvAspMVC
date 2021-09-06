@@ -23,6 +23,7 @@ namespace CGV.Controllers
         CommentDao commentD = new CommentDao();
         MailUtils mailUtil = new MailUtils();
         PaymentStripe paymentOnline = new PaymentStripe();
+      
         public ActionResult Index()
         {
             return View();
@@ -100,19 +101,21 @@ namespace CGV.Controllers
                 return Json(new { status = Constants.Constants.STATUS_ERROR, msg = Constants.Constants.YOU_NEED_LOGIN, JsonRequestBehavior.AllowGet });
             }else{
                 bool checkExist = bookingDao.checkBooking(film_id,schedule_id,showtime_id,room_id,seat_id);
-                if (checkExist){
+                bool checkExistShowtime = showtimeD.checkExistShowtime(showtime_id);
+                if (checkExist || !checkExistShowtime){
                     return Json(new { status = Constants.Constants.STATUS_ERROR, msg = Constants.Constants.CHANGE_DATABASE, JsonRequestBehavior.AllowGet });
                 }else{
                     int amount = 0;
                     var listHis = new List<HistoryBooking>();
                     var listG = new List<String>();
                     int lengthSeat = seat_id.Length;
+                    string stringDay = null;
                     HistoryBooking his = null;
                     for (int i = 0; i < lengthSeat; i++){
                         string dateschedule = String.Format(Constants.Constants.FORMAT_DATE, scheduleD.getName(schedule_id).dateschedule);
-                        string ngay = showtimeD.getName(showtime_id).start_time + "-" + showtimeD.getName(showtime_id).end_time;
+                        stringDay = showtimeD.getName(showtime_id).start_time + "-" + showtimeD.getName(showtime_id).end_time;
                         amount += Constants.Constants.PRICE_TICKET;
-                        his = bookingDao.addHistoryBooking(film_id, i, room_id, seat_id[i], dateschedule, amount, ngay, 0);
+                        his = bookingDao.addHistoryBooking(film_id, i, room_id, seat_id[i], dateschedule, amount, stringDay, 0);
                         listHis.Add(his);
                         listG.Add(seatD.getName(seat_id[i]).seat_name);
                     }
@@ -131,19 +134,21 @@ namespace CGV.Controllers
         public JsonResult bookingTicke(int film_id, int schedule_id, int showtime_id, int room_id, int[] seat_id)
         {
             bool checkExist = bookingDao.checkBooking(film_id, schedule_id, showtime_id, room_id, seat_id);
-            if (checkExist){
+            bool checkExistShowtime = showtimeD.checkExistShowtime(showtime_id);
+            if (checkExist || !checkExistShowtime){
                 return Json(new { status = Constants.Constants.STATUS_ERROR, msg = Constants.Constants.CHANGE_DATABASE, JsonRequestBehavior.AllowGet });
             }else{
                 int amount = 0;
                 var listHis = new List<HistoryBooking>();
                 var listG = new List<String>();
                 int lengthSeat = seat_id.Length;
+                string stringDay = null;
                 HistoryBooking his = null;
                 for (int i = 0; i < lengthSeat; i++){
                     string dateschedule = String.Format(Constants.Constants.FORMAT_DATE, scheduleD.getName(schedule_id).dateschedule);
-                    string ngay = showtimeD.getName(showtime_id).start_time + "-" + showtimeD.getName(showtime_id).end_time;
+                    stringDay = showtimeD.getName(showtime_id).start_time + "-" + showtimeD.getName(showtime_id).end_time;
                     amount += Constants.Constants.PRICE_TICKET;
-                    his = bookingDao.addHistoryBooking(film_id, i, room_id, seat_id[i], dateschedule, amount, ngay, 0);
+                    his = bookingDao.addHistoryBooking(film_id, i, room_id, seat_id[i], dateschedule, amount, stringDay, 0);
                     listHis.Add(his);
                     listG.Add(seatD.getName(seat_id[i]).seat_name);
                 }
@@ -219,28 +224,17 @@ namespace CGV.Controllers
             var list = filmD.getOrder(dateNow, id);
             var listHis = new List<HistoryBooking>();
             int lengthListOrder = list.Count;
+            string stringDay = null;
             HistoryBooking his = null;
             for (int i = 0; i < lengthListOrder; i++){      
                 string schedulename = scheduleD.getName(list[i].schedule_id).dateschedule.ToString();
-                string ngay = showtimeD.getName(list[i].showtime_id).start_time + "-" + showtimeD.getName(list[i].showtime_id).end_time;
-                his = bookingDao.addHistoryBooking(list[i].film_id, i, list[i].room_id, list[i].seat_id, schedulename, list[i].amount, ngay, list[i].status);
+                stringDay = showtimeD.getName(list[i].showtime_id).start_time + "-" + showtimeD.getName(list[i].showtime_id).end_time;
+                his = bookingDao.addHistoryBooking(list[i].film_id, i, list[i].room_id, list[i].seat_id, schedulename, list[i].amount, stringDay, list[i].status);
                 listHis.Add(his);
             }
             return View(listHis);
         }
-        public ActionResult testSchedule()
-        {
-            MyDB mydb = new MyDB();
-            List<schedule> listSchedule = mydb.schedules.ToList();
-            return View(listSchedule);
-        }     
-        [HttpPost]
-        public JsonResult getTest()
-        {
-            MyDB mydb = new MyDB();
-            List<schedule> list = mydb.schedules.ToList();
-            return Json(new { status = Constants.Constants.STATUS_OK, data = list, msg = Constants.Constants.MSG_SUCCESS, JsonRequestBehavior.AllowGet });
-        }
+     
         [HttpPost]
         public JsonResult postCommnet(int idFilm, string textComment, int numberstar)
         {
@@ -268,6 +262,10 @@ namespace CGV.Controllers
             int lengthList = listcomment.Count;
             return Json(new { status = Constants.Constants.STATUS_SUCCESS,data = lengthList,  msg = Constants.Constants.MSG_SUCCESS, JsonRequestBehavior.AllowGet });
         }
+        /**
+         * get history booking ticket of user
+         * @return
+         */
         public ActionResult HistoryBooking()
         {
             var user = Session[Constants.Constants.USER_SESSION];
@@ -278,11 +276,12 @@ namespace CGV.Controllers
                 var list = filmD.getBooking(userInfomatiom.id);
                 var listHis = new List<HistoryBooking>();
                 int lengthListOrder = list.Count;
+                string stringDay = null;
                 HistoryBooking his = null;
                 for (int i = 0; i < lengthListOrder; i++){
                     string dateschedule = String.Format(Constants.Constants.FORMAT_DATE, scheduleD.getName(list[i].schedule_id).dateschedule);
-                    string ngay = showtimeD.getName(list[i].showtime_id).start_time + "-" + showtimeD.getName(list[i].showtime_id).end_time;
-                    his = bookingDao.addHistoryBooking(list[i].film_id, i, list[i].room_id, list[i].seat_id, dateschedule, 3, ngay, list[i].status);
+                    stringDay = showtimeD.getName(list[i].showtime_id).start_time + "-" + showtimeD.getName(list[i].showtime_id).end_time;
+                    his = bookingDao.addHistoryBooking(list[i].film_id, i, list[i].room_id, list[i].seat_id, dateschedule, 3, stringDay, list[i].status);
                     listHis.Add(his);
                 }
                 return View(listHis);

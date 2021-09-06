@@ -90,9 +90,11 @@ namespace CGV.Controllers
             return View();
         }
 
+
         [HttpPost]
         public JsonResult Verify(string code,string email)
         {
+
             var codeSession = (string)Session[Constants.Constants.CODE_VERIFY];
             if (!code.Equals(codeSession)){             
                 return Json(new { status = Constants.Constants.STATUS_ERROR, msg = Constants.Constants.VERIFY_INCORRECT, JsonRequestBehavior.AllowGet });

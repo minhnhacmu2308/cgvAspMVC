@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DatabaseIO
 {
@@ -13,19 +11,37 @@ namespace DatabaseIO
         MyDB mydb = new MyDB();
         RoomDao roomD = new RoomDao();
 
+        /**
+         * get detail film by id from database 
+         * @return
+         */
         public film getDetailFilm(string id)
         {
             int filmId = Int32.Parse(id);
             return mydb.films.Where(f => f.id == filmId).FirstOrDefault();
         }
+
+        /**
+         * get search film by key word from database 
+         * @param keySearch
+         * @return
+         */
         public IEnumerable<film> searchFilm(string keySearch)
         {
-            String nameSearch = "%" + keySearch + "%";
+            string nameSearch = "%" + keySearch + "%";
+            // selecet all films from table films by film_name or actor or director
             string sql = "select * from films WHERE film_name LIKE @keysearch or actor LIKE @keysearch or director LIKE @keysearch ";
             return mydb.Database.SqlQuery<film>(sql, new SqlParameter("@keysearch", nameSearch)).ToList();
         }
+
+        /**
+         * booking ticket for user
+         * @param book
+         * @param createTime
+         */
         public void bookingTicket(booking book, string createTime)
         {
+            //insert data into table booking 
             string SQL = "INSERT INTO booking(id_user, film_id, schedule_id, showtime_id, room_id, seat_id, status,amount,create_time) " +
                 "VALUES (@userId,@filmId,@scheduleId,@showtimeId,@roomId,@seatId,@status,@amount,@createTime)";
             mydb.Database.ExecuteSqlCommand(SQL, new SqlParameter("@userId", book.id_user),
@@ -40,40 +56,75 @@ namespace DatabaseIO
                 );
 
         }
+
+        /**
+         * get list order booking
+         * @param datenow
+         * @param id
+         * @return
+         */
         public List<booking> getOrder(string datenow, int id)
         {
             return mydb.bookings.Where(b => b.create_time == datenow && b.id_user == id).ToList();
         }
+
+        /**
+         * get object films by id from database
+         * @param id
+         * @return
+         */
         public film getName(int id)
         {
             return mydb.films.Where(f => f.id == id).FirstOrDefault();
         }
+
+        /**
+         * get list bookings by id  sort des from database
+         * @param id
+         * @return
+         */
         public List<booking> getBooking(int id)
         {
             return mydb.bookings.Where(b => b.id_user == id).OrderByDescending(b => b.id).ToList();
         }
+
+        /**
+         * get all list films from database
+         * @param id
+         * @return
+         */
         public List<film> getAll()
         {
             return mydb.films.ToList();
         }
         public void add(string description, string director, string actor, string duration, string film_name, string image, string trailer, string idcfilm, string ngaycc)
         {
+            //insert data into table films in database
             string SQL = "INSERT INTO films(description, director, actor, duration, film_name, image, trailer, id_cfilm, premiere_date ) VALUES(N'" + description + "',N'" + director + "',N'" + actor + "',N'" + duration + "',N'" + film_name + "','" + image + "',N'" + trailer + "','" + idcfilm + "','" + ngaycc + "' )";
             mydb.Database.ExecuteSqlCommand(SQL);
 
         }
         public void update(string description, string director, string actor, string duration, string film_name, string image, string trailer, string idcfilm, string id, string ngaycc)
         {
+            //update description from table films 
             string SQL = "UPDATE films SET description = N'" + description + "',director = N'" + director + "',actor = N'" + actor + "',duration = N'" + duration + "',film_name = N'" + film_name + "',image = '" + image + "',trailer = N'" + trailer + "',id_cfilm= '" + idcfilm + "', premiere_date = '" + ngaycc + "'  WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
         }
         public void delete(string id)
         {
+            //delete film from table films by id
             string SQL = "DELETE FROM films WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
         }
+
+        /**
+         * check name film exists in database 
+         * @param name
+         * @return
+         */
         public bool checkName(string name)
         {
+            //select all films from table films with film_name equal name
             string sql = "SELECT * FROM films WHERE film_name = N'" + name + "'";
             var user = mydb.Database.SqlQuery<film>(sql).FirstOrDefault();
             if (user != null){
@@ -81,6 +132,13 @@ namespace DatabaseIO
             }
             return false;
         }
+
+
+        /**
+         * Check schedules is working
+         * @param id
+         * @return
+         */
         public bool checkActive(int id)
         {
             string sql = "SELECT * FROM schedules WHERE film_id = @id";
@@ -90,6 +148,14 @@ namespace DatabaseIO
             }
             return false;
         }
+
+
+        /**
+         * Handle get seat from user
+         * @param listSeatRoom
+         * @param listSeat
+         * @return
+         */
         public List<SeatActive> handleGetSeat(List<seat> listSeatRoom, List<seat> listSeat)
         {
            
@@ -112,6 +178,12 @@ namespace DatabaseIO
             }
             return listSeatActive;
         }
+
+        /**
+         * Handle render seat for ajax 
+         * @param listSeatActive
+         * @return
+         */
         public string renderSeat(List<SeatActive> listSeatActive)
         {
             string html = "";
@@ -129,6 +201,12 @@ namespace DatabaseIO
             }
             return html;
         }
+
+        /**
+        * Handle render room for ajax 
+        * @param listRoom
+        * @return
+        */
         public string renderRoom(List<room> listRoom)
         {
             string html = " <option> Chọn phòng </option>";
@@ -137,6 +215,12 @@ namespace DatabaseIO
             }
             return html;
         }
+
+        /**
+        * Handle render showtime for ajax 
+        * @param listShowtime
+        * @return
+        */
         public string renderShowtime(List<showtime> listShowtime)
         {
             string html = " <option>Chọn suất chiếu</option>";
@@ -146,10 +230,17 @@ namespace DatabaseIO
             }
             return html;
         }
+
+        /**
+         * Handle render schedule for ajax 
+         * @param list
+         * @return
+         */
         public string renderSchedule(List<schedule> list)
         {
             string html = "<option value=" + 0 + ">Chọn lịch chiếu</option>";
             foreach (var item in list){
+                //get schedule by id from database
                 var roomOb = roomD.getNameRoomSchedule(item.id);
                 string dateschedule = String.Format("{0:yyyy-MM-dd}", item.dateschedule);
                 html += "<option value=" + item.id + ">" + dateschedule + "" + "(" + roomOb.room_name + ")" + "</option>";
