@@ -55,25 +55,26 @@ namespace DatabaseIO
         }
         static bool IsNumeric(string value)
         {
-            try
-            {
+            try{
                 char[] chars = value.ToCharArray();
                 foreach (char c in chars){
                     if (char.IsNumber(c))
                         return true;
                 }
                 return false;
-            }catch (Exception e) { 
+            }catch (Exception e) {
+                Console.WriteLine(e);
                 return false;
             }
         }
         public string checkPasswordStrong(string password)
         {
+            string temp = "";
             bool check = IsNumeric(password);
             if (password.Length < 6){
                 return "Mật khẩu phải ít nhất 6 kí tự";
             }
-            return "";
+            return temp;
         }
 
         public void forgotPassword(string email,string password)

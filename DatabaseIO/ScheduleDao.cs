@@ -24,18 +24,18 @@ namespace DatabaseIO
         {
             return mydb.schedules.ToList();
         }
-        public void Add(string filmid, DateTime dateschedule)
+        public void add(string filmid, DateTime dateschedule)
         {
             string SQL = "INSERT INTO schedules(film_id,dateschedule) VALUES('" + filmid + "','" + dateschedule + "')";
             mydb.Database.ExecuteSqlCommand(SQL);
 
         }
-        public void Update(string filmid, DateTime dateschedule, string id)
+        public void update(string filmid, DateTime dateschedule, string id)
         {
             string SQL = "UPDATE schedules SET film_id = '" + filmid + "', dateschedule = '" + dateschedule + "' WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
         }
-        public void Delete(string id)
+        public void delete(string id)
         {
             string SQL = "DELETE FROM schedules WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
@@ -50,10 +50,9 @@ namespace DatabaseIO
         }
         public int getSCheduleByDate()
         {
-
             return Int32.Parse(mydb.schedules.ToList().Last().id.ToString());
         }
-        public void AddScheduleRoom(int id_schedule, int id_room)
+        public void addScheduleRoom(int id_schedule, int id_room)
         {
             string sql = "insert into scheduleroom(id_schedule,id_room) values('" + id_schedule + "','" + id_room + "')";
             mydb.Database.ExecuteSqlCommand(sql);
@@ -89,8 +88,10 @@ namespace DatabaseIO
         public bool checkShowtimeActive(int idSchedule , int id_room)
         {
             string sql = "select st.* from showtimes st, scheduleroom sc where  st.schedule_id = sc.id_schedule and st.id_room = sc.id_room and st.schedule_id ='" + idSchedule + "' and st.id_room ='" + id_room + "'";
+            string sql1 = "select * from booking where schedule_id = '" + idSchedule + "' and room_id = '" + id_room + "'";
             var check = mydb.Database.SqlQuery<showtime>(sql).FirstOrDefault();
-            if(check != null){
+            var checkObj = mydb.Database.SqlQuery<booking>(sql1).FirstOrDefault();
+            if(check != null || checkObj != null){
                 return true;
             }else{
                 return false;

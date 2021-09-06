@@ -38,18 +38,18 @@ namespace DatabaseIO
         {
             return mydb.rooms.ToList();
         }
-        public void Add(string name)
+        public void add(string name)
         {
             string SQL = "INSERT INTO room(room_name) VALUES(N'" + name + "')";
             mydb.Database.ExecuteSqlCommand(SQL);
 
         }
-        public void Update(string name, string id)
+        public void update(string name, string id)
         {
             string SQL = "UPDATE room SET room_name = N'" + name + "' WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
         }
-        public void Delete(string id)
+        public void delete(string id)
         {
             string SQL = "DELETE FROM room WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
@@ -63,7 +63,7 @@ namespace DatabaseIO
             }
             return false;
         }
-        public void AddRoomSeat(int id_room, int id_seat)
+        public void addRoomSeat(int id_room, int id_seat)
         {
             string SQL = "INSERT INTO roomseat(id_room,id_seat) VALUES('" + id_room + "','" + id_seat + "')";
             mydb.Database.ExecuteSqlCommand(SQL);
@@ -79,7 +79,7 @@ namespace DatabaseIO
             var roomseat =  mydb.Database.SqlQuery<roomseat>(sql).ToList();
             return roomseat.Count;
         }
-        public void DeleteRoomSeat(int idRoom)
+        public void deleteRoomSeat(int idRoom)
         {
             string sql ="delete from roomseat where id_room = '"+idRoom+"'";
             mydb.Database.ExecuteSqlCommand(sql);

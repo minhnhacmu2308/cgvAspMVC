@@ -58,7 +58,7 @@ namespace CGV.Controllers.Admin
                 String filename = "film" + num + file.FileName.Substring(file.FileName.LastIndexOf("."));
                 String Strpath = Path.Combine(Server.MapPath("~/Content/Assets/images/"), filename);
                 file.SaveAs(Strpath);
-                post.Add(noidung, daodien, dienvien, thoiluong, tenphim, filename, trailer, theloai,ngaycc);
+                post.add(noidung, daodien, dienvien, thoiluong, tenphim, filename, trailer, theloai,ngaycc);
                 string content = System.IO.File.ReadAllText(Server.MapPath("~/Content/Admin/mail/mailbody.html"));
                 content = content.Replace("{{title}}", tenphim);
                 content = content.Replace("{{noidung}}", noidung);
@@ -128,11 +128,11 @@ namespace CGV.Controllers.Admin
                             String filename = "film" + num + file.FileName.Substring(file.FileName.LastIndexOf("."));
                             String Strpath = Path.Combine(Server.MapPath("~/Content/Assets/images/"), filename);
                             file.SaveAs(Strpath);
-                            post.Update(noidung, daodien, dienvien, thoiluong, tenphim, filename, trailer, theloai, id, ngaycc);
+                            post.update(noidung, daodien, dienvien, thoiluong, tenphim, filename, trailer, theloai, id, ngaycc);
                             return RedirectToAction("Index", new { mess = "2" });
                         }
 
-                        post.Update(noidung, daodien, dienvien, thoiluong, tenphim, img, trailer, theloai, id, ngaycc);
+                        post.update(noidung, daodien, dienvien, thoiluong, tenphim, img, trailer, theloai, id, ngaycc);
                         return RedirectToAction("Index", new { mess = "2" });
                     }
                 }
@@ -152,11 +152,11 @@ namespace CGV.Controllers.Admin
                             String filename = "film" + num + file.FileName.Substring(file.FileName.LastIndexOf("."));
                             String Strpath = Path.Combine(Server.MapPath("~/Content/Assets/images/"), filename);
                             file.SaveAs(Strpath);
-                            post.Update(noidung, daodien, dienvien, thoiluong, tenphim, filename, trailer, theloai, id, ngaycc);
+                            post.update(noidung, daodien, dienvien, thoiluong, tenphim, filename, trailer, theloai, id, ngaycc);
                         return RedirectToAction("Index", new { mess = "2" });
                          }
 
-                        post.Update(noidung, daodien, dienvien, thoiluong, tenphim, img, trailer, theloai, id, ngaycc);
+                        post.update(noidung, daodien, dienvien, thoiluong, tenphim, img, trailer, theloai, id, ngaycc);
                         return RedirectToAction("Index", new { mess = "2" });
 
                 }
@@ -182,7 +182,7 @@ namespace CGV.Controllers.Admin
                 var dele = db.films.Where(c => c.id == idc).FirstOrDefault();
                 if (dele != null)
                 {
-                    post.Delete(id);
+                    post.delete(id);
                     return RedirectToAction("Index", new { mess = "2" });
                 }
                 else

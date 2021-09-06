@@ -45,19 +45,19 @@ namespace DatabaseIO
             String sql = "select * from seats s, roomseat rs where s.id = rs.id_seat and id_room = @idRoom  ";
             return mydb.Database.SqlQuery<seat>(sql, new SqlParameter("@idRoom ",id)).ToList();
         }
-        public void Add(string name)
+        public void add(string name)
         {
             string SQL = "INSERT INTO seats(seat_name) VALUES(N'" + name + "')";
             mydb.Database.ExecuteSqlCommand(SQL);
 
         }
       
-        public void Update(string name, string id)
+        public void update(string name, string id)
         {
             string SQL = "UPDATE seats SET seat_name = N'" + name + "' WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
         }
-        public void Delete(string id)
+        public void delete(string id)
         {
             string SQL = "DELETE FROM seats WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);

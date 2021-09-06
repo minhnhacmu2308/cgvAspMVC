@@ -61,7 +61,6 @@ namespace CGV.Controllers.Admin
             }
             var message = "Email hoặc password không đúng";
             return RedirectToAction("Index", new { mess = message });
-
         }
         public ActionResult Signout()
         {

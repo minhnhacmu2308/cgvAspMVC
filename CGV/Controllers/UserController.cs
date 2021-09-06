@@ -25,13 +25,13 @@ namespace CGV.Controllers
             JsonResult js = new JsonResult();
             Console.WriteLine(passwordOld);
             var userSession = Session[Constants.Constants.USER_SESSION];
-            if (userSession != null){
-                if (String.IsNullOrEmpty(passwordOld) || String.IsNullOrEmpty(passwordNew) || String.IsNullOrEmpty(rePasswordNew)){
+            if(userSession != null){
+                if(String.IsNullOrEmpty(passwordOld) || String.IsNullOrEmpty(passwordNew) || String.IsNullOrEmpty(rePasswordNew)){
                     js.Data = new{
                         status = Constants.Constants.STATUS_ERROR,
                         message = Constants.Constants.FILL_OUT_ERROR
                     };
-                }else if (passwordNew!= rePasswordNew){
+                }else if(passwordNew!= rePasswordNew){
                     js.Data = new{
                         status = Constants.Constants.STATUS_ERROR,
                         message = Constants.Constants.PASSWORD_ERROR
@@ -91,7 +91,7 @@ namespace CGV.Controllers
             ViewBag.msg = msg;
             return View();
         }
-       [HttpGet] 
+        [HttpGet] 
         public ActionResult GetForgot()
         {
             return View();
@@ -129,7 +129,7 @@ namespace CGV.Controllers
         public ActionResult NewPassword()
         {
             var email = (string)Session[Constants.Constants.EMAIL_SESSION];
-            if(email != null){
+            if(!string.IsNullOrEmpty(email)){
                 return View();
             }else{
                 return RedirectToAction("Login", "Authentication");
@@ -139,7 +139,7 @@ namespace CGV.Controllers
         public JsonResult PostNewPassword(string password)
         {
             var email = (string)Session[Constants.Constants.EMAIL_SESSION];
-            if (email != null){
+            if (!string.IsNullOrEmpty(email)){
                 authenticationD.forgotPassword(email,password);
                 Session.Remove(Constants.Constants.EMAIL_SESSION);
                 return Json(new { status = Constants.Constants.STATUS_OK, msg = Constants.Constants.UPDATE_PASSWORD_SUCCESS, JsonRequestBehavior.AllowGet });

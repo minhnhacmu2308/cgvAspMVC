@@ -54,7 +54,9 @@ namespace CGV.Constants
         public static string SUBJECT_EMAIL_FORGOT = "Quên mật khẩu";
         public static string BODY_EMAIL_FORGOT = "Mã quên mật khẩu";
         public static string FORMAT_DATE = "{0:yyyy-MM-dd}";
+        public static string FORMAT_DATE_SCHEDULE = "{0:yyyyMMdd}";
         public static string PATH_SENDMAIL = "~/Content/Assets/html/sendQRMail.html";
-
+        public static string FORMAT_DATE_STRING = "yyyyMMdd";
+        public static string CHANGE_DATABASE = "Ghế này đã được đặt trước đó vui lòng reload lại trang";
     }
 }

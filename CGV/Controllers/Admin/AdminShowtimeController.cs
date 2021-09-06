@@ -52,7 +52,7 @@ namespace CGV.Controllers.Admin
                 }
                 else
                 {
-                    show.Add(scheid, start, addTime(start), Int32.Parse(idRoom));
+                    show.add(scheid, start, addTime(start), Int32.Parse(idRoom));
                     var message = "2";
                     return RedirectToAction("Index", new { mess = message });
 
@@ -76,7 +76,7 @@ namespace CGV.Controllers.Admin
             {
                 if(showtimeObj.start_time.ToString() == start)
                 {
-                    show.Update(start, addTime(start), id);
+                    show.update(start, addTime(start), id);
                     var message = "2";
                     return RedirectToAction("Index", new { mess = message });
                 }
@@ -91,7 +91,7 @@ namespace CGV.Controllers.Admin
                     }
                     else
                     {
-                        show.Update(start, addTime(start), id);
+                        show.update(start, addTime(start), id);
                         var message = "2";
                         return RedirectToAction("Index", new { mess = message });
 
@@ -119,7 +119,7 @@ namespace CGV.Controllers.Admin
                 }
                 else
                 {
-                    show.Delete(id);
+                    show.delete(id);
                     var message = "2";
                     return RedirectToAction("Index", new { mess = message });
                 }

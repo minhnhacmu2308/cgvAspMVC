@@ -39,7 +39,7 @@ namespace CGV.Controllers.Admin
             }
             else
             {
-                cpost.Add(name);
+                cpost.add(name);
                 return RedirectToAction("Index", new { mess = "2" });
             }
             
@@ -70,7 +70,7 @@ namespace CGV.Controllers.Admin
                     }
                     else
                     {
-                        cpost.Update(name, id);
+                        cpost.update(name, id);
                         return RedirectToAction("Index", new { mess = "2" });
                     }
                 }
@@ -96,7 +96,7 @@ namespace CGV.Controllers.Admin
                 var dele = db.category_post.Where(c => c.id == idc).FirstOrDefault();
                 if (dele != null)
                 {
-                    cpost.Delete(id);
+                    cpost.delete(id);
                     return RedirectToAction("Index", new { mess = "2" });
                 }
                 else

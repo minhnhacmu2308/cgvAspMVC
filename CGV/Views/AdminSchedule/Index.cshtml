@@ -26,13 +26,13 @@
                     else if (ViewBag.Msg == "3")
                     {
                         <div class="alert alert-danger">
-                            <strong>Dữ liệu đang hoạt động, không thể xóa</strong>
+                            <strong>Dữ liệu đang hoạt động trong suất chiếu hoặc booking và có ràng buộc với suất chiếu, không thể xóa</strong>
                         </div>
                     }
                     else if (ViewBag.Msg == "4")
                     {
                         <div class="alert alert-danger">
-                            <strong>Phòng này đã có dữ liệu trong suất chiếu , không được sửa</strong>
+                            <strong>Phòng này đã có dữ liệu trong suất chiếu hoặc booking, không được sửa</strong>
                         </div>
                     }
                     else
@@ -106,11 +106,6 @@
                         <td>
                             @if (datesche < todayd)
                             {
-
-
-
-
-
                             }
                             else
                             {
@@ -196,22 +191,24 @@
                                         <div class="modal-body">
                                             Phim : @item.film.film_name <br />
                                             Ngày : @dateschedule
-                                            <form action="/AdminSchedule/Delete" method="post">
-                                                @if (roomN != null)
-                                                {
-                                                    <input type="hidden" class="form-control" id="id" name="id" value="@item.id">
-                                                }
+                                        <form action="/AdminSchedule/Delete" method="post">
+                                            @if (roomN != null)
+                                            {
+                                                <input type="hidden" class="form-control" id="id" name="id" value="@item.id">
+                                                <input type="hidden" class="form-control" id="idR" name="idRoom" value="@roomN.id">
 
-                                                <div class="modal-footer" style="margin-top: 20px">
-                                                    <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">
-                                                        Close
-                                                    </button>
-                                                    <button type="submit" class="btn btn-danger"> Xóa</button>
+                                            }
 
-                                                </div>
+                                            <div class="modal-footer" style="margin-top: 20px">
+                                                <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">
+                                                    Close
+                                                </button>
+                                                <button type="submit" class="btn btn-danger"> Xóa</button>
 
-                                            </form>
+                                            </div>
+
+                                        </form>
 
                                         </div>
 

@@ -16,17 +16,17 @@ namespace DatabaseIO
         {
             return mydb.category_film.ToList();
         }
-        public void Add(string name)
+        public void add(string name)
         {
             string SQL = "INSERT INTO category_film(name) VALUES(N'" + name + "')";
             mydb.Database.ExecuteSqlCommand(SQL);
         }
-        public void Update(string name, string id)
+        public void update(string name, string id)
         {
             string SQL = "UPDATE category_film SET name = N'" + name + "' WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
         }
-        public void Delete(string id)
+        public void delete(string id)
         {
             string SQL = "DELETE FROM category_film WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
@@ -43,7 +43,6 @@ namespace DatabaseIO
         }
         public bool checkUpdate(int id, string name)
         {
-
             string sql = "SELECT * FROM category_film WHERE name = N'" + name + "' and id = @id";
             var user = mydb.Database.SqlQuery<category_film>(sql, new SqlParameter("@id", id)).FirstOrDefault();
             if (user != null){
@@ -53,7 +52,6 @@ namespace DatabaseIO
         }
         public bool checkActive(int id)
         {
-
             string sql = "SELECT * FROM films WHERE id_cfilm = @id";
             List<film> user = mydb.Database.SqlQuery<film>(sql, new SqlParameter("@id", id)).ToList();
             if (user.Count == 0){

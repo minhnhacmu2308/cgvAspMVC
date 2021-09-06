@@ -14,17 +14,17 @@ namespace DatabaseIO
         {
             return mydb.category_post.ToList();
         }
-        public void Add(string name)
+        public void add(string name)
         {
             string SQL = "INSERT INTO category_post(name) VALUES(N'" + name + "')";
             mydb.Database.ExecuteSqlCommand(SQL);
         }
-        public void Update(string name, string id)
+        public void update(string name, string id)
         {
             string SQL = "UPDATE category_post SET name = N'" + name + "' WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
         }
-        public void Delete(string id)
+        public void delete(string id)
         {
             string SQL = "DELETE FROM category_post WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
@@ -40,7 +40,6 @@ namespace DatabaseIO
         }
         public bool checkUpdate(int id, string name)
         {
-
             string sql = "SELECT * FROM category_post WHERE name = N'" + name + "' and id = @id";
             var user = mydb.Database.SqlQuery<category_post>(sql, new SqlParameter("@id", id)).FirstOrDefault();
             if (user != null){
@@ -50,7 +49,6 @@ namespace DatabaseIO
         }
         public bool checkActive(int id)
         {
-
             string sql = "SELECT * FROM post WHERE id_cpost = @id";
             List<post> user = mydb.Database.SqlQuery<post>(sql, new SqlParameter("@id", id)).ToList();
             if (user.Count == 0){

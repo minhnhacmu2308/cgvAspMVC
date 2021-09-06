@@ -11,10 +11,15 @@ namespace DatabaseIO
     public class ShowtimeDao
     {
         MyDB mydb = new MyDB();
-        public List<showtime> getShowtime(string id,int idRoom)
+        public List<showtime> getShowtime(string id, int idRoom)
         {
             int scheduleId = Int32.Parse(id);
-            return mydb.Database.SqlQuery<showtime>("SELECT * FROM showtimes WHERE schedule_id = '" + scheduleId + "' and id_room = '" + idRoom + "' and start_time >= convert(varchar(32),getdate(),108)").ToList();
+            return mydb.Database.SqlQuery<showtime>("SELECT s.* FROM showtimes s, schedules sc WHERE s.schedule_id = '" + scheduleId + "' and s.schedule_id = sc.id and CONVERT(varchar, sc.dateschedule, 101) = CONVERT(varchar, getdate(), 101) and s.id_room = '" + idRoom + "' and s.start_time >= convert(varchar(32),getdate(),108)").ToList();
+        }
+        public List<showtime> getShowtimes(string id, int idRoom)
+        {
+            int scheduleId = Int32.Parse(id);
+            return mydb.Database.SqlQuery<showtime>("select * FROM showtimes WHERE schedule_id = '" + scheduleId + "' and id_room = '" + idRoom + "'").ToList();
         }
         public showtime getName(int id)
         {
@@ -24,18 +29,18 @@ namespace DatabaseIO
         {
             return mydb.showtimes.ToList();
         }
-        public void Add(string scheid, string start, string end, int idRoom)
+        public void add(string scheid, string start, string end, int idRoom)
         {
             string SQL = "INSERT INTO showtimes(schedule_id,start_time,end_time,id_room) VALUES('" + scheid + "','" + start + "','" + end + "','"+idRoom+"')";
             mydb.Database.ExecuteSqlCommand(SQL);
 
         }
-        public void Update(string start, string end, string id)
+        public void update(string start, string end, string id)
         {
             string SQL = "UPDATE showtimes SET start_time = '" + start + "', end_time = '" + end + "' WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
         }
-        public void Delete(string id)
+        public void delete(string id)
         {
             string SQL = "DELETE FROM showtimes WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);

@@ -22,7 +22,6 @@ namespace CGV.Utils
             message.Subject = sub;
             message.IsBodyHtml = true;
             message.Body = body;
-
             var client = new SmtpClient();
             client.Credentials = new NetworkCredential(formEmailAddress, formEmailPassword);
             client.Host = smtpHost;
@@ -30,5 +29,6 @@ namespace CGV.Utils
             client.Port = !string.IsNullOrEmpty(smtpPort) ? Convert.ToInt32(smtpPort) : 0;
             client.Send(message);
         }
+       
     }
 }

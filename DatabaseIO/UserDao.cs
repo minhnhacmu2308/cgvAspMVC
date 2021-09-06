@@ -43,23 +43,23 @@ namespace DatabaseIO
         {
             return mydb.usercgvs.ToList();
         }
-        public void Add(string email, string password, string phonenumber, string role_id, string username, string tt)
+        public void add(string email, string password, string phonenumber, string role_id, string username, string tt)
         {
             string SQL = "INSERT INTO usercgv(email,is_active,password,phonenumber,role_id,username) VALUES('" + email + "','" + tt + "','" + password + "','" + phonenumber + "','" + role_id + "',N'" + username + "')";
             mydb.Database.ExecuteSqlCommand(SQL);
 
         }
-        public void Update(string email, string password, string phonenumber, string role_id, string username, string id, string tt)
+        public void update(string email, string password, string phonenumber, string role_id, string username, string id, string tt)
         {
             string SQL = "UPDATE usercgv SET email = '" + email + "',password = '" + password + "', phonenumber = '" + phonenumber + "', role_id = '" + role_id + "', username = N'" + username + "', is_active = '" + tt + "' WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
         }
-        public void Delete(int id)
+        public void delete(int id)
         {
             string SQL = "DELETE FROM usercgv WHERE id = '" + id + "'";
             mydb.Database.ExecuteSqlCommand(SQL);
         }
-        public void ChangStatus(int id)
+        public void changStatus(int id)
         {
             var user = mydb.usercgvs.Where((u) => u.id == id).FirstOrDefault();
             user.is_active = user.is_active == 1 ? user.is_active = 0 : user.is_active = 1;

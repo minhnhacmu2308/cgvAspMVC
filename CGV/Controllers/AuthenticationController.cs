@@ -12,6 +12,7 @@ namespace CGV.Controllers
         AuthenticationDao authenticationD = new AuthenticationDao();
         UserDao userD = new UserDao();
         MailUtils mailUtil = new MailUtils();
+        ValidateUtils validateUtil = new ValidateUtils();
        
         // GET: Authentication
         public ActionResult Index()
@@ -37,22 +38,20 @@ namespace CGV.Controllers
             var rePassword = form["rePassword"];
             var passworodMd5 = authenticationD.md5(password);
             string strongPassword = authenticationD.checkPasswordStrong(password);
-            System.Text.RegularExpressions.Regex rEmail = new System.Text.RegularExpressions.Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+            bool checkFormatEmail = validateUtil.checkFormatEmail(email);
             if (string.IsNullOrEmpty(email)|| string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(phonenumber) || string.IsNullOrEmpty(rePassword)){
                 ViewBag.message = Constants.Constants.FILL_OUT_ERROR;
                 return View();
-            }else if (!rEmail.IsMatch(email)){
+            }else if(checkFormatEmail){
                 ViewBag.message = Constants.Constants.FORMAT_EMAIL_ERROR;
                 return View();
             }else if(!password.Equals(rePassword)){
                 ViewBag.message = Constants.Constants.PASSWORD_ERROR;
                 return View();
-            }
-            else if (!string.IsNullOrEmpty(strongPassword)){
+            }else if (!string.IsNullOrEmpty(strongPassword)){
                 ViewBag.message = strongPassword;
                 return View();
-            }
-            else{
+            }else{
                 bool result = authenticationD.checkEmail(email);
                 if (result){
                     ViewBag.message = Constants.Constants.EMAIL_EXIST;

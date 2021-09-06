@@ -137,7 +137,7 @@ function bookingTicket(id) {
                 var tongtien = 0;        
                 var dataHTML = '';
                 if (data.status == "ERROR") {
-                    $(nameError).html("❌ Bạn cần phải đăng nhập !");
+                    $(nameError).html(data.msg);
                 } else {
                     dataHTML += `<p ><span style="font-weight:bold">Tên phim : </span>` + data.data1[0].nameFilm + `</p><br>
 										<p ><span style="font-weight:bold">Lịch chiếu : </span>`+ data.data1[0].schedulename+ `</p><br>

@@ -36,7 +36,7 @@ namespace CGV.Controllers.Admin
             }
             else
             {
-                seat.Add(name);
+                seat.add(name);
 
                 var message = "2";
                 return RedirectToAction("Index", new { mess = message });
@@ -49,7 +49,7 @@ namespace CGV.Controllers.Admin
             var seatObj = seat.getName(Int32.Parse(id));
             if (seatObj.seat_name == name)
             {
-                seat.Update(name, id);
+                seat.update(name, id);
                 var message = "2";
                 return RedirectToAction("Index", new { mess = message });
             }
@@ -63,7 +63,7 @@ namespace CGV.Controllers.Admin
                 }
                 else
                 {
-                    seat.Update(name, id);
+                    seat.update(name, id);
                     var message = "2";
                     return RedirectToAction("Index", new { mess = message });
                 }
@@ -83,7 +83,7 @@ namespace CGV.Controllers.Admin
             }
             else
             {
-                seat.Delete(id);
+                seat.delete(id);
                 var message = "2";
                 return RedirectToAction("Index", new { mess = message });
             }

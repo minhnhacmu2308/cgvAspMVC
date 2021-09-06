@@ -46,7 +46,7 @@ namespace CGV.Controllers.Admin
             String filename = "post" + num + file.FileName.Substring(file.FileName.LastIndexOf("."));
             String Strpath = Path.Combine(Server.MapPath("~/Content/Assets/images/"), filename);
             file.SaveAs(Strpath);
-            post.Add(title,theloai,filename,noidung);
+            post.add(title,theloai,filename,noidung);
             string content = System.IO.File.ReadAllText(Server.MapPath("~/Content/Admin/mail/mailbody.html"));
             content = content.Replace("{{title}}", title);
             content = content.Replace("{{noidung}}", noidung);
@@ -104,11 +104,11 @@ namespace CGV.Controllers.Admin
                     String filename = "post" + num + file.FileName.Substring(file.FileName.LastIndexOf("."));
                     String Strpath = Path.Combine(Server.MapPath("~/Content/Assets/images/"), filename);
                     file.SaveAs(Strpath);
-                    post.Update(title, theloai, filename, noidung, id);
+                    post.update(title, theloai, filename, noidung, id);
                     return RedirectToAction("Index");
                 }
 
-                post.Update(title, theloai, img, noidung, id);
+                post.update(title, theloai, img, noidung, id);
                 return RedirectToAction("Index", new { mess = "2" });
             }
             else
@@ -128,7 +128,7 @@ namespace CGV.Controllers.Admin
             var dele = db.posts.Where(c => c.id == idc).FirstOrDefault();
             if (dele != null)
             {
-                post.Delete(id);
+                post.delete(id);
                 return RedirectToAction("Index", new { mess = "2" });
             }
             else

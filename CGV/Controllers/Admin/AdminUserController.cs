@@ -48,7 +48,7 @@ namespace CGV.Controllers.Admin
             else
             {
 
-                user.Add(email, passworodMd5, phonenumber, roleid, username, tt);
+                user.add(email, passworodMd5, phonenumber, roleid, username, tt);
 
                 return RedirectToAction("Index", new { mess = "2" });
             }
@@ -85,13 +85,13 @@ namespace CGV.Controllers.Admin
                     {
                         if (password == u.password)
                         {
-                            user.Update(email, password, phonenumber, roleid, username, id, tt);
+                            user.update(email, password, phonenumber, roleid, username, id, tt);
 
                             return RedirectToAction("Index", new { mess = "2" });
                         }
                         else
                         {
-                            user.Update(email, passworodMd5, phonenumber, roleid, username, id, tt);
+                            user.update(email, passworodMd5, phonenumber, roleid, username, id, tt);
 
                             return RedirectToAction("Index", new { mess = "2" });
                         }
@@ -110,13 +110,13 @@ namespace CGV.Controllers.Admin
 
                     if (password == u.password)
                     {
-                        user.Update(email, password, phonenumber, roleid, username, id, tt);
+                        user.update(email, password, phonenumber, roleid, username, id, tt);
 
                         return RedirectToAction("Index", new { mess = "2" });
                     }
                     else
                     {
-                        user.Update(email, passworodMd5, phonenumber, roleid, username, id, tt);
+                        user.update(email, passworodMd5, phonenumber, roleid, username, id, tt);
 
                         return RedirectToAction("Index", new { mess = "2" });
                     }
@@ -149,7 +149,7 @@ namespace CGV.Controllers.Admin
                 var dele = db.usercgvs.Where(c => c.id == idc).FirstOrDefault();
                 if (dele != null)
                 {
-                    user.Delete(idc);
+                    user.delete(idc);
                     return RedirectToAction("Index", new { mess = "2" });
                 }
                 else
@@ -173,7 +173,7 @@ namespace CGV.Controllers.Admin
         [HttpPost]
         public JsonResult ChangeStatus(int id)
         {
-            user.ChangStatus(id);
+            user.changStatus(id);
             return Json(new { status = "SUCCESS", msg = "THÀNH CÔNG", JsonRequestBehavior.AllowGet });
         }
     }

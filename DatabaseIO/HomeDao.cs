@@ -13,23 +13,23 @@ namespace DatabaseIO
 
         public List<film> getFilmComingSoon()
         {
-            return mydb.Database.SqlQuery<film>("SELECT a.* FROM films as a WHERE FORMAT(a.premiere_date, 'dd/MM/yyyy' ) > FORMAT(getdate(), 'dd/MM/yyyy' )").ToList();
+            return mydb.Database.SqlQuery<film>("SELECT * FROM films WHERE CONVERT(varchar, premiere_date, 101) > CONVERT(varchar, getdate(), 101)").ToList();
         }
         public List<film> getFilmNowShowing()
         {
-            return mydb.Database.SqlQuery<film>("SELECT a.* FROM films as a WHERE FORMAT(a.premiere_date, 'dd/MM/yyyy' ) <= FORMAT(getdate(), 'dd/MM/yyyy' )").ToList();
+            return mydb.Database.SqlQuery<film>("SELECT * FROM films WHERE CONVERT(varchar, premiere_date, 101) <= CONVERT(varchar, getdate(), 101)").ToList();
         }
         public List<post> getPromotion()
         {
             return mydb.posts.Where(p => p.id_cpost == 1).ToList();
         }
-        public int Statictis(int month)
+        public int statictis(int month)
         {
             string SQL = "Select SUM(a.amount)  FROM booking as a,schedules as b WHERE a.schedule_id = b.id GROUP BY  MONTH(b.dateschedule) HAVING MONTH(b.dateschedule) = '" + month + "'";
             int result = mydb.Database.SqlQuery<int>(SQL).FirstOrDefault();
             return result;
         }
-        public int CountTicket(int month)
+        public int countTicket(int month)
         {
             string SQL = "Select COUNT(a.id)  FROM booking as a,schedules as b WHERE a.schedule_id = b.id GROUP BY  MONTH(b.dateschedule) HAVING MONTH(b.dateschedule) = '" + month + "'";
             int result = mydb.Database.SqlQuery<int>(SQL).FirstOrDefault();

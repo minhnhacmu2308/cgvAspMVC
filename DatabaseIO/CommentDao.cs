@@ -36,5 +36,24 @@ namespace DatabaseIO
             mydb.ratings.Remove(ObjectM);
             mydb.SaveChanges();
         }
+        public List<CommentAjax> addCommentAjax(List<rating> listcomment)
+        {
+            var listAjax = new List<CommentAjax>();
+            CommentAjax commentA = null;
+            int lengthComment = listcomment.Count;
+            for (int i = 0; i <lengthComment; ++i)
+            {
+                commentA = new CommentAjax();
+                commentA.id = listcomment[i].id;
+                commentA.film_id = listcomment[i].film_id;
+                commentA.id_user = listcomment[i].id_user;
+                commentA.number_start = listcomment[i].number_start;
+                commentA.rate = listcomment[i].rate;
+                commentA.name_user = listcomment[i].name_user;
+                commentA.created_time = listcomment[i].created_time.ToString();
+                listAjax.Add(commentA);
+            }
+            return listAjax;
+        }
     }
 }

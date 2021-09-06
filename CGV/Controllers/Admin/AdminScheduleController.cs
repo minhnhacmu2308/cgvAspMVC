@@ -47,9 +47,9 @@ namespace CGV.Controllers.Admin
                 }
                 else
                 {
-                    sche.Add(filmid, datesche);
+                    sche.add(filmid, datesche);
                     int idSchedule = sche.getSCheduleByDate();
-                    sche.AddScheduleRoom(idSchedule, Int32.Parse(roomid));
+                    sche.addScheduleRoom(idSchedule, Int32.Parse(roomid));
                     var message = "2";
                     return RedirectToAction("Index", new { mess = message });
                 }
@@ -77,8 +77,8 @@ namespace CGV.Controllers.Admin
                 if (scheduleO.film_id == idF && scheduleO.dateschedule == datesche && roomO.id == idR)
                 {
                     sche.deleteScheduleRoom(idSchedule);
-                    sche.AddScheduleRoom(idSchedule, idR);
-                    sche.Update(filmid, datesche, id);
+                    sche.addScheduleRoom(idSchedule, idR);
+                    sche.update(filmid, datesche, id);
                     var message = "2";
                     return RedirectToAction("Index", new { mess = message });
                 }
@@ -94,9 +94,9 @@ namespace CGV.Controllers.Admin
                     {
                         
                             sche.deleteScheduleRoom(idSchedule);
-                            sche.AddScheduleRoom(idSchedule, idR);
+                            sche.addScheduleRoom(idSchedule, idR);
                             sche.editRoomShowTime(idSchedule, idR);
-                            sche.Update(filmid, datesche, id);
+                            sche.update(filmid, datesche, id);
                             var message = "2";
                             return RedirectToAction("Index", new { mess = message });
                        
@@ -130,7 +130,7 @@ namespace CGV.Controllers.Admin
                 else
                 {
                     sche.deleteScheduleRoom(Int32.Parse(id));
-                    sche.Delete(id);
+                    sche.delete(id);
 
                     var message = "2";
                     return RedirectToAction("Index", new { mess = message });

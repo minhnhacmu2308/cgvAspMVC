@@ -45,11 +45,11 @@ namespace CGV.Controllers.Admin
                 }
                 else
                 {
-                    room.Add(name);
+                    room.add(name);
                     var roomByID = room.getId(name);
                     for (int i = 0; i < Int32.Parse(soluong); i++)
                     {
-                        room.AddRoomSeat(roomByID.id, listAll[i].id);
+                        room.addRoomSeat(roomByID.id, listAll[i].id);
                     }
                     var message = "2";
                     return RedirectToAction("Index", new { mess = message });
@@ -73,12 +73,12 @@ namespace CGV.Controllers.Admin
             {
                 if (roomname.room_name == name)
                 {
-                    room.DeleteRoomSeat(Int32.Parse(id));
-                    room.Update(name, id);
+                    room.deleteRoomSeat(Int32.Parse(id));
+                    room.update(name, id);
                     var roomByID = room.getId(name);
                     for (int i = 0; i < Int32.Parse(number); i++)
                     {
-                        room.AddRoomSeat(roomByID.id, listAll[i].id);
+                        room.addRoomSeat(roomByID.id, listAll[i].id);
                     }
                     var message = "2";
                     return RedirectToAction("Index", new { mess = message });
@@ -93,12 +93,12 @@ namespace CGV.Controllers.Admin
                     }
                     else
                     {
-                        room.DeleteRoomSeat(Int32.Parse(id));
-                        room.Update(name, id);
+                        room.deleteRoomSeat(Int32.Parse(id));
+                        room.update(name, id);
                         var roomByID = room.getId(name);
                         for (int i = 0; i < Int32.Parse(number); i++)
                         {
-                            room.AddRoomSeat(roomByID.id, listAll[i].id);
+                            room.addRoomSeat(roomByID.id, listAll[i].id);
                         }
                         var message = "2";
                         return RedirectToAction("Index", new { mess = message });
@@ -127,8 +127,8 @@ namespace CGV.Controllers.Admin
                 }
                 else
                 {
-                    room.DeleteRoomSeat(Int32.Parse(id));
-                    room.Delete(id);
+                    room.deleteRoomSeat(Int32.Parse(id));
+                    room.delete(id);
                     var message = "2";
                     return RedirectToAction("Index", new { mess = message });
                 }

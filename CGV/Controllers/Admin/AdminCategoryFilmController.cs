@@ -41,7 +41,7 @@ namespace CGV.Controllers.Admin
             }
             else
             {
-                cfilm.Add(name);
+                cfilm.add(name);
 
                 return RedirectToAction("Index", new { mess = "2" });
             }
@@ -73,7 +73,7 @@ namespace CGV.Controllers.Admin
                     }
                     else
                     {
-                        cfilm.Update(name, id);
+                        cfilm.update(name, id);
                         return RedirectToAction("Index", new { mess = "2" });
                     }
                 }
@@ -98,7 +98,7 @@ namespace CGV.Controllers.Admin
                 var dele = db.category_film.Where(c => c.id == idc).FirstOrDefault();
                 if (dele != null)
                 {
-                    cfilm.Delete(id);
+                    cfilm.delete(id);
                     return RedirectToAction("Index", new { mess = "2" });
                 }
                 else
