@@ -1,7 +1,7 @@
-﻿using Model;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using Model;
 
 
 namespace DatabaseIO
@@ -100,7 +100,7 @@ namespace DatabaseIO
             //select all from table room by room_name
             string sql = "SELECT * FROM room WHERE room_name = @name";
             var user = mydb.Database.SqlQuery<room>(sql, new SqlParameter("@name", name)).FirstOrDefault();
-            if (user != null){
+            if (user != null) {
                 return true;
             }
             return false;
@@ -153,9 +153,9 @@ namespace DatabaseIO
             var room_seat = mydb.Database.SqlQuery<roomseat>(sql).FirstOrDefault();
             var schedule_room = mydb.Database.SqlQuery<scheduleroom>(sql1).FirstOrDefault();
             var show_time = mydb.Database.SqlQuery<showtime>(sql2).FirstOrDefault();
-            if(schedule_room != null || show_time != null){
+            if (schedule_room != null || show_time != null) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
         }

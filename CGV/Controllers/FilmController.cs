@@ -3,9 +3,7 @@ using Model;
 using Stripe.Checkout;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
-using System.Web.UI.WebControls;
 using CGV.Utils;
 
 
@@ -28,91 +26,153 @@ namespace CGV.Controllers
         {
             return View();
         }
+
+        /**
+         * get detail film by id for user
+         * @param id
+         * @return
+         */
         public ActionResult DetailFilm(string id)
         {
+            //select film from database by id
             film film = filmD.getDetailFilm(id);
             var listSeat = seatD.getAll();
             ViewBag.listseat = listSeat;
             return View(film);
         }
+
+        /**
+         * search film by keyseach for user
+         * @param keySearch
+         * @return
+         */
         public ActionResult SearchFilm(string keySearch)
         {
-            if (string.IsNullOrEmpty(keySearch)){
+            if (string.IsNullOrEmpty(keySearch)) {
                 return RedirectToAction("IndexUser","Home");
-            }else{
+            } else {
+                //select film from database by key word
                 var listSearch = filmD.searchFilm(keySearch);
                 ViewBag.keySearch = keySearch;
                 var listSeat = seatD.getAll();
                 ViewBag.listseat = listSeat;
                 return View(listSearch);
             }      
-        }  
+        }
+
+        /**
+         * get schedule by id for user
+         * @param id
+         * @return
+         */
         [HttpPost]
         public  JsonResult  getSchedule(string id)
         {
+            //select list schedule by id
              List<schedule> list = scheduleD.getSchedule(id);      
-             if(Int32.Parse(id) == 0){
+             if (Int32.Parse(id) == 0) {
                   return Json(new { status = Constants.Constants.STATUS_ERROR, msg = Constants.Constants.FILL_OUT_SCHEDULE, JsonRequestBehavior.AllowGet });
-             }else{
+             } else {
                   string html = filmD.renderSchedule(list);
                   return Json(new { status = Constants.Constants.STATUS_OK, data = html, msg = Constants.Constants.MSG_SUCCESS, JsonRequestBehavior.AllowGet });
              }    
-        } 
+        }
+
+        /**
+         * get showtime by id and idRoom for user
+         * @param id
+         * @param idRoom
+         * @return
+         */
         [HttpPost]
         public JsonResult getShowtime(string id,int idRoom)
         {
-            var idSche = Int32.Parse(id);
+            List<showtime> listShowtime = null;
+            string html = null;
+            var idSche = Int32.Parse(id); 
             var scheduledate = scheduleD.getName(idSche);
             string dtnow = DateTime.Today.ToString(Constants.Constants.FORMAT_DATE_STRING);
             int todayd = Int32.Parse(dtnow);
             string dateint = String.Format(Constants.Constants.FORMAT_DATE_SCHEDULE, scheduledate.dateschedule);
             int datesche = Int32.Parse(dateint);
-            if (datesche == todayd){
-                List<showtime> listShowtime = showtimeD.getShowtime(id, idRoom);
-                string html = filmD.renderShowtime(listShowtime);
+            if (datesche == todayd) {
+                listShowtime = showtimeD.getShowtime(id, idRoom);
+                html = filmD.renderShowtime(listShowtime);
                 return Json(new { status = Constants.Constants.STATUS_OK, data = html, msg = Constants.Constants.MSG_SUCCESS, JsonRequestBehavior.AllowGet });
-            }else{
-                List<showtime> listShowtime = showtimeD.getShowtimes(id, idRoom);
-                string html = filmD.renderShowtime(listShowtime);
+            } else {
+                listShowtime = showtimeD.getShowtimes(id, idRoom);
+                html = filmD.renderShowtime(listShowtime);
                 return Json(new { status = Constants.Constants.STATUS_OK, data = html, msg = Constants.Constants.MSG_SUCCESS, JsonRequestBehavior.AllowGet });
             }           
         }
+
+        /**
+         * get room by id for user
+         * @param id
+         * @return
+         */
         [HttpPost]
         public JsonResult getRoom(int id)
         {
+            //select list room from database by id
             List<room> listRoom = roomD.getRoom(id);
             string html = filmD.renderRoom(listRoom);        
             return Json(new { status = Constants.Constants.STATUS_OK, data = html, msg = Constants.Constants.MSG_SUCCESS, JsonRequestBehavior.AllowGet });
         }
+
+        /**
+         * get seat by id for user
+         * @param id
+         * @param showtimeId
+         * @param filmId
+         * @param scheduleId
+         * @return
+         */
         [HttpPost]
         public JsonResult getSeat(int roomId, int showtimeId, int filmId, int scheduleId)
         {
+            //select list seat done by roomId, showtimeId, filmId, scheduleId
             List<seat> listSeat = seatD.getSeatDone(roomId, showtimeId, filmId, scheduleId);
+            //select list seat  by roomId, showtimeId, filmId, scheduleId
             List<seat> listSeatRoom = seatD.getSeatRoom(roomId);
             var listSeatActive = filmD.handleGetSeat(listSeatRoom, listSeat); ;
             string html = filmD.renderSeat(listSeatActive);        
             return Json(new { status = Constants.Constants.STATUS_OK, data = html, msg = Constants.Constants.MSG_SUCCESS, JsonRequestBehavior.AllowGet });
         }
+
+
+        /**
+         * booking ticket for user 
+         * @param film_id
+         * @param schedule_id
+         * @param showtime_id
+         * @param room_id
+         * @param seat_id
+         * @return
+         */
         [HttpPost]
         public JsonResult bookingTicket( int film_id,int schedule_id,int showtime_id, int room_id, int[] seat_id )
         {
             var userInfomatiom = (usercgv)Session[Constants.Constants.USER_SESSION];
-            if(userInfomatiom == null ){
+            if (userInfomatiom == null ) {
                 return Json(new { status = Constants.Constants.STATUS_ERROR, msg = Constants.Constants.YOU_NEED_LOGIN, JsonRequestBehavior.AllowGet });
-            }else{
+            } else {
+                //check if the data has changed
                 bool checkExist = bookingDao.checkBooking(film_id,schedule_id,showtime_id,room_id,seat_id);
+                //check data showtime is working
                 bool checkExistShowtime = showtimeD.checkExistShowtime(showtime_id);
-                if (checkExist || !checkExistShowtime){
+                if (checkExist || !checkExistShowtime) {
                     return Json(new { status = Constants.Constants.STATUS_ERROR, msg = Constants.Constants.CHANGE_DATABASE, JsonRequestBehavior.AllowGet });
-                }else{
+                } else {
                     int amount = 0;
                     var listHis = new List<HistoryBooking>();
                     var listG = new List<String>();
                     int lengthSeat = seat_id.Length;
                     string stringDay = null;
                     HistoryBooking his = null;
-                    for (int i = 0; i < lengthSeat; i++){
-                        string dateschedule = String.Format(Constants.Constants.FORMAT_DATE, scheduleD.getName(schedule_id).dateschedule);
+                    string dateschedule = null;
+                    for (int i = 0; i < lengthSeat; i++) {
+                        dateschedule = String.Format(Constants.Constants.FORMAT_DATE, scheduleD.getName(schedule_id).dateschedule);
                         stringDay = showtimeD.getName(showtime_id).start_time + "-" + showtimeD.getName(showtime_id).end_time;
                         amount += Constants.Constants.PRICE_TICKET;
                         his = bookingDao.addHistoryBooking(film_id, i, room_id, seat_id[i], dateschedule, amount, stringDay, 0);
@@ -130,43 +190,65 @@ namespace CGV.Controllers
                
             }        
         }
+
+        /**
+         * booking ticket for user 
+         * @param film_id
+         * @param schedule_id
+         * @param showtime_id
+         * @param room_id
+         * @param seat_id
+         * @return
+         */
         [HttpPost]
         public JsonResult bookingTicke(int film_id, int schedule_id, int showtime_id, int room_id, int[] seat_id)
         {
+            int status = 0;
+            int idUserDefault = 1;
+            //check if the data has changed
             bool checkExist = bookingDao.checkBooking(film_id, schedule_id, showtime_id, room_id, seat_id);
+            //check data showtime is working
             bool checkExistShowtime = showtimeD.checkExistShowtime(showtime_id);
-            if (checkExist || !checkExistShowtime){
+            if (checkExist || !checkExistShowtime) {
                 return Json(new { status = Constants.Constants.STATUS_ERROR, msg = Constants.Constants.CHANGE_DATABASE, JsonRequestBehavior.AllowGet });
-            }else{
+            } else {
                 int amount = 0;
                 var listHis = new List<HistoryBooking>();
                 var listG = new List<String>();
                 int lengthSeat = seat_id.Length;
                 string stringDay = null;
+                string dateschedule = null;
                 HistoryBooking his = null;
-                for (int i = 0; i < lengthSeat; i++){
-                    string dateschedule = String.Format(Constants.Constants.FORMAT_DATE, scheduleD.getName(schedule_id).dateschedule);
+                for (int i = 0; i < lengthSeat; i++) {
+                    dateschedule = String.Format(Constants.Constants.FORMAT_DATE, scheduleD.getName(schedule_id).dateschedule);
                     stringDay = showtimeD.getName(showtime_id).start_time + "-" + showtimeD.getName(showtime_id).end_time;
                     amount += Constants.Constants.PRICE_TICKET;
-                    his = bookingDao.addHistoryBooking(film_id, i, room_id, seat_id[i], dateschedule, amount, stringDay, 0);
+                    his = bookingDao.addHistoryBooking(film_id, i, room_id, seat_id[i], dateschedule, amount, stringDay, status);
                     listHis.Add(his);
                     listG.Add(seatD.getName(seat_id[i]).seat_name);
                 }
                 DateTime now = DateTime.Now;
-                booking book = bookingDao.newObjectBooking(schedule_id, film_id, room_id, showtime_id, 1, now.Ticks.ToString());
+                booking book = bookingDao.newObjectBooking(schedule_id, film_id, room_id, showtime_id, idUserDefault, now.Ticks.ToString());
                 Session.Add(Constants.Constants.LENGTH_SEAT, seat_id);
                 Session.Add(Constants.Constants.ORDER, book);
                 return Json(new { status = Constants.Constants.STATUS_OK, data1 = listHis, data2 = listG, msg = Constants.Constants.BOOKINGTICKET_SUCCESS, JsonRequestBehavior.AllowGet });
             }          
         }
+
+        /**
+         * User payment success
+         * @return
+         */
         public ActionResult paymentSuccess()
         {
+            int status = 1;
             var userInfomatiom = (usercgv)Session[Constants.Constants.USER_SESSION];
             var arrSeat = (int[])Session[Constants.Constants.LENGTH_SEAT];
             var order = (booking)Session[Constants.Constants.ORDER];
             var dateNowString = (string)Session[Constants.Constants.DATE_NOW_STRING];
-            if (order != null && dateNowString != null){
-                bookingDao.addBookingTicket(arrSeat, order, dateNowString, userInfomatiom.id,1);
+            if (order != null && dateNowString != null) {
+                //insert booking ticket into database
+                bookingDao.addBookingTicket(arrSeat, order, dateNowString, userInfomatiom.id, status);
                 string stringLink = Constants.Constants.BOOKING_URL + dateNowString + "/" + userInfomatiom.id;
                 var link = Constants.Constants.GOOGLE_URL + stringLink;
                 string content = System.IO.File.ReadAllText(Server.MapPath(Constants.Constants.PATH_SENDMAIL));
@@ -176,18 +258,24 @@ namespace CGV.Controllers
                 Session.Remove(Constants.Constants.ORDER);
                 Session.Remove(Constants.Constants.DATE_NOW_STRING);
                 return View();
-            }else{
+            } else { 
                 return RedirectToAction("IndexUser", "Home");
             }      
         }
+
+        /**
+         * payment for user at cinema 
+         * @return
+         */
         public ActionResult paymentAtCine()
         {
+            int status = 0;
             var userInfomatiom = (usercgv)Session[Constants.Constants.USER_SESSION];
             var arrSeat = (int[])Session[Constants.Constants.LENGTH_SEAT];
             var order = (booking)Session[Constants.Constants.ORDER];
             var dateNowString = (string)Session[Constants.Constants.DATE_NOW_STRING];
-            if (order != null && dateNowString != null && userInfomatiom !=null){
-                bookingDao.addBookingTicket(arrSeat, order, dateNowString, userInfomatiom.id, 0);
+            if (order != null && dateNowString != null && userInfomatiom != null) {
+                bookingDao.addBookingTicket(arrSeat, order, dateNowString, userInfomatiom.id, status);
                 string stringLink = Constants.Constants.BOOKING_URL + dateNowString + "/" + userInfomatiom.id;
                 var link = Constants.Constants.GOOGLE_URL + stringLink;
                 string content = System.IO.File.ReadAllText(Server.MapPath(Constants.Constants.PATH_SENDMAIL));
@@ -197,51 +285,79 @@ namespace CGV.Controllers
                 Session.Remove(Constants.Constants.ORDER);
                 Session.Remove(Constants.Constants.DATE_NOW_STRING);
                 return View();
-            }else{
+            } else {
                 return RedirectToAction("IndexUser", "Home");
             }
         }
+
+        /**
+         * Admin booking ticket for user at cinema 
+         * @return
+         */
         public JsonResult paymentAtCinema()
         {
+            int idUserDefault = 1;
+            int status = 1;
             var arrSeat = (int[])Session[Constants.Constants.LENGTH_SEAT];
             var order = (booking)Session[Constants.Constants.ORDER];
             DateTime now = DateTime.Now;
-            bookingDao.addBookingTicket(arrSeat, order, now.Ticks.ToString(),1,1);
+            bookingDao.addBookingTicket(arrSeat, order, now.Ticks.ToString(), idUserDefault, status);
             return Json(new { status = Constants.Constants.STATUS_OK, msg = Constants.Constants.BOOKINGTICKET_SUCCESS, JsonRequestBehavior.AllowGet });
         }
+
+        /**
+         * User payment error
+         * @return
+         */
         public ActionResult paymentError()
         {
             var order = (booking)Session[Constants.Constants.ORDER];
             var dateNowString = (string)Session[Constants.Constants.DATE_NOW_STRING];
-            if (order != null && !string.IsNullOrEmpty(dateNowString)){
+            if (order != null && !string.IsNullOrEmpty(dateNowString)) {
                 return View();
-            }else{
+            } else {
                 return RedirectToAction("IndexUser", "Home");
             }
         }
+
+        /**
+         * get QR code for user
+         * @param dataNow
+         * @param id
+         * @return
+         */
         public ActionResult qrResult(string dateNow,int id)
         {
+            //select list order from database
             var list = filmD.getOrder(dateNow, id);
             var listHis = new List<HistoryBooking>();
             int lengthListOrder = list.Count;
             string stringDay = null;
             HistoryBooking his = null;
-            for (int i = 0; i < lengthListOrder; i++){      
-                string schedulename = scheduleD.getName(list[i].schedule_id).dateschedule.ToString();
+            string schedulename = null;
+            for (int i = 0; i < lengthListOrder; i++) {      
+                schedulename = scheduleD.getName(list[i].schedule_id).dateschedule.ToString();
                 stringDay = showtimeD.getName(list[i].showtime_id).start_time + "-" + showtimeD.getName(list[i].showtime_id).end_time;
                 his = bookingDao.addHistoryBooking(list[i].film_id, i, list[i].room_id, list[i].seat_id, schedulename, list[i].amount, stringDay, list[i].status);
                 listHis.Add(his);
             }
             return View(listHis);
         }
-     
+
+        /**
+         * post comment film for user
+         * @param idFilm
+         * @param textComment
+         * @param numberstar
+         * @return
+         */
         [HttpPost]
         public JsonResult postCommnet(int idFilm, string textComment, int numberstar)
         {
             var userInfomatiom = (usercgv)Session[Constants.Constants.USER_SESSION];
-            if (userInfomatiom == null){
+            if (userInfomatiom == null) {
                 return Json(new { status = Constants.Constants.STATUS_ERROR, msg = Constants.Constants.YOU_NEED_LOGIN, JsonRequestBehavior.AllowGet });
-            }else{
+            } else {
                 rating rating = new rating();
                 rating.film_id = idFilm;
                 rating.id_user = userInfomatiom.id;
@@ -249,18 +365,26 @@ namespace CGV.Controllers
                 rating.rate = textComment;
                 rating.number_start = numberstar;
                 commentD.comment(rating);
+                //select list comment from database by id
                 var listcomment = commentD.getCommentById(idFilm);
                 var listAjax = commentD.addCommentAjax(listcomment);
                 return Json(new { status = Constants.Constants.STATUS_SUCCESS, data = listAjax, msg = Constants.Constants.MSG_SUCCESS, JsonRequestBehavior.AllowGet });
             }
         }
+
+        /**
+         * delete comment film for user
+         * @param idFilm
+         * @param id
+         * @return
+         */
         [HttpPost]
         public JsonResult deleteComment(int id,int idFilm)
         {           
             commentD.deleteComment(id);
             var listcomment = commentD.getCommentById(idFilm);
             int lengthList = listcomment.Count;
-            return Json(new { status = Constants.Constants.STATUS_SUCCESS,data = lengthList,  msg = Constants.Constants.MSG_SUCCESS, JsonRequestBehavior.AllowGet });
+            return Json(new { status = Constants.Constants.STATUS_SUCCESS,data = lengthList, msg = Constants.Constants.MSG_SUCCESS, JsonRequestBehavior.AllowGet });
         }
         /**
          * get history booking ticket of user
@@ -269,17 +393,18 @@ namespace CGV.Controllers
         public ActionResult HistoryBooking()
         {
             var user = Session[Constants.Constants.USER_SESSION];
-            if (user == null){
+            if (user == null) {
                 return RedirectToAction("IndexUser", "Home");
-            }else{
+            } else {
                 var userInfomatiom = (usercgv)Session[Constants.Constants.USER_SESSION];
                 var list = filmD.getBooking(userInfomatiom.id);
                 var listHis = new List<HistoryBooking>();
                 int lengthListOrder = list.Count;
                 string stringDay = null;
+                string dateschedule = null;
                 HistoryBooking his = null;
-                for (int i = 0; i < lengthListOrder; i++){
-                    string dateschedule = String.Format(Constants.Constants.FORMAT_DATE, scheduleD.getName(list[i].schedule_id).dateschedule);
+                for (int i = 0; i < lengthListOrder; i++) {
+                    dateschedule = String.Format(Constants.Constants.FORMAT_DATE, scheduleD.getName(list[i].schedule_id).dateschedule);
                     stringDay = showtimeD.getName(list[i].showtime_id).start_time + "-" + showtimeD.getName(list[i].showtime_id).end_time;
                     his = bookingDao.addHistoryBooking(list[i].film_id, i, list[i].room_id, list[i].seat_id, dateschedule, 3, stringDay, list[i].status);
                     listHis.Add(his);

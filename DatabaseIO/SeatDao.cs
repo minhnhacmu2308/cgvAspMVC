@@ -1,8 +1,8 @@
-﻿using Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using Model;
 
 namespace DatabaseIO
 {
@@ -100,7 +100,7 @@ namespace DatabaseIO
         public bool checkName(string name)
         {
             var user = mydb.seats.Where(u => u.seat_name == name).FirstOrDefault();
-            if (user != null){
+            if (user != null) {
                 return true;
             }
             return false; ;
@@ -115,9 +115,9 @@ namespace DatabaseIO
         {
             string sql = "select * from roomseat where id_seat = '" + id + "'";
             var roomseat = mydb.Database.SqlQuery<roomseat>(sql).FirstOrDefault();
-            if(roomseat != null){
+            if (roomseat != null) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
         }

@@ -1,8 +1,8 @@
-﻿using DatabaseIO;
-using Model;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using DatabaseIO;
+using Model;
 
 namespace CGV.Controllers
 {
@@ -55,18 +55,22 @@ namespace CGV.Controllers
         {
             return View("IndexUser");
         }
+
+        /**
+         * get information for user
+         * @param email
+         * @return
+         */
         public ActionResult ProfileUser(string email)
         {
             var user = Session[Constants.Constants.USER_SESSION];
-            if (user == null){
+            if (user == null) {
                 return RedirectToAction("IndexUser", "Home");
-            }else{
+            } else {
                 UserDao userD = new UserDao();
                 var model = userD.getInformation(email);
                 return View(model);
-            }
-           
+            }         
         }
-
     }
 }

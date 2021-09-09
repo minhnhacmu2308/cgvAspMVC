@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Model;
 namespace DatabaseIO
 {
@@ -121,6 +122,21 @@ namespace DatabaseIO
                 }
             }
             return false;
+        }
+
+        /**
+         * get list booking before the premiere time
+         * @return
+         */
+        public List<booking> getBooking()
+        {
+            return mydb.Database.SqlQuery<booking>("select a.* from booking a, schedules b, showtimes c where a.schedule_id = b.id and a.status = 0 and a.showtime_id = c.id and CONVERT(varchar, b.dateschedule, 101) = CONVERT(varchar, getdate(), 101) and(cast(CONVERT(datetime, c.start_time, 101) as float) - floor(cast(CONVERT(datetime, c.start_time, 101) as float))) - (cast(getdate() as float) - FLOOR(cast(getdate() as float))) <= 0.0833333333333333 and(cast(CONVERT(datetime, c.start_time, 101) as float) - floor(cast(CONVERT(datetime, c.start_time, 101) as float))) - (cast(getdate() as float) - FLOOR(cast(getdate() as float))) > 0").ToList();
+        }
+        public void Delete(int id)
+        {
+            //delete from booking by id
+            string SQL = "DELETE FROM booking WHERE id = '" + id + "'";
+            mydb.Database.ExecuteSqlCommand(SQL);
         }
     }
 }

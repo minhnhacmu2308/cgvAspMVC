@@ -1,5 +1,5 @@
-﻿using DatabaseIO;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using DatabaseIO;
 using Model;
 
 namespace CGV.Controllers
@@ -12,11 +12,22 @@ namespace CGV.Controllers
         {
             return View();
         }
+
+        /**
+         * get list introduce for user
+         * @return
+         */
         public ActionResult Promotion()
         {
             var list = postD.getListIntroduce();
             return View(list);
         }
+
+        /**
+         * get detail introduce by id for user
+         * @param id
+         * @return
+         */
         public ActionResult DetailPromotion(string id)
         {
             post post = postD.getDetailPromotion(id);

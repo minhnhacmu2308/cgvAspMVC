@@ -1,7 +1,7 @@
-﻿using Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Model;
 
 
 namespace DatabaseIO
@@ -101,7 +101,7 @@ namespace DatabaseIO
         {
             string sql = "select a.* from schedules a,scheduleroom b, booking c where  a.id = b.id_schedule and a.dateschedule = '"+datesche+"' and b.id_room = '"+idRoom+"' and c.film_id = '"+idFilm+"'";
             var scheduleR = mydb.Database.SqlQuery<schedule>(sql).FirstOrDefault();
-            if (scheduleR != null){
+            if (scheduleR != null) {
                 return true;
             }
             return false;
@@ -118,7 +118,7 @@ namespace DatabaseIO
         {
             string sql = "select a.* from schedules a,scheduleroom b where  a.id = b.id_schedule and a.dateschedule = '" + datesche + "' and b.id_room = '" + idRoom + "' and a.film_id = '"+idFilm+"'";
             var scheduleR = mydb.Database.SqlQuery<schedule>(sql).FirstOrDefault();
-            if (scheduleR != null){
+            if (scheduleR != null) {
                 return true;
             }
             return false;
@@ -154,9 +154,9 @@ namespace DatabaseIO
             string sql1 = "select * from booking where schedule_id = '" + idSchedule + "' and room_id = '" + id_room + "'";
             var check = mydb.Database.SqlQuery<showtime>(sql).FirstOrDefault();
             var checkObj = mydb.Database.SqlQuery<booking>(sql1).FirstOrDefault();
-            if(check != null || checkObj != null){
+            if (check != null || checkObj != null) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
         }

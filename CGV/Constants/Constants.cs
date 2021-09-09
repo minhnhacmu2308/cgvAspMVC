@@ -57,6 +57,6 @@ namespace CGV.Constants
         public static string FORMAT_DATE_SCHEDULE = "{0:yyyyMMdd}";
         public static string PATH_SENDMAIL = "~/Content/Assets/html/sendQRMail.html";
         public static string FORMAT_DATE_STRING = "yyyyMMdd";
-        public static string CHANGE_DATABASE = "❌ Dữ liệu đã có sự thay đổi vui lòng reload lại trang";
+        public static string CHANGE_DATABASE = "❌ Ghế bạn chọn đã đặt bởi người khác vui lòng reload lại trang";
     }
 }

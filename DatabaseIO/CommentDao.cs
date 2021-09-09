@@ -61,8 +61,7 @@ namespace DatabaseIO
             var listAjax = new List<CommentAjax>();
             CommentAjax commentA = null;
             int lengthComment = listComment.Count;
-            for (int i = 0; i <lengthComment; ++i)
-            {
+            for (int i = 0; i <lengthComment; ++i){
                 commentA = new CommentAjax();
                 commentA.id = listComment[i].id;
                 commentA.film_id = listComment[i].film_id;

@@ -34,16 +34,30 @@
 
 <body>
     <!--navigation-------------->
-        @Html.Action("Header", "Modules");
+    @Html.Action("Header", "Modules");
     <div id="content">
         @RenderBody();
     </div>
-    
+
     <!--footer------------------>
     <footer>
-      @Html.Action("Footer","Modules")
+        @Html.Action("Footer", "Modules")
     </footer>
-    @RenderSection("scripts",required:false)
+    @RenderSection("scripts", required: false)
+    <script>
+        $.ajax({
+            url: "/AdminBooking/Remove",
+            type: "post",
+            data: {
+
+            },
+            success: function (data) {
+
+            }
+
+
+        })
+    </script>
 </body>
 
 </html>

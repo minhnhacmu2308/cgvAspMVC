@@ -62,5 +62,17 @@ namespace CGV.Controllers.Admin
             bk.accpect(id);
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public JsonResult Remove()
+        {
+            List<booking> list = bk.getBooking();
+            if (list.Count() != 0){
+                for (int i = 0; i < list.Count(); i++){
+                    bk.Delete(list[i].id);
+                }
+            }
+            return Json(new { status = "SUCCESS", msg = "THÀNH CÔNG", JsonRequestBehavior.AllowGet });
+        }
     }
 }

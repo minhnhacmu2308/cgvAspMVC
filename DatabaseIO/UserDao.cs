@@ -117,7 +117,7 @@ namespace DatabaseIO
             List<rating> user = mydb.Database.SqlQuery<rating>(sql, new SqlParameter("@id", id)).ToList();
             string sqlb = "SELECT * FROM booking WHERE id_user = @id";
             List<booking> userb = mydb.Database.SqlQuery<booking>(sqlb, new SqlParameter("@id", id)).ToList();
-            if (user.Count != 0 || userb.Count != 0){
+            if (user.Count != 0 || userb.Count != 0) {
                 return true;
             }
             return false; ;
