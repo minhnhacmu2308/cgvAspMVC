@@ -201,8 +201,8 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Cập nhập</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            <h5 class="modal-title" id="exampleModalLabel">Sửa</h5>
+                                            <button style="width100px" type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -212,16 +212,16 @@
                                                     <div class="mb-3">
                                                         <label for="category-film" class="col-form-label">
                                                             Ngày
-                                                            chiếu:
+                                                            chiếu <span style="color:red">* </span>:
                                                         </label>
-                                                        @{ 
+                                                        @{
                                                             String a = "";
                                                         }
                                                         <input type="text" class="form-control"
                                                                id="category-film" value="@foreach (var item1 in schedule)
                                     {
                                                                    var dateschedule = String.Format("{0:yyyy-MM-dd}", item1.dateschedule);
-                                                                 
+
                                         if (item1.id == item.schedule_id)
                                         {
                                             @dateschedule;
@@ -231,7 +231,7 @@
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="category-film"
-                                                               class="col-form-label">Phòng</label>
+                                                               class="col-form-label">Phòng <span style="color:red">* </span>:</label>
                                                         @foreach (var r in listRoom1)
                                                         {
                                                             if (r.id == item.id_room)
@@ -247,17 +247,17 @@
 
                                                     </div>
                                                     @{ DateTime now1 = DateTime.Now; var s1 = now1.AddHours(3).ToString("HH"); int minTime1 = Int32.Parse(s1); string minString1 = minTime1 + ":00";
-                                                       
-                                                      
-                                                        }
-                                                   
+
+
+                                                    }
+
                                                     @if (minTime1 < 23)
                                                     {
                                                         <div class="mb-3">
                                                             <label for="category-film" class="col-form-label">
-                                                               
+
                                                             </label>
-                                                            <label for="appt-time1">Chọn thời gian từ @minString1  đến 23:00: </label>
+                                                            <label for="appt-time1">Chọn thời gian từ @minString1  đến 23:00 <span style="color:red">* </span>: </label>
                                                             <input id="appt-time1" class="form-control" type="time" name="start"
                                                                    min="@minString1" max="23:00" value="@item.start_time" required>
                                                             <span class="validity"></span>
@@ -268,7 +268,7 @@
                                                     {
                                                         <div class="mb-3">
                                                             <label for="category-film" class="col-form-label">
-                                                                Bắt đầu:
+                                                                Bắt đầu <span style="color:red">* </span>:
                                                             </label>
                                                             <label for="appt-time1">Hết hạn đăng suất chiếu</label>
                                                             <input id="appt-time1" class="form-control" type="time" name="start"
@@ -276,20 +276,18 @@
                                                             <span class="validity"></span>
                                                         </div>
                                                     }
-
-
-
+                                                    <div class="modal-footer">
+                                                        <button style="width:100px" type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">
+                                                            Đóng
+                                                        </button>
+                                                        <button style="width:100px" type="submit" class="btn btn-primary">Lưu</button>
+                                                    </div>
                                                 </div>
-                                                <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">
-                                                    Đóng
-                                                </button>
-                                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                               
                                             </form>
                                         </div>
-                                        <div class="modal-footer">
-
-                                        </div>
+                                       
                                     </div>
                                 </div>
                             </div>
@@ -322,7 +320,7 @@
 
                     <div class="mb-3">
                         <label for="category-film"
-                               class="col-form-label">Phim:</label>
+                               class="col-form-label">Phim <span style="color:red">* </span>:</label>
                         <select class="form-select"
                                 aria-label="Default select example" name="filmid" required onchange="filmChanged(this)">
                             <option value="">Chọn phim</option>
@@ -335,14 +333,14 @@
                     <div class="mb-3">
                         <div class="mb-3">
                             <label for="category-film"
-                                   class="col-form-label">Lịch chiếu:</label>
+                                   class="col-form-label">Lịch chiếu <span style="color:red">* </span>:</label>
                             <select class="form-select"
                                     aria-label="Default select example" name="id" id="nameschedule" onchange="scheduleChanged(this)" required>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="category-film"
-                                   class="col-form-label">Phòng</label>
+                                   class="col-form-label">Phòng <span style="color:red">* </span>:</label>
                             <select class="form-select"
                                     aria-label="Default select example" name="idroom" id="nameroom" required>
                             </select>
@@ -350,31 +348,31 @@
 
                         <div id="checkDay">
                             @*
-                                @if (minTime < 23)
-                                {
-                                    <div class="mb-3">
-                                        <label for="category-film" class="col-form-label">
+                @if (minTime < 23)
+                {
+                    <div class="mb-3">
+                        <label for="category-film" class="col-form-label">
 
-                                        </label>
-                                        <label for="appt-time1">Chọn thời gian từ @minString  đến 23:00: </label>
-                                        <input id="appt-time1" class="form-control" type="time" name="start"
-                                               min="@minString" max="23:00" required>
-                                        <span class="validity"></span>
-                                        <p style="color:red" id="error"></p>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="mb-3">
-                                        <label for="category-film" class="col-form-label">
-                                            Bắt đầu:
-                                        </label>
-                                        <label for="appt-time1">Hết hạn đăng suất chiếu</label>
-                                        <input id="appt-time1" class="form-control" type="time" name="start"
-                                               min="@minString" max="23:00" readonly required>
-                                        <span class="validity"></span>
-                                    </div>
-                                }*@
+                        </label>
+                        <label for="appt-time1">Chọn thời gian từ @minString  đến 23:00: </label>
+                        <input id="appt-time1" class="form-control" type="time" name="start"
+                               min="@minString" max="23:00" required>
+                        <span class="validity"></span>
+                        <p style="color:red" id="error"></p>
+                    </div>
+                }
+                else
+                {
+                    <div class="mb-3">
+                        <label for="category-film" class="col-form-label">
+                            Bắt đầu:
+                        </label>
+                        <label for="appt-time1">Hết hạn đăng suất chiếu</label>
+                        <input id="appt-time1" class="form-control" type="time" name="start"
+                               min="@minString" max="23:00" readonly required>
+                        <span class="validity"></span>
+                    </div>
+                }*@
                         </div>
 
 
@@ -396,52 +394,52 @@
                                 var minString = $('#idMinString').val();
                                 if (parseInt(minTime) < 23) {
                                     html += `<div class="mb-3">
-                                                        <label for="category-film" class="col-form-label">
+                                                                            <label for="category-film" class="col-form-label">
 
-                                                        </label>
-                                                        <label for="appt-time1">Chọn thời gian từ `+ minString + ` đến 23:00: </label>
-                                                        <input id="appt-time1" class="form-control" type="time" name="start"
-                                                               min="`+ minString + `" max="23:00" required>
-                                                        <span class="validity"></span>
-                                                        <p style="color:red" id="error"></p>
-                                                    </div>`
+                                                                            </label>
+                                                                            <label for="appt-time1">Chọn thời gian từ `+ minString + ` đến 23:00: </label>
+                                                                            <input id="appt-time1" class="form-control" type="time" name="start"
+                                                                                   min="`+ minString + `" max="23:00" required>
+                                                                            <span class="validity"></span>
+                                                                            <p style="color:red" id="error"></p>
+                                                                        </div>`
                                 } else {
                                     html += `<div class="mb-3">
-                                                            <label for="category-film" class="col-form-label">
-                                                                Bắt đầu:
-                                                            </label>
-                                                            <label for="appt-time1">Hết hạn đăng suất chiếu</label>
-                                                            <input id="appt-time1" class="form-control" type="time" name="start"
-                                                                   readonly required>
-                                                            <span class="validity"></span>
-                                                        </div>`
+                                                                                <label for="category-film" class="col-form-label">
+                                                                                    Bắt đầu:
+                                                                                </label>
+                                                                                <label for="appt-time1">Hết hạn đăng suất chiếu</label>
+                                                                                <input id="appt-time1" class="form-control" type="time" name="start"
+                                                                                       readonly required>
+                                                                                <span class="validity"></span>
+                                                                            </div>`
                                 }
                             } else {
                                 html += `<div class="mb-3">
-                                                        <label for="category-film" class="col-form-label">
-                                                            Bắt đầu:
-                                                        </label>
+                                                                            <label for="category-film" class="col-form-label">
+                                                                                Bắt đầu:
+                                                                            </label>
 
-                                                        <input id="appt-time1" class="form-control" type="time" name="start"
-                                                               max="23:00" required>
-                                                        <span class="validity"></span>
-                                                    </div>`;
+                                                                            <input id="appt-time1" class="form-control" type="time" name="start"
+                                                                                   max="23:00" required>
+                                                                            <span class="validity"></span>
+                                                                        </div>`;
 
 
                             }
                             $('#checkDay').html(html);
                         }
                     </script>
-                    <button type="button" class="btn btn-secondary"
-                            data-bs-dismiss="modal">
-                        Đóng
-                    </button>
-                    <button type="submit" class="btn btn-primary">Save </button>
+                    <div class="modal-footer">
+                        <button style="width:100px" type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">
+                            Đóng
+                        </button>
+                        <button style="width:100px" type="submit" class="btn btn-primary">Lưu </button>
+                    </div>
                 </form>
             </div>
-            <div class="modal-footer">
-
-            </div>
+           
         </div>
     </div>
 </div>

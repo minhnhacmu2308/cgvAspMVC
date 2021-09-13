@@ -1,9 +1,23 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Model;
+
 namespace DatabaseIO
 {
-    
+    /**
+     * BookingDao
+     * 
+     * Version 1.0
+     * 
+     * Date 07-08-2021
+     * 
+     * Copyright
+     * 
+     * Modification Logs:
+     * DATE            AUTHOR            DESCRIPTION
+     * ----------------------------------------------
+     * 07-08-2021      NhaNM2              Create
+     */
     public class BookingDao
     {
         MyDB mydb = new MyDB();
@@ -33,16 +47,17 @@ namespace DatabaseIO
          */
         public booking newObjectBooking(int schedule_id,int film_id,int room_id,int showtime_id, int id_user, string create_time)
         {
-          
+            int statusBook = 0;
+            int amountDefault = 3;
             booking book = new booking();
             book.schedule_id = schedule_id;
             book.film_id = film_id;
             book.room_id = room_id;
             book.showtime_id = showtime_id;
             book.id_user = id_user;
-            book.status = 0;
+            book.status = statusBook;
             book.create_time = create_time;
-            book.amount = 3;
+            book.amount = amountDefault;
             return book;
         }
 
@@ -57,6 +72,7 @@ namespace DatabaseIO
         public void addBookingTicket(int[] arrSeat,booking order, string create_time,int id_user,int status)
         {
             booking book = new booking();
+            int amountDefault = 3;
             int lengthArSeat = arrSeat.Length;
             for (int i = 0; i < lengthArSeat; i++)
             {
@@ -68,7 +84,7 @@ namespace DatabaseIO
                 book.id_user = id_user;
                 book.status = status;
                 book.create_time = order.create_time;
-                book.amount = 3;
+                book.amount = amountDefault;
                 // add a booking ticket into database
                 filmD.bookingTicket(book, create_time);
             }
@@ -113,11 +129,11 @@ namespace DatabaseIO
         public bool checkBooking(int film_id, int schedule_id, int showtime_id, int room_id, int[] seat_id)
         {
             int lengthArrSeatId = seat_id.Length;
-            for (int i=0 ; i< lengthArrSeatId; i++){
+            for (int i = 0 ; i < lengthArrSeatId; i ++) {
                 int idSeat = seat_id[i];
                 var booking = mydb.bookings.Where(b => b.film_id == film_id && b.schedule_id == schedule_id && b.room_id == room_id 
                 && b.seat_id == idSeat && b.showtime_id == showtime_id).FirstOrDefault();
-                if(booking != null){
+                if (booking != null) {
                     return true;
                 }
             }

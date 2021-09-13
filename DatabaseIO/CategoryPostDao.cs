@@ -1,12 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Model;
+
 namespace DatabaseIO
 {
+    /**
+     * CategoryPostDao
+     * 
+     * Version 1.0
+     * 
+     * Date 07-08-2021
+     * 
+     * Copyright
+     * 
+     * Modification Logs:
+     * DATE            AUTHOR            DESCRIPTION
+     * ----------------------------------------------
+     * 07-08-2021      NhaNM2              Create
+     */
     public class CategoryPostDao
     {
         MyDB mydb = new MyDB();
@@ -47,7 +59,7 @@ namespace DatabaseIO
         {
             string sql = "SELECT * FROM category_post WHERE name = N'" + name + "'";
             var user = mydb.Database.SqlQuery<category_post>(sql).FirstOrDefault();
-            if (user != null){
+            if (user != null) {
                 return true;
             }
             return false;
@@ -63,7 +75,7 @@ namespace DatabaseIO
         {
             string sql = "SELECT * FROM category_post WHERE name = N'" + name + "' and id = @id";
             var user = mydb.Database.SqlQuery<category_post>(sql, new SqlParameter("@id", id)).FirstOrDefault();
-            if (user != null){
+            if (user != null) {
                 return true;
             }
             return false;

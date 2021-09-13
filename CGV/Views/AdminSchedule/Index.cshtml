@@ -129,7 +129,7 @@
                                                         <div class="mb-3">
                                                             <label for="category-film" class="col-form-label">
                                                                 Ngày
-                                                                chiếu:
+                                                                chiếu <span style="color:red">* </span>:
                                                             </label>
                                                             <input type="text" class="form-control"
                                                                    id="category-film" value="@dateschedule" disabled>
@@ -137,7 +137,7 @@
                                                         <div class="mb-3">
                                                             <label for="category-film" class="col-form-label">
                                                                 Bắt
-                                                                đầu:
+                                                                đầu <span style="color:red">* </span>:
                                                             </label>
                                                             <input type="time" class="form-control"
                                                                    id="category-film" name="start" required>
@@ -145,22 +145,22 @@
                                                         <div class="mb-3">
                                                             <label for="category-film" class="col-form-label">
                                                                 Kết
-                                                                thúc:
+                                                                thúc <span style="color:red">* </span>:
                                                             </label>
                                                             <input type="time" class="form-control"
                                                                    id="category-film" name="end" required>
                                                         </div>
                                                     </div>
-                                                    <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">
-                                                        Close
-                                                    </button>
-                                                    <button type="submit" class="btn btn-primary">Save </button>
+                                                    <div class="modal-footer">
+                                                        <button style="width:100px" type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">
+                                                            Đóng
+                                                        </button>
+                                                        <button style="width:100px" type="submit" class="btn btn-primary">Lưu </button>
+                                                    </div>
                                                 </form>
                                             </div>
-                                            <div class="modal-footer">
-
-                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -200,11 +200,11 @@
                                             }
 
                                             <div class="modal-footer" style="margin-top: 20px">
-                                                <button type="button" class="btn btn-secondary"
+                                                <button style="width:100px" type="button" class="btn btn-secondary"
                                                         data-bs-dismiss="modal">
-                                                    Close
+                                                    Đóng
                                                 </button>
-                                                <button type="submit" class="btn btn-danger"> Xóa</button>
+                                                <button style="width:100px" type="submit" class="btn btn-danger"> Xóa</button>
 
                                             </div>
 
@@ -227,7 +227,7 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Cập nhập</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">Sửa</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                         </div>
@@ -236,7 +236,7 @@
                                                 <input type="hidden" class="form-control" id="id" name="id" value="@item.id">
                                                 <div class="mb-3">
                                                     <label for="category-film"
-                                                           class="col-form-label">Phim:</label>
+                                                           class="col-form-label">Phim <span style="color:red">* </span>:</label>
                                                     <select class="form-select"
                                                             aria-label="Default select example" name="filmid" required>
 
@@ -257,41 +257,41 @@
                                                 <div class="mb-3">
                                                     <label for="category-film" class="col-form-label">
                                                         Ngày
-                                                        chiếu:
+                                                        chiếu <span style="color:red">* </span>:
                                                     </label>
                                                     <input type="date" class="form-control" id="category-film" name="dateschedule" min="@dtnoww" value="@dateschedule" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="category-film" class="col-form-label">
-                                                        Phòng
+                                                        Phòng <span style="color:red">* </span>:
                                                     </label>
                                                     @{
                                                         var listRoom1 = new DatabaseIO.RoomDao().getAll();
                                                         var nameR = new DatabaseIO.ScheduleDao().getNameRoom(item.id);
                                                     }
-                                                <select required class="form-select" id="idroom" name="idroom" aria-label="Default select example">
-                                                    @if (nameR != null)
-                                                    {
-                                                        <option value="@nameR.id">@nameR.room_name</option>
-                                                    }
+                                                    <select required class="form-select" id="idroom" name="idroom" aria-label="Default select example">
+                                                        @if (nameR != null)
+                                                        {
+                                                            <option value="@nameR.id">@nameR.room_name</option>
+                                                        }
 
-                                                    @foreach (var r in listRoom1)
-                                                    {
-                                                        <option value="@r.id">@r.room_name</option>
-                                                    }
+                                                        @foreach (var r in listRoom1)
+                                                        {
+                                                            <option value="@r.id">@r.room_name</option>
+                                                        }
 
-                                                </select>
+                                                    </select>
                                                 </div>
-                                                <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">
-                                                    Close
-                                                </button>
-                                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                                <div class="modal-footer">
+                                                    <button style="width:100px" type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">
+                                                       Đóng
+                                                    </button>
+                                                    <button style="width:100px" type="submit" class="btn btn-primary">Lưu</button>
+                                                </div>
                                             </form>
                                         </div>
-                                        <div class="modal-footer">
-
-                                        </div>
+                                       
                                     </div>
                                 </div>
                             </div>
@@ -318,7 +318,7 @@
                 <form method="POST" action="/AdminSchedule/Add" class="register-form" id="register-form">
                     <div class="mb-3">
                         <label for="category-film"
-                               class="col-form-label">Phim:</label>
+                               class="col-form-label">Phim <span style="color:red">* </span>:</label>
                         <select class="form-select"
                                 aria-label="Default select example" name="filmid" required>
 
@@ -333,13 +333,13 @@
                     <div class="mb-3">
                         <label for="category-film" class="col-form-label">
                             Ngày
-                            chiếu:
+                            chiếu <span style="color:red">* </span>:
                         </label>
                         <input type="date" class="form-control" id="category-film" name="dateschedule" min="@dtnoww" required>
                     </div>
                     <div class="mb-3">
                         <label for="category-film" class="col-form-label">
-                          Phòng
+                          Phòng <span style="color:red">* </span>:
                         </label>
                         @{ 
                             var listRoom = new DatabaseIO.RoomDao().getAll();
@@ -351,18 +351,17 @@
                         }
                        
                     </select>
+                    </div>                
+                    <div class="modal-footer">
+                        <button style="width:100px" type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">
+                            Đóng
+                        </button>
+                        <button style="width:100px" type="submit" class="btn btn-primary">Lưu </button>
                     </div>
-                  
-                    <button type="button" class="btn btn-secondary"
-                            data-bs-dismiss="modal">
-                        Close
-                    </button>
-                    <button type="submit" class="btn btn-primary">Save </button>
                 </form>
             </div>
-            <div class="modal-footer">
-
-            </div>
+            
         </div>
     </div>
 </div>

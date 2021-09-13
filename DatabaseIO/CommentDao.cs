@@ -1,15 +1,27 @@
-﻿using Model;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-
+using Model;
 
 namespace DatabaseIO
 {
-    public  class CommentDao
+    /**
+     * CommentDao
+     * 
+     * Version 1.0
+     * 
+     * Date 07-08-2021
+     * 
+     * Copyright
+     * 
+     * Modification Logs:
+     * DATE            AUTHOR            DESCRIPTION
+     * ----------------------------------------------
+     * 07-08-2021      NhaNM2              Create
+     */
+    public class CommentDao
     {
         MyDB mydb = new MyDB();
-
 
         /**
          * get list comment by id from database 
@@ -61,7 +73,7 @@ namespace DatabaseIO
             var listAjax = new List<CommentAjax>();
             CommentAjax commentA = null;
             int lengthComment = listComment.Count;
-            for (int i = 0; i <lengthComment; ++i){
+            for (int i = 0; i <lengthComment; ++i) {
                 commentA = new CommentAjax();
                 commentA.id = listComment[i].id;
                 commentA.film_id = listComment[i].film_id;

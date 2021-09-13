@@ -94,11 +94,11 @@
                                                     <form action="/AdminSeat/Delete" method="post">
                                                         <input type="hidden" class="form-control" id="id" name="id" value="@item.id">
                                                         <div class="modal-footer" style="margin-top: 20px">
-                                                            <button type="button" class="btn btn-secondary"
+                                                            <button style="width:100px" type="button" class="btn btn-secondary"
                                                                     data-bs-dismiss="modal">
-                                                                Close
+                                                                Đóng
                                                             </button>
-                                                            <button type="submit" class="btn btn-danger"> Xóa</button>
+                                                            <button style="width:100px" type="submit" class="btn btn-danger"> Xóa</button>
 
                                                         </div>
 
@@ -120,7 +120,7 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Cập nhập</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">Sửa</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                         </div>
@@ -129,19 +129,19 @@
                                                 <input type="hidden" class="form-control" id="id" name="id" value="@item.id">
                                                 <div class="mb-3">
                                                     <label for="category-film"
-                                                           class="col-form-label">Name:</label>
+                                                           class="col-form-label">Tên <span style="color:red">* </span>:</label>
                                                     <input type="text" class="form-control" id="category-film" name="seatname" value="@item.seat_name" required>
                                                 </div>
-                                                <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">
-                                                    Close
-                                                </button>
-                                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                                <div class="modal-footer">
+                                                    <button style="width:100px" type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">
+                                                        Đóng
+                                                    </button>
+                                                    <button style="width:100px" type="submit" class="btn btn-primary">Lưu</button>
+                                                </div>
                                             </form>
                                         </div>
-                                        <div class="modal-footer">
-
-                                        </div>
+                                       
                                     </div>
                                 </div>
                             </div>
@@ -167,19 +167,19 @@
                 <form method="POST" action="/AdminSeat/Add" class="register-form" id="register-form">
                     <div class="mb-3">
                         <label for="category-film"
-                               class="col-form-label">Name:</label>
+                               class="col-form-label">Tên <span style="color:red">* </span>:</label>
                         <input type="text" class="form-control" id="category-film" name="seatname" required>
                     </div>
-                    <button type="button" class="btn btn-secondary"
-                            data-bs-dismiss="modal">
-                        Close
-                    </button>
-                    <button type="submit" class="btn btn-primary">Save </button>
+                    <div class="modal-footer">
+                        <button style="width:100px" type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">
+                            Đóng
+                        </button>
+                        <button style="width:100px" type="submit" class="btn btn-primary">Lưu </button>
+                    </div>
                 </form>
             </div>
-            <div class="modal-footer">
-
-            </div>
+            
         </div>
     </div>
 </div>

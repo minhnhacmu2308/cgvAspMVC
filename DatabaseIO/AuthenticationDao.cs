@@ -4,9 +4,22 @@ using System.Text;
 using System.Security.Cryptography;
 using Model;
 
-
 namespace DatabaseIO
 {
+    /**
+     * AuthenticationDao
+     * 
+     * Version 1.0
+     * 
+     * Date 07-08-2021
+     * 
+     * Copyright
+     * 
+     * Modification Logs:
+     * DATE            AUTHOR            DESCRIPTION
+     * ----------------------------------------------
+     * 07-08-2021      NhaNM2              Create
+     */
     public class AuthenticationDao
     {
         MyDB mydb = new MyDB();
@@ -22,7 +35,7 @@ namespace DatabaseIO
                 byte[] inputString = System.Text.Encoding.ASCII.GetBytes(password);
                 byte[] hash = md.ComputeHash(inputString);
                 StringBuilder sb = new StringBuilder();
-                for(int i = 0; i<hash.Length;i++){
+                for (int i = 0; i<hash.Length;i++) {
                     sb.Append(hash[i].ToString("x"));
                 }
                 return sb.ToString();
@@ -36,7 +49,7 @@ namespace DatabaseIO
         public bool checkEmail(string email)
         {
             var user = mydb.usercgvs.Where(u => u.email == email).FirstOrDefault();
-            if(user != null){
+            if (user != null) {
                 return true;
             }
             return false;
@@ -51,9 +64,9 @@ namespace DatabaseIO
         public bool checklogin(string email,string password)
         {
             var result = mydb.usercgvs.Where(u => u.email == email && u.password == password && u.role_id ==3).FirstOrDefault();
-            if(result != null){
+            if (result != null) {
                 return true;           
-            }else{
+            } else {
                 return false;
             }
         }
@@ -65,9 +78,9 @@ namespace DatabaseIO
         public bool checkActive(string email)
         {
             var result = mydb.usercgvs.Where(u => u.email == email).FirstOrDefault();
-            if(result.is_active == 0){
+            if (result.is_active == 0) {
                 return false;
-            }else{
+            } else {
                 return true;
             }
         }
@@ -90,14 +103,14 @@ namespace DatabaseIO
          */
         static bool IsNumeric(string value)
         {
-            try{
+            try {
                 char[] chars = value.ToCharArray();
-                foreach (char c in chars){
+                foreach (char c in chars) {
                     if (char.IsNumber(c))
                         return true;
                 }
                 return false;
-            }catch (Exception e) {
+            } catch (Exception e) {
                 Console.WriteLine(e);
                 return false;
             }
@@ -112,7 +125,7 @@ namespace DatabaseIO
         {
             string temp = "";
             bool check = IsNumeric(password);
-            if (password.Length < 6){
+            if (password.Length < 6) {
                 return "Mật khẩu phải ít nhất 6 kí tự";
             }
             return temp;

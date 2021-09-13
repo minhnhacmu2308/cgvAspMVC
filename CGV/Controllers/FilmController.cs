@@ -1,9 +1,9 @@
-﻿using DatabaseIO;
-using Model;
-using Stripe.Checkout;
+﻿using Stripe.Checkout;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using DatabaseIO;
+using Model;
 using CGV.Utils;
 
 

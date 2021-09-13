@@ -1,9 +1,8 @@
-﻿using Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-
+using Model;
 
 namespace DatabaseIO
 {
@@ -98,7 +97,7 @@ namespace DatabaseIO
         {
             string sql = "select * from booking where showtime_id = '" + idShowtime + "'";
             var showtimeOBj = mydb.Database.SqlQuery<booking>(sql).FirstOrDefault();
-            if(showtimeOBj != null){
+            if (showtimeOBj != null) {
                 return true;
             }
             return false;
@@ -112,10 +111,9 @@ namespace DatabaseIO
         public bool checkExistShowtime(int showthime_id)
         {
             var showtime = mydb.showtimes.Where(s => s.id == showthime_id).FirstOrDefault();
-            if(showtime != null)
-            {
+            if (showtime != null) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
         }

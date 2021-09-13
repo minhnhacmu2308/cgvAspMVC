@@ -3,10 +3,23 @@ using System.Data.SqlClient;
 using System.Linq;
 using Model;
 
-
 namespace DatabaseIO
 {
-    public  class RoomDao
+    /**
+     * RoomDao
+     * 
+     * Version 1.0
+     * 
+     * Date 07-08-2021
+     * 
+     * Copyright
+     * 
+     * Modification Logs:
+     * DATE            AUTHOR            DESCRIPTION
+     * ----------------------------------------------
+     * 07-08-2021      NhaNM2              Create
+     */
+    public class RoomDao
     {
         MyDB mydb = new MyDB();
 
