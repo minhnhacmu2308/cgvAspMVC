@@ -73,7 +73,7 @@ namespace CGV.Controllers.Admin
                 client.Port = !string.IsNullOrEmpty(smtpPort) ? Convert.ToInt32(smtpPort) : 0;
                 client.Send(message);
             }
-            var messag = "Thêm thành công";
+            var messag = "2";
             return RedirectToAction("Index", new { mess = messag });
         }
 

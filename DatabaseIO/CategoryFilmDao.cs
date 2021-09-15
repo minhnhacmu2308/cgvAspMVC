@@ -4,7 +4,21 @@ using System.Linq;
 using Model;
 
 namespace DatabaseIO
-{   
+{
+    /**
+     * CategoryFilmDao
+     * 
+     * Version 1.0
+     * 
+     * Date 07-08-2021
+     * 
+     * Copyright
+     * 
+     * Modification Logs:
+     * DATE            AUTHOR            DESCRIPTION
+     * ----------------------------------------------
+     * 07-08-2021      NhaNM2              Create
+     */
     public class CategoryFilmDao
     {
         MyDB mydb = new MyDB();

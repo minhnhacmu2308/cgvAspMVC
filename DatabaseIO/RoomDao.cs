@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using Model;
@@ -85,22 +86,34 @@ namespace DatabaseIO
 
         public void add(string name)
         {
-            //insert data into table room 
-            string SQL = "INSERT INTO room(room_name) VALUES(N'" + name + "')";
-            mydb.Database.ExecuteSqlCommand(SQL);
-
+            try {
+                //insert data into table room 
+                string SQL = "INSERT INTO room(room_name) VALUES(N'" + name + "')";
+                mydb.Database.ExecuteSqlCommand(SQL);
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+            }
         }
         public void update(string name, string id)
         {
-            //update room_name by id
-            string SQL = "UPDATE room SET room_name = N'" + name + "' WHERE id = '" + id + "'";
-            mydb.Database.ExecuteSqlCommand(SQL);
+            try {
+                //update room_name by id
+                string SQL = "UPDATE room SET room_name = N'" + name + "' WHERE id = '" + id + "'";
+                mydb.Database.ExecuteSqlCommand(SQL);
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+            }
+           
         }
         public void delete(string id)
         {
-            //delete room by id
-            string SQL = "DELETE FROM room WHERE id = '" + id + "'";
-            mydb.Database.ExecuteSqlCommand(SQL);
+            try {
+                //delete room by id
+                string SQL = "DELETE FROM room WHERE id = '" + id + "'";
+                mydb.Database.ExecuteSqlCommand(SQL);
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         /**
@@ -120,9 +133,13 @@ namespace DatabaseIO
         }
         public void addRoomSeat(int id_room, int id_seat)
         {
-            //insert data into table roomseat 
-            string SQL = "INSERT INTO roomseat(id_room,id_seat) VALUES('" + id_room + "','" + id_seat + "')";
-            mydb.Database.ExecuteSqlCommand(SQL);
+            try {
+                //insert data into table roomseat 
+                string SQL = "INSERT INTO roomseat(id_room,id_seat) VALUES('" + id_room + "','" + id_seat + "')";
+                mydb.Database.ExecuteSqlCommand(SQL);
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+            }        
         }
 
         /**
@@ -131,8 +148,13 @@ namespace DatabaseIO
          */
         public List<roomseat> getAllRoomSeat()
         {
-            string sql = "select * from roomseat";
-            return mydb.Database.SqlQuery<roomseat>(sql).ToList();
+            try {
+                string sql = "select * from roomseat";
+                return mydb.Database.SqlQuery<roomseat>(sql).ToList();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }        
         }
 
         /**
@@ -142,9 +164,15 @@ namespace DatabaseIO
          */
         public int numberSeat(int idRoom)
         {
-            string sql = "select * from roomseat where id_room = '"+ idRoom +"'";
-            var roomseat =  mydb.Database.SqlQuery<roomseat>(sql).ToList();
-            return roomseat.Count;
+            try {
+                string sql = "select * from roomseat where id_room = '" + idRoom + "'";
+                var roomseat = mydb.Database.SqlQuery<roomseat>(sql).ToList();
+                return roomseat.Count;
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return 0;
+            }
+           
         }
         public void deleteRoomSeat(int idRoom)
         {

@@ -159,7 +159,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Thêm mới</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Thêm</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close"></button>
             </div>
@@ -168,18 +168,29 @@
                     <div class="mb-3">
                         <label for="category-film"
                                class="col-form-label">Tên <span style="color:red">* </span>:</label>
-                        <input type="text" class="form-control" id="category-film" name="seatname" required>
+                        <input type="text" class="form-control" id="seatname" name="seatname" required>
                     </div>
                     <div class="modal-footer">
                         <button style="width:100px" type="button" class="btn btn-secondary"
                                 data-bs-dismiss="modal">
                             Đóng
                         </button>
-                        <button style="width:100px" type="submit" class="btn btn-primary">Lưu </button>
+                        <button style="width:100px" onclick="check()" type="submit" class="btn btn-primary">Lưu </button>
                     </div>
                 </form>
             </div>
-            
+            <script>
+                function check() {
+                    var seatname = document.getElementById("seatname").value;
+                    if (seatname == "") {
+                        document.getElementById("seatname").style.borderWidth = '1px';
+                        document.getElementById("seatname").style.borderColor = 'red';
+                    } else {
+                        document.getElementById("seatname").style.borderWidth = '1px';
+                        document.getElementById("seatname").style.borderColor = '#D0C9C9';
+                    }
+                }
+            </script>
         </div>
     </div>
 </div>

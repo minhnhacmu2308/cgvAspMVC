@@ -30,9 +30,14 @@ namespace DatabaseIO
          */
         public List<schedule> getSchedule(string id)
         {
-            int filmId = Int32.Parse(id);
-            string SQL = "Select * from schedules where film_id = '" + id + "' and YEAR(dateschedule) >= YEAR(getdate()) and MONTH(dateschedule) >= MONTH(getdate()) and DAY(dateschedule) >= DAY(getdate())";
-            return mydb.Database.SqlQuery<schedule>(SQL).ToList();
+            try {
+                int filmId = Int32.Parse(id);
+                string SQL = "Select * from schedules where film_id = '" + id + "' and YEAR(dateschedule) >= YEAR(getdate()) and MONTH(dateschedule) >= MONTH(getdate()) and DAY(dateschedule) >= DAY(getdate())";
+                return mydb.Database.SqlQuery<schedule>(SQL).ToList();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }          
         }
 
         /**
@@ -42,7 +47,12 @@ namespace DatabaseIO
          */
         public schedule getName(int id)
         {
-            return mydb.schedules.Where(s => s.id == id).FirstOrDefault();
+            try {
+                return mydb.schedules.Where(s => s.id == id).FirstOrDefault();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }          
         }
 
         /**
@@ -51,7 +61,13 @@ namespace DatabaseIO
          */
         public List<schedule> getAll()
         {
-            return mydb.schedules.ToList();
+            try {
+                return mydb.schedules.ToList();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+           
         }
         public void add(string filmid, DateTime dateSchedule)
         {

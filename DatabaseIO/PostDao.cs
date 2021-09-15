@@ -30,8 +30,14 @@ namespace DatabaseIO
          */
         public post getDetailPromotion(string id)
         {
-            int promotionId = Int32.Parse(id);
-            return mydb.posts.Where(p => p.id == promotionId).FirstOrDefault();
+            try {
+                int promotionId = Int32.Parse(id);
+                return mydb.posts.Where(p => p.id == promotionId).FirstOrDefault();
+            } catch(Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+            
         }
 
         /**
@@ -40,7 +46,12 @@ namespace DatabaseIO
          */
         public List<post> getListIntroduce()
         {
-            return mydb.posts.Where(p => p.id_cpost == 2).ToList();
+            try {
+                return mydb.posts.Where(p => p.id_cpost == 2).ToList();
+            } catch (Exception ex){
+                Console.WriteLine(ex.Message);
+                return null;
+            }         
         }
 
         /**
@@ -49,7 +60,12 @@ namespace DatabaseIO
          */
         public room getName(int id)
         {
-            return mydb.rooms.Where(r => r.id == id).FirstOrDefault();
+            try {
+                return mydb.rooms.Where(r => r.id == id).FirstOrDefault();
+            } catch (Exception ex){
+                Console.WriteLine(ex.Message);
+                return null;
+            }         
         }
 
         /**
@@ -58,7 +74,12 @@ namespace DatabaseIO
          */
         public List<post> getAll()
         {
-            return mydb.posts.ToList();
+            try {
+                return mydb.posts.ToList();
+            } catch (Exception ex){
+                Console.WriteLine(ex.Message);
+                return null;
+            }      
         }
 
         public void add(string title, string idcate, string image, string description)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Model;
 
@@ -29,7 +30,12 @@ namespace DatabaseIO
          */
         public List<film> getFilmComingSoon()
         {
-            return mydb.Database.SqlQuery<film>("SELECT * FROM films WHERE CONVERT(varchar, premiere_date, 101) > CONVERT(varchar, getdate(), 101)").ToList();
+            try {
+                return mydb.Database.SqlQuery<film>("SELECT * FROM films WHERE CONVERT(varchar, premiere_date, 101) > CONVERT(varchar, getdate(), 101)").ToList();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }       
         }
 
         /**
@@ -38,7 +44,12 @@ namespace DatabaseIO
          */
         public List<film> getFilmNowShowing()
         {
-            return mydb.Database.SqlQuery<film>("SELECT * FROM films WHERE CONVERT(varchar, premiere_date, 101) <= CONVERT(varchar, getdate(), 101)").ToList();
+            try {
+                return mydb.Database.SqlQuery<film>("SELECT * FROM films WHERE CONVERT(varchar, premiere_date, 101) <= CONVERT(varchar, getdate(), 101)").ToList();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }        
         }
 
         /**
@@ -47,7 +58,12 @@ namespace DatabaseIO
          */
         public List<post> getPromotion()
         {
-            return mydb.posts.Where(p => p.id_cpost == 1).ToList();
+            try {
+                return mydb.posts.Where(p => p.id_cpost == 1).ToList();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }         
         }
 
         /**
@@ -80,7 +96,12 @@ namespace DatabaseIO
          */
         public List<film> getFilmNow()
         {
-            return mydb.Database.SqlQuery<film>("SELECT DISTINCT  a.* FROM films as a,schedules as b, showtimes as c WHERE b.film_id = a.id AND c.schedule_id = b.id AND FORMAT(b.dateschedule, 'dd/MM/yyyy' ) = FORMAT(getdate(), 'dd/MM/yyyy' ) and c.start_time >= convert(varchar(32),getdate(),108)").ToList();
+            try {
+                return mydb.Database.SqlQuery<film>("SELECT DISTINCT  a.* FROM films as a,schedules as b, showtimes as c WHERE b.film_id = a.id AND c.schedule_id = b.id AND FORMAT(b.dateschedule, 'dd/MM/yyyy' ) = FORMAT(getdate(), 'dd/MM/yyyy' ) and c.start_time >= convert(varchar(32),getdate(),108)").ToList();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }           
         }
     }
 }

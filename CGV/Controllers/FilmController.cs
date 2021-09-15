@@ -9,6 +9,20 @@ using CGV.Utils;
 
 namespace CGV.Controllers
 {
+    /**
+     * FilmController
+     * 
+     * Version 1.0
+     * 
+     * Date 07-08-2021
+     * 
+     * Copyright
+     * 
+     * Modification Logs:
+     * DATE            AUTHOR            DESCRIPTION
+     * ----------------------------------------------
+     * 07-08-2021      NhaNM2              Create
+     */
     public class FilmController : Controller
     {
         // GET: Film
@@ -37,7 +51,12 @@ namespace CGV.Controllers
             //select film from database by id
             film film = filmD.getDetailFilm(id);
             var listSeat = seatD.getAll();
-            ViewBag.listseat = listSeat;
+            if(listSeat != null || film != null) {
+                ViewBag.listseat = listSeat;
+                return View(film);
+            } else {
+                ModelState.AddModelError(Constants.Constants.ERROR_SYSTEM, Constants.Constants.ERROR_SYTEM_DETAIL);
+            }
             return View(film);
         }
 
@@ -55,7 +74,12 @@ namespace CGV.Controllers
                 var listSearch = filmD.searchFilm(keySearch);
                 ViewBag.keySearch = keySearch;
                 var listSeat = seatD.getAll();
-                ViewBag.listseat = listSeat;
+                if( listSeat !=null || listSearch != null) {
+                    ViewBag.listseat = listSeat;
+                    return View(listSearch);
+                } else {
+                    ModelState.AddModelError(Constants.Constants.ERROR_SYSTEM, Constants.Constants.ERROR_SYTEM_DETAIL);
+                }             
                 return View(listSearch);
             }      
         }
@@ -162,7 +186,7 @@ namespace CGV.Controllers
                 //check data showtime is working
                 bool checkExistShowtime = showtimeD.checkExistShowtime(showtime_id);
                 if (checkExist || !checkExistShowtime) {
-                    return Json(new { status = Constants.Constants.STATUS_ERROR, msg = Constants.Constants.CHANGE_DATABASE, JsonRequestBehavior.AllowGet });
+                    return Json(new { status = Constants.Constants.STATUS_ERROR_ONE, msg = Constants.Constants.CHANGE_DATABASE, JsonRequestBehavior.AllowGet });
                 } else {
                     int amount = 0;
                     var listHis = new List<HistoryBooking>();

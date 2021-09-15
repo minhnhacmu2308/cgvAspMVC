@@ -14,24 +14,24 @@
 
         var idModel = "exampleModal" + item.id;
         var idModa = "exampleModa" + item.id;
-    <div class="movies-box">
-        <a href="/film/detail/@item.id">
-            <div class="movies-img">
-                <div class="quality">4K</div>
-                <img src="/Content/Assets/images/@item.image" />
+        <div class="movies-box">
+            <a href="/film/detail/@item.id">
+                <div class="movies-img">
+                    <div class="quality">4K</div>
+                    <img src="/Content/Assets/images/@item.image" />
+                </div>
+            </a>
+            <!--text--------->
+            <a href="/film/detail/@item.id"> @item.film_name </a>
+            <!-- Button trigger modal -->
+            <div style="margin-bottom:20px" class="button--movie">
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#@idModel"
+                        style="margin-right: 20px">
+                    Trailer
+                </button>
+                <button type="button" onclick="getSchedule(@item.id)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#@idModa">Đặt Vé</button>
             </div>
-        </a>
-        <!--text--------->
-        <a href="/film/detail/@item.id"> @item.film_name </a>
-        <!-- Button trigger modal -->
-        <div style="margin-bottom:20px" class="button--movie">
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#@idModel"
-                    style="margin-right: 20px">
-                Trailer
-            </button>
-            <button type="button" onclick="getSchedule(@item.id)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#@idModa">Đặt Vé</button>
         </div>
-    </div>
         <!-- Modal -->
         <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
@@ -142,6 +142,24 @@
                     <div class="modal-footer">
                         <a href="/Film/paymentAtCine" class="btn btn-danger">Thanh toán tại rạp </a>
                         <button class="btn btn-danger" id="btnPay">Thanh toán Online</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="exampleModaltest2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div id="result2" class="modal-body"></div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <a href="/Home/IndexUser" class="btn btn-danger" id="btnPay">Reload</a>
 
                     </div>
                 </div>

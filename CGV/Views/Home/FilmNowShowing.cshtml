@@ -1,15 +1,15 @@
 ﻿@model List<Model.film>
 @foreach (var item in Model)
 {
-<div class="movies-box">
-    <!--img------------>
+    <div class="movies-box">
+        <!--img------------>
         <a href="/film/detail/@item.id">
             <div class="movies-img">
                 <div class="quality">4K</div>
                 <img src="/Content/Assets/images/@item.image" />
             </div>
         </a>
-        
+
         <!--text--------->
         <a href="/film/detail/@item.id"> @item.film_name </a>
         <!-- Button trigger modal -->
@@ -26,7 +26,7 @@
             </button>
             <button type="button" onclick="getSchedule(@item.id)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#@idModa">Đặt Vé</button>
         </div>
-</div>
+    </div>
     <!-- Modal -->
     <div class="modal fade" id="@idModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
@@ -130,10 +130,31 @@
                 <div style="display:none" id="linkqr" class="modal-body"></div>
                 <div style="margin-bottom:20px" id="id_qrcode"></div>
                 <div style="display:none" id="sessionId" class="modal-body"></div>
-               
+
                 <div class="modal-footer">
                     <a href="/Film/paymentAtCine" class="btn btn-danger">Thanh toán tại rạp </a>
                     <button class="btn btn-danger" id="btnPay">Thanh toán online</button>
+
+                </div>
+            </div>
+            <div>
+                <span class="red">@Html.ValidationSummary(false)</span>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModaltest2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="result2" class="modal-body"></div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <a href="/Home/IndexUser" class="btn btn-danger" id="btnPay">Reload</a>
 
                 </div>
             </div>
@@ -152,19 +173,19 @@
             });
         }
     </script>
-    
+
     <script>
         var stripe = Stripe("pk_test_51Itn76AY7zpl2tqohPq6YilgoGQtljYobrItYBaIvyrVXOjq5Lff6djQeMgBcLvRIGHvgrx9OwmC3ZZcHV6TepuG00KgREPMiI");
-       
+
         var element = document.getElementById('btnPay');
         element.addEventListener('click', function () {
-        var text = document.getElementById('sessionId').innerHTML;
-        stripe.redirectToCheckout({
-            sessionId: text
-        }).then(function (result) {
-            console.log(result)
-        });
-    })
+            var text = document.getElementById('sessionId').innerHTML;
+            stripe.redirectToCheckout({
+                sessionId: text
+            }).then(function (result) {
+                console.log(result)
+            });
+        })
 
     </script>
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using Model;
@@ -31,7 +32,12 @@ namespace DatabaseIO
          */
         public usercgv getInformation(string email)
         {
-            return mydb.usercgvs.Where(u => u.email == email).FirstOrDefault();
+            try {
+                return mydb.usercgvs.Where(u => u.email == email).FirstOrDefault();
+            } catch(Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }         
         }
 
         /**
@@ -41,7 +47,12 @@ namespace DatabaseIO
          */
         public usercgv getUpdateProfile(string email, string password)
         {
-            return mydb.usercgvs.Where(u => u.email == email && u.password == password).FirstOrDefault();
+            try{
+                return mydb.usercgvs.Where(u => u.email == email && u.password == password).FirstOrDefault();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }         
         }
 
         /**
@@ -87,7 +98,12 @@ namespace DatabaseIO
          */
         public List<usercgv> getAll()
         {
-            return mydb.usercgvs.ToList();
+            try {
+                return mydb.usercgvs.ToList();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }        
         }
         public void add(string email, string password, string phonenumber, string role_id, string username, string tt)
         {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using Model;
@@ -29,7 +30,12 @@ namespace DatabaseIO
          */
         public List<rating> getCommentById(int id)
         {
-            return mydb.ratings.Where(r => r.film_id == id).ToList();
+            try {
+                return mydb.ratings.Where(r => r.film_id == id).ToList();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }     
         }
 
         /**
@@ -38,7 +44,13 @@ namespace DatabaseIO
          */
         public rating getObjectCommentById(int id)
         {
-            return mydb.ratings.Where(r => r.id == id).FirstOrDefault();
+            try {
+                return mydb.ratings.Where(r => r.id == id).FirstOrDefault();
+            }
+            catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }          
         }
         public void comment(rating rating)
         {

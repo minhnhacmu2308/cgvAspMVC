@@ -27,7 +27,7 @@ namespace CGV.Controllers.Admin
         [HttpPost]
         public ActionResult Add(FormCollection form)
         {
-            var name = form["categorypost"];
+            var name = form["categoryfilm"];
             bool result = cpost.checkName(name);
             if (Session["usr"] == null)
             {

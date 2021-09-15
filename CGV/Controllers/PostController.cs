@@ -4,6 +4,20 @@ using Model;
 
 namespace CGV.Controllers
 {
+    /**
+     * PostController
+     * 
+     * Version 1.0
+     * 
+     * Date 07-08-2021
+     * 
+     * Copyright
+     * 
+     * Modification Logs:
+     * DATE            AUTHOR            DESCRIPTION
+     * ----------------------------------------------
+     * 07-08-2021      NhaNM2              Create
+     */
     public class PostController : Controller
     {
         // GET: Post
@@ -20,6 +34,11 @@ namespace CGV.Controllers
         public ActionResult Promotion()
         {
             var list = postD.getListIntroduce();
+            if (list != null) {
+                return View(list);
+            } else {
+                ModelState.AddModelError(Constants.Constants.ERROR_SYSTEM, Constants.Constants.ERROR_SYTEM_DETAIL);
+            }
             return View(list);
         }
 
@@ -31,6 +50,11 @@ namespace CGV.Controllers
         public ActionResult DetailPromotion(string id)
         {
             post post = postD.getDetailPromotion(id);
+            if (post != null) {
+                return View(post);
+            } else {
+                ModelState.AddModelError(Constants.Constants.ERROR_SYSTEM, Constants.Constants.ERROR_SYTEM_DETAIL);
+            }
             return View(post);
         }
     }

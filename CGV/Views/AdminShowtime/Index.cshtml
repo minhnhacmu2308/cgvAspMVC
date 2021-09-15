@@ -322,7 +322,7 @@
                         <label for="category-film"
                                class="col-form-label">Phim <span style="color:red">* </span>:</label>
                         <select class="form-select"
-                                aria-label="Default select example" name="filmid" required onchange="filmChanged(this)">
+                                aria-label="Default select example" id="chooseFilm" name="filmid" required onchange="filmChanged(this)">
                             <option value="">Chọn phim</option>
                             @foreach (var item1 in films)
                             {
@@ -347,37 +347,11 @@
                         </div>
 
                         <div id="checkDay">
-                            @*
-                @if (minTime < 23)
-                {
-                    <div class="mb-3">
-                        <label for="category-film" class="col-form-label">
 
-                        </label>
-                        <label for="appt-time1">Chọn thời gian từ @minString  đến 23:00: </label>
-                        <input id="appt-time1" class="form-control" type="time" name="start"
-                               min="@minString" max="23:00" required>
-                        <span class="validity"></span>
-                        <p style="color:red" id="error"></p>
-                    </div>
-                }
-                else
-                {
-                    <div class="mb-3">
-                        <label for="category-film" class="col-form-label">
-                            Bắt đầu:
-                        </label>
-                        <label for="appt-time1">Hết hạn đăng suất chiếu</label>
-                        <input id="appt-time1" class="form-control" type="time" name="start"
-                               min="@minString" max="23:00" readonly required>
-                        <span class="validity"></span>
-                    </div>
-                }*@
                         </div>
 
-
-
                     </div>
+
                     <script>
                         function removeData() {
                             $('#appt-time1').val("");
@@ -394,36 +368,36 @@
                                 var minString = $('#idMinString').val();
                                 if (parseInt(minTime) < 23) {
                                     html += `<div class="mb-3">
-                                                                            <label for="category-film" class="col-form-label">
+                                                                                                                    <label for="category-film" class="col-form-label">
 
-                                                                            </label>
-                                                                            <label for="appt-time1">Chọn thời gian từ `+ minString + ` đến 23:00: </label>
-                                                                            <input id="appt-time1" class="form-control" type="time" name="start"
-                                                                                   min="`+ minString + `" max="23:00" required>
-                                                                            <span class="validity"></span>
-                                                                            <p style="color:red" id="error"></p>
-                                                                        </div>`
+                                                                                                                    </label>
+                                                                                                                    <label for="appt-time1">Chọn thời gian từ `+ minString + ` đến 23:00: </label>
+                                                                                                                    <input id="appt-time1" class="form-control" type="time" name="start"
+                                                                                                                           min="`+ minString + `" max="23:00" required>
+                                                                                                                    <span class="validity"></span>
+                                                                                                                    <p style="color:red" id="error"></p>
+                                                                                                                </div>`
                                 } else {
                                     html += `<div class="mb-3">
-                                                                                <label for="category-film" class="col-form-label">
-                                                                                    Bắt đầu:
-                                                                                </label>
-                                                                                <label for="appt-time1">Hết hạn đăng suất chiếu</label>
-                                                                                <input id="appt-time1" class="form-control" type="time" name="start"
-                                                                                       readonly required>
-                                                                                <span class="validity"></span>
-                                                                            </div>`
+                                                                                                                        <label for="category-film" class="col-form-label">
+                                                                                                                            Bắt đầu:
+                                                                                                                        </label>
+                                                                                                                        <label for="appt-time1">Hết hạn đăng suất chiếu</label>
+                                                                                                                        <input id="appt-time1" class="form-control" type="time" name="start"
+                                                                                                                               readonly required>
+                                                                                                                        <span class="validity"></span>
+                                                                                                                    </div>`
                                 }
                             } else {
                                 html += `<div class="mb-3">
-                                                                            <label for="category-film" class="col-form-label">
-                                                                                Bắt đầu:
-                                                                            </label>
+                                                                                                                    <label for="category-film" class="col-form-label">
+                                                                                                                        Bắt đầu:
+                                                                                                                    </label>
 
-                                                                            <input id="appt-time1" class="form-control" type="time" name="start"
-                                                                                   max="23:00" required>
-                                                                            <span class="validity"></span>
-                                                                        </div>`;
+                                                                                                                    <input id="appt-time1" class="form-control" type="time" name="start"
+                                                                                                                           max="23:00" required>
+                                                                                                                    <span class="validity"></span>
+                                                                                                                </div>`;
 
 
                             }
@@ -435,11 +409,37 @@
                                 data-bs-dismiss="modal">
                             Đóng
                         </button>
-                        <button style="width:100px" type="submit" class="btn btn-primary">Lưu </button>
+                        <button style="width:100px" onclick="check()" type="submit" class="btn btn-primary">Lưu </button>
                     </div>
                 </form>
             </div>
-           
+            <script>
+                function check() {
+                    
+                    var chooseFilm = document.getElementById("chooseFilm").value;
+                    alert(chooseFilm)
+                    var nameroom = document.getElementById("nameroom").value;
+                    var nameschedule = document.getElementById("nameschedule").value; idroom
+                  
+                    if (chooseFilm == "") {
+                        document.getElementById("chooseFilm").style.borderWidth = '1px';
+                        document.getElementById("chooseFilm").style.borderColor = 'red';
+                    } else if (nameschedule == "") {
+                        document.getElementById("nameroom").style.borderWidth = '1px';
+                        document.getElementById("nameroom").style.borderColor = 'red';
+                        
+                    } else if (nameroom == "") {
+                        document.getElementById("dateSchedule").style.borderWidth = '1px';
+                        document.getElementById("dateSchedule").style.borderColor = 'red';
+                        document.getElementById("nameroom").style.borderWidth = '1px';
+                        document.getElementById("nameroom").style.borderColor = '#D0C9C9';
+                    } else {
+                        document.getElementById("dateSchedule").style.borderWidth = '1px';
+                        document.getElementById("dateSchedule").style.borderColor = '#D0C9C9';
+                    }
+
+                }
+            </script>
         </div>
     </div>
 </div>

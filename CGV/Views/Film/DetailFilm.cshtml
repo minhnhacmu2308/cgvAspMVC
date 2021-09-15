@@ -99,7 +99,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="showtime" class="col-form-label">Suất chiếu:</label>
-                                    <select class="form-select" onchange="getSeat(@Model.id)"  id="@nameShowtime" name="showtime" aria-label="Default select example">
+                                    <select class="form-select" onchange="getSeat(@Model.id)" id="@nameShowtime" name="showtime" aria-label="Default select example">
                                         <option value="0">Chọn suất chiếu</option>
                                     </select>
                                 </div>
@@ -112,13 +112,13 @@
                                             <p style="font-weight:bold;font-size:20px">MÀN HÌNH</p>
                                         </div>
                                         <div id="@nameSeat" style="display: flex; flex-direction: row; flex-wrap: wrap;">
-                                            @foreach(var item1 in ViewBag.listseat)                         
+                                            @foreach (var item1 in ViewBag.listseat)
                                             {
-                                              
-                                            <div id=""  style="display: flex; align-content: center;  justify-content: center; justify-items: center; border: 1px solid black; line-height: 50px; height: 50px; width: 104.2px; margin-right: 6.4px; margin-bottom: 6.4px ;">
-                                                <p> 🪑 @item1.seat_name</p>
-                                               
-                                            </div>
+
+                                                <div id="" style="display: flex; align-content: center;  justify-content: center; justify-items: center; border: 1px solid black; line-height: 50px; height: 50px; width: 104.2px; margin-right: 6.4px; margin-bottom: 6.4px ;">
+                                                    <p> 🪑 @item1.seat_name</p>
+
+                                                </div>
 
                                             }
                                         </div>
@@ -126,14 +126,14 @@
 
                                 </div>
                                 @* <div class="mb-3">
-                                    <label for="seat" class="col-form-label">Ghế ngồi:</label>
-                                    <select multiple="multiple" class="form-select" id="@nameSeat" name="seat" aria-label="Default select example">
-                                        <option value="0">Chọn ghế</option>
+                                <label for="seat" class="col-form-label">Ghế ngồi:</label>
+                                <select multiple="multiple" class="form-select" id="@nameSeat" name="seat" aria-label="Default select example">
+                                    <option value="0">Chọn ghế</option>
 
-                                    </select>
-                                </div>*@
+                                </select>
+                            </div>*@
                                 <script>
-                                  
+
                                 </script>
                                 <div class="mb-3">
                                     <label for="roomaa" class="col-form-label">Giá vé: 3$/ vé</label>
@@ -164,8 +164,26 @@
                         <div style="display:none" id="sessionId" class="modal-body"></div>
 
                         <div class="modal-footer">
-                            <a href="/Film/paymentAtCine" class="btn btn-danger" >Thanh toán tại rạp </a>
+                            <a href="/Film/paymentAtCine" class="btn btn-danger">Thanh toán tại rạp </a>
                             <button class="btn btn-danger" id="btnPay">Thanh toán online</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="exampleModaltest2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div id="result2" class="modal-body"></div>
+                       
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            <a href="/Home/IndexUser" class="btn btn-danger" id="btnPay">Reload</a>
 
                         </div>
                     </div>
@@ -199,7 +217,7 @@
                             });
                         }
                     } else {
-                       
+
                     }
                 }
                 function onReady() {

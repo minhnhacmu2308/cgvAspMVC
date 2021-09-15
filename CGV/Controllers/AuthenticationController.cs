@@ -6,6 +6,20 @@ using Model;
 
 namespace CGV.Controllers
 {
+    /**
+     * AuthenticationController
+     * 
+     * Version 1.0
+     * 
+     * Date 07-08-2021
+     * 
+     * Copyright
+     * 
+     * Modification Logs:
+     * DATE            AUTHOR            DESCRIPTION
+     * ----------------------------------------------
+     * 07-08-2021      NhaNM2              Create
+     */
     public class AuthenticationController : Controller
     {
         GenericDao genericD = new GenericDao();
@@ -44,9 +58,9 @@ namespace CGV.Controllers
             var rePassword = form["rePassword"];
             var passworodMd5 = authenticationD.md5(password);
             string strongPassword = authenticationD.checkPasswordStrong(password);
-            int TIME_OUT = 2;
-            int STATUS_ACTIVE = 0;
-            int ROLE_ID = 3;
+            int timeOut = 2;
+            int statusActive = 0;
+            int roleId = 3;
             bool checkFormatEmail = validateUtil.checkFormatEmail(email);
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(phonenumber) || string.IsNullOrEmpty(rePassword)) {
                 ViewBag.message = Constants.Constants.FILL_OUT_ERROR;
@@ -71,15 +85,15 @@ namespace CGV.Controllers
                     user.password = passworodMd5;
                     user.phonenumber = phonenumber;
                     user.username = username;
-                    user.is_active = STATUS_ACTIVE;
-                    user.role_id = ROLE_ID;
+                    user.is_active = statusActive;
+                    user.role_id = roleId;
                     authenticationD.register(user);
                     string subjectEmail = Constants.Constants.SUBJECT_EMAIL;
                     string code = RandomCode.GenerateRandomNo().ToString();
                     string bodyEmail = Constants.Constants.BODY_EMAIL + " " + code;
                     mailUtil.sendMail(email,subjectEmail,bodyEmail);
                     Session.Add(Constants.Constants.CODE_VERIFY, code);
-                    Session.Timeout = TIME_OUT;
+                    Session.Timeout = timeOut;
                     ViewBag.email = email;
                     return View("Verify");
                 }             

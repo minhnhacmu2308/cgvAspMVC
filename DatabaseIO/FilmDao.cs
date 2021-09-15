@@ -31,8 +31,13 @@ namespace DatabaseIO
          */
         public film getDetailFilm(string id)
         {
-            int filmId = Int32.Parse(id);
-            return mydb.films.Where(f => f.id == filmId).FirstOrDefault();
+            try {
+                int filmId = Int32.Parse(id);
+                return mydb.films.Where(f => f.id == filmId).FirstOrDefault();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }      
         }
 
         /**
@@ -42,10 +47,16 @@ namespace DatabaseIO
          */
         public IEnumerable<film> searchFilm(string keySearch)
         {
-            string nameSearch = "%" + keySearch + "%";
-            // selecet all films from table films by film_name or actor or director
-            string sql = "select * from films WHERE film_name LIKE @keysearch or actor LIKE @keysearch or director LIKE @keysearch ";
-            return mydb.Database.SqlQuery<film>(sql, new SqlParameter("@keysearch", nameSearch)).ToList();
+            try
+            {
+                string nameSearch = "%" + keySearch + "%";
+                // selecet all films from table films by film_name or actor or director
+                string sql = "select * from films WHERE film_name LIKE @keysearch or actor LIKE @keysearch or director LIKE @keysearch ";
+                return mydb.Database.SqlQuery<film>(sql, new SqlParameter("@keysearch", nameSearch)).ToList();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }        
         }
 
         /**
@@ -79,7 +90,13 @@ namespace DatabaseIO
          */
         public List<booking> getOrder(string datenow, int id)
         {
-            return mydb.bookings.Where(b => b.create_time == datenow && b.id_user == id).ToList();
+            try {
+                return mydb.bookings.Where(b => b.create_time == datenow && b.id_user == id).ToList();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+          
         }
 
         /**
@@ -89,7 +106,14 @@ namespace DatabaseIO
          */
         public film getName(int id)
         {
-            return mydb.films.Where(f => f.id == id).FirstOrDefault();
+            try {
+                return mydb.films.Where(f => f.id == id).FirstOrDefault();
+            }
+            catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+          
         }
 
         /**
@@ -99,7 +123,12 @@ namespace DatabaseIO
          */
         public List<booking> getBooking(int id)
         {
-            return mydb.bookings.Where(b => b.id_user == id).OrderByDescending(b => b.id).ToList();
+            try {
+                return mydb.bookings.Where(b => b.id_user == id).OrderByDescending(b => b.id).ToList();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }       
         }
 
         /**
@@ -109,7 +138,13 @@ namespace DatabaseIO
          */
         public List<film> getAll()
         {
-            return mydb.films.ToList();
+            try {
+                return mydb.films.ToList();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+           
         }
         public void add(string description, string director, string actor, string duration, string film_name, string image, string trailer, string idcfilm, string ngaycc)
         {

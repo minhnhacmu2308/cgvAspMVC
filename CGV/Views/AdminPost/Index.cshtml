@@ -299,7 +299,7 @@
                                     <label for="category-film"
                                            class="col-form-label">Tiêu đề <span style="color:red">* </span>:</label>
                                     <input type="text" class="form-control"
-                                           name="title" id="category-film" required>
+                                           name="title" id="tieude" required>
                                 </div>
                                 </div>
                                 <div class="col-6 ">
@@ -307,8 +307,8 @@
                                         <label for="category-film"
                                                class="col-form-label">Thể loại <span style="color:red">* </span>:</label>
                                         <select name="theloai" class="form-select"
-                                                aria-label="Default select example" required>
-                                            <option selected>Open this select menu</option>
+                                              id="theloai"  aria-label="Default select example" required>
+                                            <option selected value="">Open this select menu</option>
                                             @{var cate = new DatabaseIO.CategoryPostDao().getAll();
                                             }
                                             @foreach (var item1 in cate)
@@ -340,7 +340,7 @@
                                     data-bs-dismiss="modal">
                                 Đóng
                             </button>
-                            <button style="width:100px" type="submit" class="btn btn-primary">Lưu</button>
+                            <button style="width:100px" onclick="check()" type="submit" class="btn btn-primary">Lưu</button>
                         </div>
                     </form>
                         
@@ -353,7 +353,28 @@
     </div>
           
     <script>
-
+        function check() {
+            var tieude = document.getElementById("tieude").value;
+            var theloai = document.getElementById("theloai").value;
+            var file = document.getElementById("file").value;
+            if (tieude == "") {
+                document.getElementById("tieude").style.borderWidth = '1px';
+                document.getElementById("tieude").style.borderColor = 'red';
+            } else if (theloai == "") {
+                document.getElementById("theloai").style.borderWidth = '1px';
+                document.getElementById("theloai").style.borderColor = 'red';
+                document.getElementById("tieude").style.borderWidth = '1px';
+                document.getElementById("tieude").style.borderColor = '#D0C9C9';
+            } else if (file == "") {
+                document.getElementById("file").style.borderWidth = '1px';
+                document.getElementById("file").style.borderColor = 'red';
+                document.getElementById("theloai").style.borderWidth = '1px';
+                document.getElementById("theloai").style.borderColor = '#D0C9C9';
+            } else {
+                document.getElementById("file").style.borderWidth = '1px';
+                document.getElementById("file").style.borderColor = '#D0C9C9';
+            }
+        }
         ClassicEditor.create(document.querySelector('#editor')).then(eidt => {
             console.log("da" + eidt);
         })

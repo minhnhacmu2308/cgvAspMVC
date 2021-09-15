@@ -34,13 +34,18 @@ namespace DatabaseIO
          */
         public List<seat> getSeat(int roomId, int showtimeId, int filmId, int scheduleId)
         {
-            return mydb.Database.SqlQuery<seat>("SELECT * from seats WHERE id NOT IN (SELECT seat_id FROM booking WHERE room_id = @rId " +
-                "and showtime_id = @sId and film_id = @fId and schedule_id = @scheId)",
-                new SqlParameter("@rId",roomId),
-                new SqlParameter("@sId", showtimeId),
-                new SqlParameter("@fId", filmId),
-                new SqlParameter("@scheId", scheduleId)
-                ).ToList();
+            try {
+                return mydb.Database.SqlQuery<seat>("SELECT * from seats WHERE id NOT IN (SELECT seat_id FROM booking WHERE room_id = @rId " +
+               "and showtime_id = @sId and film_id = @fId and schedule_id = @scheId)",
+               new SqlParameter("@rId", roomId),
+               new SqlParameter("@sId", showtimeId),
+               new SqlParameter("@fId", filmId),
+               new SqlParameter("@scheId", scheduleId)
+               ).ToList();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }         
         }
 
         /**
@@ -53,17 +58,29 @@ namespace DatabaseIO
          */
         public List<seat> getSeatDone(int roomId, int showtimeId, int filmId, int scheduleId)
         {
-            return mydb.Database.SqlQuery<seat>("SELECT * from seats WHERE id IN (SELECT rs.id_seat FROM roomseat rs WHERE rs.id_room = @idRoom )" +
-                "and  id NOT IN (SELECT seat_id FROM booking WHERE room_id = @idRoom  and showtime_id = @sId and film_id = @fId and schedule_id = @scheId)",
-                new SqlParameter("@idRoom", roomId),
-                new SqlParameter("@sId", showtimeId),
-                new SqlParameter("@fId", filmId),
-                new SqlParameter("@scheId", scheduleId)
-                ).ToList();
+            try {
+                return mydb.Database.SqlQuery<seat>("SELECT * from seats WHERE id IN (SELECT rs.id_seat FROM roomseat rs WHERE rs.id_room = @idRoom )" +
+               "and  id NOT IN (SELECT seat_id FROM booking WHERE room_id = @idRoom  and showtime_id = @sId and film_id = @fId and schedule_id = @scheId)",
+               new SqlParameter("@idRoom", roomId),
+               new SqlParameter("@sId", showtimeId),
+               new SqlParameter("@fId", filmId),
+               new SqlParameter("@scheId", scheduleId)
+               ).ToList();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+          
         }
         public seat getName(int id)
         {
-            return mydb.seats.Where(s => s.id == id).FirstOrDefault();
+            try {
+                return mydb.seats.Where(s => s.id == id).FirstOrDefault();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+           
         }
 
         /**
@@ -72,7 +89,13 @@ namespace DatabaseIO
          */
         public List<seat> getAll()
         {
-            return mydb.seats.ToList();
+            try {
+                return mydb.seats.ToList();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+           
         }
 
         /**
@@ -82,8 +105,14 @@ namespace DatabaseIO
          */
         public List<seat> getSeatRoom(int id)
         {
-            String sql = "select * from seats s, roomseat rs where s.id = rs.id_seat and id_room = @idRoom  ";
-            return mydb.Database.SqlQuery<seat>(sql, new SqlParameter("@idRoom ",id)).ToList();
+            try {
+                String sql = "select * from seats s, roomseat rs where s.id = rs.id_seat and id_room = @idRoom  ";
+                return mydb.Database.SqlQuery<seat>(sql, new SqlParameter("@idRoom ", id)).ToList();
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+            
         }
         public void add(string name)
         {

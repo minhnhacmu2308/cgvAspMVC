@@ -47,6 +47,11 @@ namespace CGV.Controllers
         {
             HomeDao homeDao = new HomeDao();
             List<film> list = homeDao.getFilmComingSoon().Distinct().ToList();
+            if (list != null) {
+                return PartialView(list);
+            } else {
+                ModelState.AddModelError(Constants.Constants.ERROR_SYSTEM, Constants.Constants.ERROR_SYTEM_DETAIL);
+            }
             return PartialView(list);
         }
         [ChildActionOnly]
@@ -54,8 +59,13 @@ namespace CGV.Controllers
         {
             HomeDao homeDao = new HomeDao();
             List<film> list = homeDao.getFilmNowShowing().Distinct().ToList();
-            var listSeat = seatD.getAll();
-            ViewBag.listseat = listSeat;
+            if (list != null) {
+                var listSeat = seatD.getAll();
+                ViewBag.listseat = listSeat;
+                return PartialView(list);
+            } else {
+                ModelState.AddModelError(Constants.Constants.ERROR_SYSTEM, Constants.Constants.ERROR_SYTEM_DETAIL);
+            }        
             return PartialView(list);
         }
         [ChildActionOnly]
@@ -63,6 +73,11 @@ namespace CGV.Controllers
         {
             HomeDao homeDao = new HomeDao();
             List<post> list = homeDao.getPromotion();
+            if (list != null) {
+                return PartialView(list);
+            } else {
+                ModelState.AddModelError(Constants.Constants.ERROR_SYSTEM, Constants.Constants.ERROR_SYTEM_DETAIL);
+            }
             return PartialView(list);
         }
         public ActionResult Film()

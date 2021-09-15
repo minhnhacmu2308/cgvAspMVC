@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Model;
 
@@ -27,8 +28,14 @@ namespace DatabaseIO
          * @return
          */
         public List<role> getAll()
-        {           
-            return db.roles.ToList();
+        {
+            try {
+                return db.roles.ToList();
+            } catch(Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+           
         }
     }
 }

@@ -259,7 +259,7 @@
                                                         Ngày
                                                         chiếu <span style="color:red">* </span>:
                                                     </label>
-                                                    <input type="date" class="form-control" id="category-film" name="dateschedule" min="@dtnoww" value="@dateschedule" required>
+                                                    <input type="date" class="form-control"  name="dateschedule" min="@dtnoww" value="@dateschedule" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="category-film" class="col-form-label">
@@ -269,7 +269,7 @@
                                                         var listRoom1 = new DatabaseIO.RoomDao().getAll();
                                                         var nameR = new DatabaseIO.ScheduleDao().getNameRoom(item.id);
                                                     }
-                                                    <select required class="form-select" id="idroom" name="idroom" aria-label="Default select example">
+                                                    <select required class="form-select"  name="idroom" aria-label="Default select example">
                                                         @if (nameR != null)
                                                         {
                                                             <option value="@nameR.id">@nameR.room_name</option>
@@ -320,7 +320,7 @@
                         <label for="category-film"
                                class="col-form-label">Phim <span style="color:red">* </span>:</label>
                         <select class="form-select"
-                                aria-label="Default select example" name="filmid" required>
+                                aria-label="Default select example" id="filmId" name="filmid" required>
 
                             <option selected value="">Open this select menu</option>
 
@@ -330,39 +330,67 @@
                             }
                         </select>
                     </div>
+
+                    <div class="mb-3">
+                        <label for="category-film" class="col-form-label">
+                            Phòng <span style="color:red">* </span>:
+                        </label>
+                        @{
+                            var listRoom = new DatabaseIO.RoomDao().getAll();
+                        }
+                        <select required class="form-select" id="idroom" name="idroom" aria-label="Default select example">
+                            <option value="" selected>Chọn phòng</option>
+                            @foreach (var r in listRoom)
+                            {
+                                <option value="@r.id">@r.room_name</option>
+                            }
+
+                        </select>
+                    </div>
                     <div class="mb-3">
                         <label for="category-film" class="col-form-label">
                             Ngày
                             chiếu <span style="color:red">* </span>:
                         </label>
-                        <input type="date" class="form-control" id="category-film" name="dateschedule" min="@dtnoww" required>
+                        <input type="date" class="form-control" id="dateSchedule" name="dateschedule" min="@dtnoww" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="category-film" class="col-form-label">
-                          Phòng <span style="color:red">* </span>:
-                        </label>
-                        @{ 
-                            var listRoom = new DatabaseIO.RoomDao().getAll();
-                        }
-                    <select required class="form-select" id="idroom" name="idroom" aria-label="Default select example">
-                        @foreach (var r in listRoom)
-                        {
-                            <option value="@r.id">@r.room_name</option>
-                        }
-                       
-                    </select>
-                    </div>                
                     <div class="modal-footer">
                         <button style="width:100px" type="button" class="btn btn-secondary"
                                 data-bs-dismiss="modal">
                             Đóng
                         </button>
-                        <button style="width:100px" type="submit" class="btn btn-primary">Lưu </button>
+                        <button onclick="check()" style="width:100px" type="submit" class="btn btn-primary">Lưu </button>
                     </div>
                 </form>
             </div>
             
         </div>
+        <script>
+            function check() {
+                var valueFilm = document.getElementById("filmId").value;
+                var valuaDate = document.getElementById("dateSchedule").value;
+                var valueSchedule = document.getElementById("idroom").value; idroom
+                
+                if (valueFilm == "") {
+                    document.getElementById("filmId").style.borderWidth = '1px';
+                    document.getElementById("filmId").style.borderColor = 'red';
+                } else if (valueSchedule == "") {
+                    document.getElementById("idroom").style.borderWidth = '1px';
+                    document.getElementById("idroom").style.borderColor = 'red';
+                    document.getElementById("filmId").style.borderWidth = '1px';
+                    document.getElementById("filmId").style.borderColor = '#D0C9C9';
+                } else if ( valuaDate == "") {
+                    document.getElementById("dateSchedule").style.borderWidth = '1px';
+                    document.getElementById("dateSchedule").style.borderColor = 'red';
+                    document.getElementById("idroom").style.borderWidth = '1px';
+                    document.getElementById("idroom").style.borderColor = '#D0C9C9';
+                } else {
+                    document.getElementById("filmId").style.borderWidth = '1px';
+                    document.getElementById("filmId").style.borderColor = '#D0C9C9';
+                }
+
+            }
+        </script>
     </div>
 </div>
 <!-- Modal Update-->

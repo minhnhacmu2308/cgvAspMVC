@@ -175,7 +175,7 @@
                     <div class="mb-3">
                         <label for="category-film"
                                class="col-form-label">Tên <span style="color:red">* </span>:</label>
-                        <input type="text" class="form-control" id="category-film" name="categoryfilm" required>
+                        <input type="text" class="form-control" id="categoryFilm" name="categoryfilm" required>
 
                     </div>
                     <div class="modal-footer">
@@ -183,7 +183,7 @@
                                 data-bs-dismiss="modal">
                             Đóng
                         </button>
-                        <button style="width:100px" type="submit" class="btn btn-primary">Lưu</button>
+                        <button style="width:100px" onclick="check()" type="submit" class="btn btn-primary">Lưu</button>
                     </div>
                 </form>
             </div>
@@ -192,7 +192,16 @@
     </div>
 </div>
 <script>
-   
+    function check() {
+        var valueCheck = document.getElementById("categoryFilm").value;
+        if (valueCheck == "") {
+            document.getElementById("categoryFilm").style.borderWidth = '1px';
+            document.getElementById("categoryFilm").style.borderColor = 'red';
+        } else {
+            document.getElementById("categoryFilm").style.borderWidth = '1px';
+            document.getElementById("categoryFilm").style.borderColor = '#D0C9C9';
+        }
+    }
     document.getElementById("category-film").focus();
     document.getElementById("category-film").select();
 </script>

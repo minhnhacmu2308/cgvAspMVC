@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using Model;
@@ -29,7 +30,14 @@ namespace DatabaseIO
         */
         public List<category_post> getAll()
         {
-            return mydb.category_post.ToList();
+            try {
+                return mydb.category_post.ToList();
+            }
+            catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+           
         }
         public void add(string name)
         {

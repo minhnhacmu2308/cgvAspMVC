@@ -23,6 +23,7 @@ namespace CGV.Constants
         public static string VERIFY_INCORRECT = "Mã xác thực không chính xác";
         public static string VERIFY_SUCCESS = "Xác thực thành công";
         public static string STATUS_ERROR = "ERROR";
+        public static string STATUS_ERROR_ONE = "ERROR_ONE";
         public static string STATUS_SUCCESS = "SUCCESS";
         public static string STATUS_OK = "OK";
         public static string GET_CODE_VERIFY_SUCCESS = "Lấy lại mã thành công vui lòng check mail ";
@@ -58,5 +59,7 @@ namespace CGV.Constants
         public static string PATH_SENDMAIL = "~/Content/Assets/html/sendQRMail.html";
         public static string FORMAT_DATE_STRING = "yyyyMMdd";
         public static string CHANGE_DATABASE = "❌ Ghế bạn chọn đã đặt bởi người khác vui lòng reload lại trang";
+        public static string ERROR_SYSTEM = "Lỗi hệ thống";
+        public static string ERROR_SYTEM_DETAIL = "Vui lòng liên hệ quản trị viên để được hổ trợ";
     }
 }
