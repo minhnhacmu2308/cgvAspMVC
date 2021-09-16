@@ -79,6 +79,16 @@ namespace CGV
              defaults: new { controller = "AdminFilm", action = "Index", id = UrlParameter.Optional }
          );
             routes.MapRoute(
+            name: "Admin Trash Film",
+            url: "admin/filmtrash",
+            defaults: new { controller = "AdminFilm", action = "Trash", id = UrlParameter.Optional }
+        );
+            routes.MapRoute(
+            name: "Admin Trash Room",
+            url: "admin/roomtrash",
+            defaults: new { controller = "AdminRoom", action = "Trash", id = UrlParameter.Optional }
+        );
+            routes.MapRoute(
              name: "Admin Schedule",
              url: "admin/lichchieu",
              defaults: new { controller = "AdminSchedule", action = "Index", id = UrlParameter.Optional }

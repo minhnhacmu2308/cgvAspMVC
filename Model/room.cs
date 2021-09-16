@@ -14,5 +14,6 @@ namespace Model
 
         [StringLength(255)]
         public string room_name { get; set; }
+        public int trash { get; set; }
     }
 }

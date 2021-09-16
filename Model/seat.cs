@@ -13,5 +13,6 @@ namespace Model
 
         [StringLength(255)]
         public string seat_name { get; set; }
+        public int trash { get; set; }
     }
 }

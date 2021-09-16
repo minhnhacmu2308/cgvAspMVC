@@ -375,12 +375,7 @@
                 document.getElementById("file").style.borderColor = '#D0C9C9';
             }
         }
-        ClassicEditor.create(document.querySelector('#editor')).then(eidt => {
-            console.log("da" + eidt);
-        })
-            .catch(error => {
-                                                console.error(error);
-                                            });
+        CKEDITOR.replace("editor");
 
     </script>
     <!-- Modal Add-->
@@ -389,13 +384,9 @@
         var dodai = document.getElementById("dodai").value;
 
         for (var i = 1; i < dodai; i++) {
-            var name = "#editor" + i
-            ClassicEditor.create(document.querySelector(name)).then(eidt => {
-                console.log("da" + eidt);
-            })
-                .catch(error => {
-                    console.error(error);
-                });
+            var name = "editor" + i
+            CKEDITOR.replace(name);
+
         }
 
     </script>

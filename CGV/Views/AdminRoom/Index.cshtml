@@ -10,7 +10,7 @@
        
 
         <div class="card mb-4">
-            <div class="card-header">
+            
                 @if (ViewBag.Msg != null)
                 {
                     if (ViewBag.Msg == "1")
@@ -38,11 +38,17 @@
                         </div>
                     }
                 }
-                <button style="width:100px" type="button" class="btn btn-success" data-bs-toggle="modal"
-                        data-bs-target="#exampleModalAdd">
-                    Thêm
+        <div class="card-header" style="display:flex;justify-content:space-between">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModalAdd" style="width: 100px !important">
+                Thêm
+            </button>
+            <a href="/admin/roomtrash">
+                <button type="button" class="btn btn-secondary">
+                    Thùng rác
                 </button>
-            </div>
+            </a>
+        </div>
+            
             <div class="card-body">
                 <table id="datatablesSimple">
                     <thead>
@@ -96,7 +102,7 @@
                                            
                                             <div class="modal-body">
                                                 Phòng : @item.room_name
-                                                <form action="/AdminRoom/Delete"  metNamehod="post">
+                                                <form action="/AdminRoom/Delete"  method="post">
                                                     <input type="hidden" class="form-control" id="id" name="id" value="@item.id">
                                                     <div class="modal-footer" style="margin-top: 20px">
                                                         <button style="width:100px"type="button" class="btn btn-secondary"

@@ -35,11 +35,16 @@
                     </div>
                 }
             }
-            <div class="card-header">
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModalAdd" style="width: 100px !important">
-                    Thêm
+        <div class="card-header" style="display:flex;justify-content:space-between">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModalAdd" style="width: 100px !important">
+                Thêm
+            </button>
+            <a href="/admin/filmtrash">
+                <button type="button" class="btn btn-secondary" >
+                    Thùng rác
                 </button>
-            </div>
+            </a>
+        </div>
             <div class="card-body">
                 <table id="datatablesSimple">
                     <thead>
@@ -398,7 +403,7 @@
                         </div>
                         <div class="">
                             <label for="category-film" class="col-form-label">Nội dung :</label>
-                            <textarea name="noidung" style="min-height:400px"  id="editor" cols="30" tabindex="8" rows="30"></textarea>
+                            <textarea name="noidung" id="editor" cols="30" tabindex="8" rows="30"></textarea>
                         </div>
                     </div>
                    
@@ -473,13 +478,7 @@
     }
 
    
-    ClassicEditor.create(document.querySelector('#editor')).then(editor  => {
-        editor.ui.view.editable.editableElement.style.height = '1000px'
-        console.log("da" + eidt);
-
-    }).catch(error => {
-        console.error(error);
-    });
+    CKEDITOR.replace("editor");
    
     document.getElementById("tenphim").focus();
 </script>
@@ -488,14 +487,9 @@
     var dodai = document.getElementById("dodai").value;
 
     for (var i = 1; i < dodai; i++) {
-        var name = "#editor" + i
-        ClassicEditor.create(document.querySelector(name)).then(editor => {
-            editor.ui.view.editable.editableElement.style.height = '1000px'
-            console.log("da" + eidt);
-        })
-            .catch(error => {
-                console.error(error);
-            });
+        var name = "editor" + i
+        CKEDITOR.replace(name);
+
     }
 
 </script>

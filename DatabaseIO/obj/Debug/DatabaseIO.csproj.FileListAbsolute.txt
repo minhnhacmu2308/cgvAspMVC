@@ -73,3 +73,18 @@ D:\dđ\Final\cgvAspMVC\DatabaseIO\obj\Debug\DatabaseIO.csproj.CoreCompileInputs.
 D:\dđ\Final\cgvAspMVC\DatabaseIO\obj\Debug\DatabaseIO.csproj.CopyComplete
 D:\dđ\Final\cgvAspMVC\DatabaseIO\obj\Debug\DatabaseIO.dll
 D:\dđ\Final\cgvAspMVC\DatabaseIO\obj\Debug\DatabaseIO.pdb
+D:\.NET MVC\FPT\cgvAspMVC\DatabaseIO\bin\Debug\DatabaseIO.dll.config
+D:\.NET MVC\FPT\cgvAspMVC\DatabaseIO\bin\Debug\DatabaseIO.dll
+D:\.NET MVC\FPT\cgvAspMVC\DatabaseIO\bin\Debug\DatabaseIO.pdb
+D:\.NET MVC\FPT\cgvAspMVC\DatabaseIO\bin\Debug\EntityFramework.dll
+D:\.NET MVC\FPT\cgvAspMVC\DatabaseIO\bin\Debug\EntityFramework.SqlServer.dll
+D:\.NET MVC\FPT\cgvAspMVC\DatabaseIO\bin\Debug\Model.dll
+D:\.NET MVC\FPT\cgvAspMVC\DatabaseIO\bin\Debug\Model.pdb
+D:\.NET MVC\FPT\cgvAspMVC\DatabaseIO\bin\Debug\Model.dll.config
+D:\.NET MVC\FPT\cgvAspMVC\DatabaseIO\bin\Debug\EntityFramework.xml
+D:\.NET MVC\FPT\cgvAspMVC\DatabaseIO\bin\Debug\EntityFramework.SqlServer.xml
+D:\.NET MVC\FPT\cgvAspMVC\DatabaseIO\obj\Debug\DatabaseIO.csprojAssemblyReference.cache
+D:\.NET MVC\FPT\cgvAspMVC\DatabaseIO\obj\Debug\DatabaseIO.csproj.CoreCompileInputs.cache
+D:\.NET MVC\FPT\cgvAspMVC\DatabaseIO\obj\Debug\DatabaseIO.csproj.CopyComplete
+D:\.NET MVC\FPT\cgvAspMVC\DatabaseIO\obj\Debug\DatabaseIO.dll
+D:\.NET MVC\FPT\cgvAspMVC\DatabaseIO\obj\Debug\DatabaseIO.pdb

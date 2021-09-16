@@ -25,7 +25,18 @@ namespace CGV.Controllers.Admin
             ViewBag.Msg = mess;
             Utils.CheckActive.checkActive();
             Session["checkactive"] = "film";
-            List<film> list = db.films.OrderByDescending(f => f.id).ToList();
+            List<film> list = db.films.Where(f => f.trash == 1).OrderByDescending(f => f.id).ToList();
+            return View(list);
+        }
+        public ActionResult Trash()
+        {
+            if (Session["usr"] == null)
+            {
+                return RedirectToAction("Index", "AdminAuthen");
+            }
+            Utils.CheckActive.checkActive();
+            Session["checkactive"] = "film";
+            List<film> list = db.films.Where(f => f.trash == 0).OrderByDescending(f => f.id).ToList();
             return View(list);
         }
         [HttpPost]
@@ -167,6 +178,18 @@ namespace CGV.Controllers.Admin
             }
                 
         }
+        [HttpPost]
+        public ActionResult ChangeStatus(FormCollection form)
+        {
+            var id = form["id"];
+            var idc = Int32.Parse(id);
+            if (Session["usr"] == null)
+            {
+                return RedirectToAction("Index", "AdminAuthen");
+            }
+            post.changStatus(idc);
+            return RedirectToAction("Index", new { mess = "2" });
+        }
         public ActionResult Delete(FormCollection form)
         {
 
@@ -182,7 +205,7 @@ namespace CGV.Controllers.Admin
                 var dele = db.films.Where(c => c.id == idc).FirstOrDefault();
                 if (dele != null)
                 {
-                    post.delete(id);
+                    post.changStatus(idc);
                     return RedirectToAction("Index", new { mess = "2" });
                 }
                 else

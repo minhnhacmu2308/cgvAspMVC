@@ -200,5 +200,15 @@ namespace DatabaseIO
                 return false;
             }
         }
+        /**
+         * change status for room
+         * @param id
+         */
+        public void changStatus(int id)
+        {
+            var room = mydb.rooms.Where((u) => u.id == id).FirstOrDefault();
+            room.trash = room.trash == 1 ? 0 : 1;
+            mydb.SaveChanges();
+        }
     }
 }

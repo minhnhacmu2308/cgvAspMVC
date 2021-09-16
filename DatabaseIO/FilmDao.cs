@@ -296,6 +296,16 @@ namespace DatabaseIO
             }
             return html;
         }
-        
+        /**
+         * change status for film
+         * @param id
+         */
+        public void changStatus(int id)
+        {
+            var film = mydb.films.Where((u) => u.id == id).FirstOrDefault();
+            film.trash = film.trash == 1 ? 0 :  1;
+            mydb.SaveChanges();
+        }
+
     }
 }

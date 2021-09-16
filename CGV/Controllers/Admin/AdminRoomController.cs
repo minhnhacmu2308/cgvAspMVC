@@ -22,7 +22,19 @@ namespace CGV.Controllers.Admin
             ViewBag.Msg = mess;
             Session["checkactive"] = "room";
             Utils.CheckActive.checkActive();
-            List<room> list = db.rooms.ToList();        
+            List<room> list = db.rooms.Where(r => r.trash == 1).ToList();        
+            return View(list);
+        }
+        public ActionResult Trash()
+        {
+            if (Session["usr"] == null)
+            {
+                return RedirectToAction("Index", "AdminAuthen");
+            }
+            
+            Session["checkactive"] = "room";
+            Utils.CheckActive.checkActive();
+            List<room> list = db.rooms.Where(r => r.trash == 0).ToList();
             return View(list);
         }
         [HttpPost]
@@ -110,6 +122,18 @@ namespace CGV.Controllers.Admin
 
 
         }
+        [HttpPost]
+        public ActionResult ChangeStatus(FormCollection form)
+        {
+            var id = form["id"];
+            var idc = Int32.Parse(id);
+            if (Session["usr"] == null)
+            {
+                return RedirectToAction("Index", "AdminAuthen");
+            }
+            room.changStatus(idc);
+            return RedirectToAction("Index", new { mess = "2" });
+        }
         public ActionResult Delete(FormCollection form)
         {
             var id = form["id"];
@@ -127,8 +151,8 @@ namespace CGV.Controllers.Admin
                 }
                 else
                 {
-                    room.deleteRoomSeat(Int32.Parse(id));
-                    room.delete(id);
+                   /* room.deleteRoomSeat(Int32.Parse(id));*/
+                    room.changStatus(Int32.Parse(id));
                     var message = "2";
                     return RedirectToAction("Index", new { mess = message });
                 }
